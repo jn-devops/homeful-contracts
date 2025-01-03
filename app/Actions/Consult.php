@@ -18,20 +18,20 @@ class Consult
      */
     public function handle(string $contact_reference_code): Reference
     {
-        //create a blank contract
+        /** create a blank contract */
         $contract = app(Contract::class)->create();
 
         //get customer from contact reference code and assign to contract contact json attribute
         $contract->contact = GetCustomer::run(compact('contact_reference_code'));
         $contract->save();
 
-        //prepare entities e.g., contract
+        /** prepare entities e.g., contract */
         $entities = compact('contract');
 
         //create a blank reference, add the prepared entities tot he reference
         $reference = References::withEntities(...$entities)->withStartTime(now())->create();
 
-        //update the state to Consulted
+        /** update the state to Consulted */
         $contract->state->transitionTo(Consulted::class, $reference);
 
         return $reference;

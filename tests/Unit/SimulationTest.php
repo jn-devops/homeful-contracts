@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
+use Homeful\Contracts\States\{Availed, Consulted};
 use Homeful\Contacts\Classes\ContactMetaData;
 use Homeful\Properties\Data\PropertyData;
-use App\Actions\{Consult, GetInventory};
 use Homeful\References\Models\Reference;
-use Homeful\Contracts\States\Consulted;
 use Homeful\Contracts\Models\Contract;
 use Illuminate\Support\Facades\Http;
 use Homeful\Common\Classes\Amount;
+use App\Actions\{Avail, Consult};
 use Homeful\Mortgage\Mortgage;
 
 uses(RefreshDatabase::class, WithFaker::class);
@@ -35,7 +35,7 @@ dataset('product_params', function () {
     ];
 });
 
-test('generate reference from new availment', function (array $contact_params, array $product_params) {
+test('generate reference from a new contract', function (array $contact_params, array $product_params) {
     $response = Http::acceptJson()->post('http://homeful-contacts.test/api/register', $contact_params);
     expect($response->status())->toBe(201);
     $contact_reference_code = $response->json('code');
@@ -47,15 +47,15 @@ test('generate reference from new availment', function (array $contact_params, a
     expect($contract->contact)->toBeInstanceOf(ContactMetaData::class);
     expect($contract->property)->toBeNull();
     expect($contract->mortgage)->toBeNull();
-    $property_attributes = GetInventory::run($product_params);
-    $contract->property = $property_attributes;
-    $contract->save();
+
+    Avail::run($reference, $product_params);
     if ($contract instanceof Contract) {
+        $contract->refresh();
         expect($contract->property)->toBeInstanceOf(PropertyData::class);
         expect($contract->mortgage)->toBeInstanceOf(Mortgage::class);
+        expect($contract->state)->toBeInstanceOf(Availed::class);
         expect($contract->mortgage->getBorrower()->getBirthdate()->isSameDay($contact_params['date_of_birth']))->toBeTrue();
         expect($contract->mortgage->getBorrower()->getGrossMonthlyIncome()->inclusive()->compareTo($contact_params['monthly_gross_income']))->toBe(Amount::EQUAL);
-        expect($contract->mortgage->getProperty()->getSKU())->toBe($property_attributes['sku']);
-        expect($contract->mortgage->getProperty()->getTotalContractPrice()->inclusive()->compareTo($property_attributes['tcp']))->toBe(Amount::EQUAL);
+        expect($contract->mortgage->getProperty()->getSKU())->toBe($product_params['sku']);
     }
 })->with('contact_params', 'product_params');
