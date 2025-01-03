@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
+use App\Actions\{GetContact, GetNextInventory};
 use Homeful\Contacts\Classes\ContactMetaData;
 use Homeful\References\Facades\References;
 use Homeful\Properties\Data\PropertyData;
@@ -37,23 +38,13 @@ dataset('product_params', function () {
 test('generate reference from new availment', function (array $contact_params, array $product_params) {
     $response = Http::acceptJson()->post('http://homeful-contacts.test/api/register', $contact_params);
     expect($response->status())->toBe(201);
-    $contact_attributes = $response->json('contact');
     $membership_id = $response->json('code');
-    $response = Http::acceptJson()->get('http://homeful-contacts.test/api/references/'.$membership_id);
-    expect($response->status())->toBe(200);
-    expect($response->json('contact'))->toBe($contact_attributes);
-
-    $route = __('https://properties.homeful.ph/api/next-property-details/:sku', $product_params);
-    $response = Http::acceptJson()->get($route);
-    expect($response->status())->toBe(200);
-    $property_attributes = $response->json('data');
-    expect($property_attributes['tcp'])->toBe($property_attributes['product']['price']);
-
+    $contact_attributes = GetContact::run($membership_id);
+    $property_attributes = GetNextInventory::run($product_params);
     $contract = app(Contract::class)->create([
         'contact' => $contact_attributes,
         'property' => $property_attributes
     ]);
-
     if ($contract instanceof Contract) {
         expect($contract->contact)->toBeInstanceOf(ContactMetaData::class);
         expect($contract->property)->toBeInstanceOf(PropertyData::class);

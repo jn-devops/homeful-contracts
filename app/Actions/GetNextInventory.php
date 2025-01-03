@@ -2,15 +2,18 @@
 
 namespace App\Actions;
 
-use Homeful\Properties\Models\Property as Inventory;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Illuminate\Support\Facades\Http;
 
 class GetNextInventory
 {
     use AsAction;
 
-    public function handle(string $sku): ?Inventory
+    public function handle(array $attribs)
     {
-        return Inventory::where('sku', $sku)->first();
+        $route = __('https://properties.homeful.ph/api/next-property-details/:sku', $attribs);
+        $response = Http::acceptJson()->get($route);
+
+        return $response->ok() ? $response->json('data') : false;
     }
 }
