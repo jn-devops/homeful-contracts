@@ -58,4 +58,5 @@ test('generate reference from a new contract', function (array $contact_params, 
         expect($contract->mortgage->getBorrower()->getGrossMonthlyIncome()->inclusive()->compareTo($contact_params['monthly_gross_income']))->toBe(Amount::EQUAL);
         expect($contract->mortgage->getProperty()->getSKU())->toBe($product_params['sku']);
     }
+//    dd(\Homeful\Contracts\Data\ContractData::fromModel($contract));
 })->with('contact_params', 'product_params');

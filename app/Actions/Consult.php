@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use Homeful\References\Events\ReferenceCreated;
 use Homeful\References\Facades\References;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\References\Models\Reference;
@@ -21,17 +22,17 @@ class Consult
         /** create a blank contract */
         $contract = app(Contract::class)->create();
 
-        //get customer from contact reference code and assign to contract contact json attribute
-        $contract->contact = GetCustomer::run(compact('contact_reference_code'));
-        $contract->save();
+        /** update the contract contact */
+        UpdateContractContact::run($contract, $contact_reference_code);
 
         /** prepare entities e.g., contract */
         $entities = compact('contract');
 
-        //create a blank reference, add the prepared entities tot he reference
+        /** create a blank reference, add the prepared entities to the reference model */
         $reference = References::withEntities(...$entities)->withStartTime(now())->create();
+        ReferenceCreated::dispatch($reference);
 
-        /** update the state to Consulted */
+        /** update the contract state from Pending to Consulted */
         $contract->state->transitionTo(Consulted::class, $reference);
 
         return $reference;
