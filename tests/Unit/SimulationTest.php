@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use App\Actions\{GetContact, GetNextInventory};
 use Homeful\Contacts\Classes\ContactMetaData;
-use Homeful\References\Facades\References;
 use Homeful\Properties\Data\PropertyData;
+use App\Actions\{Consult, GetInventory};
 use Homeful\References\Models\Reference;
+use Homeful\Contracts\States\Consulted;
 use Homeful\Contracts\Models\Contract;
 use Illuminate\Support\Facades\Http;
 use Homeful\Common\Classes\Amount;
@@ -38,15 +38,19 @@ dataset('product_params', function () {
 test('generate reference from new availment', function (array $contact_params, array $product_params) {
     $response = Http::acceptJson()->post('http://homeful-contacts.test/api/register', $contact_params);
     expect($response->status())->toBe(201);
-    $membership_id = $response->json('code');
-    $contact_attributes = GetContact::run($membership_id);
-    $property_attributes = GetNextInventory::run($product_params);
-    $contract = app(Contract::class)->create([
-        'contact' => $contact_attributes,
-        'property' => $property_attributes
-    ]);
+    $contact_reference_code = $response->json('code');
+    $reference = Consult::run($contact_reference_code);
+    expect($reference)->toBeInstanceOf(Reference::class);
+    $contract = $reference->getContract();
+    expect($contract)->toBeInstanceOf(Contract::class);
+    expect($contract->state)->toBeInstanceOf(Consulted::class);
+    expect($contract->contact)->toBeInstanceOf(ContactMetaData::class);
+    expect($contract->property)->toBeNull();
+    expect($contract->mortgage)->toBeNull();
+    $property_attributes = GetInventory::run($product_params);
+    $contract->property = $property_attributes;
+    $contract->save();
     if ($contract instanceof Contract) {
-        expect($contract->contact)->toBeInstanceOf(ContactMetaData::class);
         expect($contract->property)->toBeInstanceOf(PropertyData::class);
         expect($contract->mortgage)->toBeInstanceOf(Mortgage::class);
         expect($contract->mortgage->getBorrower()->getBirthdate()->isSameDay($contact_params['date_of_birth']))->toBeTrue();
@@ -54,14 +58,4 @@ test('generate reference from new availment', function (array $contact_params, a
         expect($contract->mortgage->getProperty()->getSKU())->toBe($property_attributes['sku']);
         expect($contract->mortgage->getProperty()->getTotalContractPrice()->inclusive()->compareTo($property_attributes['tcp']))->toBe(Amount::EQUAL);
     }
-
-    $entities = [
-        'contract' => $contract
-    ];
-    $reference = References::withEntities(...$entities)->withStartTime(now())->create();
-
-    expect($reference)->toBeInstanceOf(Reference::class);
-    expect($reference->getContract())->toBeInstanceOf(Contract::class);
-    expect($reference->getContract()->is($contract))->toBeTrue();
-
 })->with('contact_params', 'product_params');

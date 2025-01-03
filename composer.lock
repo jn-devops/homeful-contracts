@@ -2620,16 +2620,16 @@
         },
         {
             "name": "homeful/references",
-            "version": "v1.2.2",
+            "version": "v1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/references.git",
-                "reference": "ba2b32d52da7dbea32b3ec528ba25f4b9ac0203e"
+                "reference": "f510c829457980e308120dc0d35284bb4ebb7a16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/references/zipball/ba2b32d52da7dbea32b3ec528ba25f4b9ac0203e",
-                "reference": "ba2b32d52da7dbea32b3ec528ba25f4b9ac0203e",
+                "url": "https://api.github.com/repos/jn-devops/references/zipball/f510c829457980e308120dc0d35284bb4ebb7a16",
+                "reference": "f510c829457980e308120dc0d35284bb4ebb7a16",
                 "shasum": ""
             },
             "require": {
@@ -2695,7 +2695,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/references/issues",
-                "source": "https://github.com/jn-devops/references/tree/v1.2.2"
+                "source": "https://github.com/jn-devops/references/tree/v1.2.5"
             },
             "funding": [
                 {
@@ -2703,7 +2703,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-21T13:18:11+00:00"
+            "time": "2025-01-03T04:05:23+00:00"
         },
         {
             "name": "inertiajs/inertia-laravel",
@@ -3082,16 +3082,16 @@
         },
         {
             "name": "jn-devops/contracts",
-            "version": "v1.4.1",
+            "version": "v1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contracts.git",
-                "reference": "e9c16ab26ccefb1c7638bc85f4349377ae5cc5dd"
+                "reference": "273f70b0a485facd79958bde71591e655787f3b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contracts/zipball/e9c16ab26ccefb1c7638bc85f4349377ae5cc5dd",
-                "reference": "e9c16ab26ccefb1c7638bc85f4349377ae5cc5dd",
+                "url": "https://api.github.com/repos/jn-devops/contracts/zipball/273f70b0a485facd79958bde71591e655787f3b2",
+                "reference": "273f70b0a485facd79958bde71591e655787f3b2",
                 "shasum": ""
             },
             "require": {
@@ -3157,7 +3157,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contracts/issues",
-                "source": "https://github.com/jn-devops/contracts/tree/v1.4.1"
+                "source": "https://github.com/jn-devops/contracts/tree/v1.4.6"
             },
             "funding": [
                 {
@@ -3165,7 +3165,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-03T00:37:34+00:00"
+            "time": "2025-01-03T04:35:50+00:00"
         },
         {
             "name": "jn-devops/mortgage",
