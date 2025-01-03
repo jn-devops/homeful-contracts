@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
+use App\Actions\{Contract\Avail, Contract\Consult};
 use Homeful\Contracts\States\{Availed, Consulted};
 use Homeful\Contacts\Classes\ContactMetaData;
 use Homeful\Properties\Data\PropertyData;
@@ -8,7 +9,6 @@ use Homeful\References\Models\Reference;
 use Homeful\Contracts\Models\Contract;
 use Illuminate\Support\Facades\Http;
 use Homeful\Common\Classes\Amount;
-use App\Actions\{Avail, Consult};
 use Homeful\Mortgage\Mortgage;
 
 uses(RefreshDatabase::class, WithFaker::class);

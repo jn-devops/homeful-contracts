@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Contract;
 
 use Homeful\References\Events\ReferenceCreated;
 use Homeful\References\Facades\References;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\References\Models\Reference;
 use Homeful\Contracts\States\Consulted;
+use App\Actions\UpdateContractContact;
 use Homeful\Contracts\Models\Contract;
 
 class Consult

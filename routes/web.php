@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\{Contract\AvailController, Contract\ConsultController};
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('consult', ConsultController::class)->only(['create', 'store']);;
+Route::resource('avail', AvailController::class)->only(['create', 'store']);;
 
 require __DIR__.'/auth.php';

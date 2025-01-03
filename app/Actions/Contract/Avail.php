@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Contract;
 
+use App\Actions\GetInventory;
+use Homeful\Contracts\States\Availed;
+use Homeful\References\Models\Reference;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Homeful\References\Models\Reference;
-use Homeful\Contracts\States\Availed;
-use Illuminate\Support\Arr;
 
 class Avail
 {
