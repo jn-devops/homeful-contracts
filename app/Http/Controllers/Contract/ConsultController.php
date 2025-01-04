@@ -11,9 +11,11 @@ use Illuminate\Support\Arr;
 
 class ConsultController extends Controller
 {
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        return Inertia::render('Contract/Consult');
+        $props = Arr::only($request->all(), 'contact_reference_code');
+
+        return Inertia::render('Contract/Consult', $props);
     }
 
     public function store(Request $request): RedirectResponse

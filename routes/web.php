@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\{Contract\AvailController, Contract\ConsultController};
+use App\Http\Controllers\Contract\{AvailController, ConsultController};
+use App\Http\Controllers\RegisterContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('register-contact', RegisterContactController::class)->name('register-contact');
 Route::resource('consult', ConsultController::class)->only(['create', 'store']);;
 Route::resource('avail', AvailController::class)->only(['create', 'store']);;
 
