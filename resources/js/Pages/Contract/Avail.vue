@@ -6,6 +6,15 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { ref, watch } from "vue";
+import ButtonOptions from "@/Components/ButtonOptions.vue";
+
+const props = defineProps({
+    matches: Object,
+    buttonOptions: {
+        type: [Object, Boolean],
+        default: [],
+    }
+});
 
 const reference = ref({});
 
@@ -25,6 +34,7 @@ watch (
 const form = useForm({
     reference_code: reference.value,
     sku: null,
+    option: null,
 });
 
 const submit = () => {
@@ -39,6 +49,12 @@ const submit = () => {
         <Head title="Register" />
 
         <form @submit.prevent="submit">
+            {{ form.option }}
+
+            <div class="col-span-6 lg:col-span-4">
+                <ButtonOptions :options="buttonOptions" v-model:option="form.sku"/>
+            </div>
+
             <div>
                 <InputLabel for="reference_code" value="Reference Code" />
 
@@ -54,19 +70,19 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.reference_code" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="sku" value="SKU" />
+<!--            <div class="mt-4">-->
+<!--                <InputLabel for="sku" value="SKU" />-->
 
-                <TextInput
-                    id="sku"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.sku"
-                    required
-                />
+<!--                <TextInput-->
+<!--                    id="sku"-->
+<!--                    type="text"-->
+<!--                    class="mt-1 block w-full"-->
+<!--                    v-model="form.sku"-->
+<!--                    required-->
+<!--                />-->
 
-                <InputError class="mt-2" :message="form.errors.sku" />
-            </div>
+<!--                <InputError class="mt-2" :message="form.errors.sku" />-->
+<!--            </div>-->
 
             <div class="mt-4 flex items-center justify-end">
                 <PrimaryButton

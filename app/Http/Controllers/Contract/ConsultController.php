@@ -26,7 +26,7 @@ class ConsultController extends Controller
         $contact_reference_code = Arr::get($validated, 'contact_reference_code');
         $reference = Consult::run($contact_reference_code);
 
-        return redirect()->route('avail.create')->with('event', [
+        return redirect()->route('avail.create', ['reference' => $reference->code])->with('event', [
             'name' => 'reference',
             'data' => $reference->code
         ]);

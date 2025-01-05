@@ -9,12 +9,27 @@ use App\Http\Controllers\Controller;
 use Inertia\{Inertia, Response};
 use App\Actions\Contract\Avail;
 use Illuminate\Support\Arr;
+use App\Actions\GetMatches;
+use App\Classes\ProductOptions;
 
 class AvailController extends Controller
 {
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        return Inertia::render('Contract/Avail');
+        $matches = [];
+        $options = [];
+        if ($reference_code = $request->get('reference')) {
+            if ($reference = Reference::where('code', $reference_code)->first()) {
+                $matches = GetMatches::run($reference, 5, 2);
+                ProductOptions::setMatches($matches);
+                $options = ProductOptions::records();
+            }
+        }
+
+        return Inertia::render('Contract/Avail', [
+            'matches' => $matches,
+            'buttonOptions' => $options
+        ]);
     }
 
     public function store(Request $request): RedirectResponse

@@ -1,15 +1,22 @@
 <?php
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use App\Actions\{Contract\Avail, Contract\Consult};
+use App\Actions\Contract\{Avail, Consult, Verify};
 use Homeful\Contracts\States\{Availed, Consulted};
 use Homeful\Contacts\Classes\ContactMetaData;
 use Homeful\Properties\Data\PropertyData;
 use Homeful\References\Models\Reference;
+use Homeful\KwYCCheck\Data\CheckinData;
 use Homeful\Contracts\Models\Contract;
 use Illuminate\Support\Facades\Http;
+use Homeful\KwYCCheck\Models\Lead;
 use Homeful\Common\Classes\Amount;
 use Homeful\Mortgage\Mortgage;
+use App\Actions\GetMatches;
+
+use Illuminate\Support\Arr;
+use App\Classes\ProductOptions;
+use App\Data\MatchDescriptionData;
 
 uses(RefreshDatabase::class, WithFaker::class);
 
@@ -35,7 +42,25 @@ dataset('product_params', function () {
     ];
 });
 
-test('generate reference from a new contract', function (array $contact_params, array $product_params) {
+dataset('checkin_payload', function () {
+    return [
+        [fn() => Lead::factory()->getCheckinPayload([
+            'email' => fake()->email(),
+            'mobile' => '09171234567',
+            'code' => fake()->word(),
+            'identifier' => fake()->word(),
+            'choice' => fake()->word(),
+            'location' => fake()->latitude() .',' . fake()->longitude(),
+            'fullName' => fake()->name(),
+            'address' => fake()->city(),
+            'dateOfBirth' => '1999-03-17',
+            'idType' => 'phl_dl',
+            'idNumber' => 'ID-123456'
+        ])]
+    ];
+});
+
+test('generate reference from a new contract', function (array $contact_params, array $product_params, array $checkin_payload) {
     $response = Http::acceptJson()->post('http://homeful-contacts.test/api/register', $contact_params);
     expect($response->status())->toBe(201);
     $contact_reference_code = $response->json('code');
@@ -48,6 +73,10 @@ test('generate reference from a new contract', function (array $contact_params, 
     expect($contract->property)->toBeNull();
     expect($contract->mortgage)->toBeNull();
 
+//    $matches = (GetMatches::run($reference, 1, 2));
+//    ProductOptions::setMatches($matches);
+//    dd(ProductOptions::records());
+
     Avail::run($reference, $product_params);
     if ($contract instanceof Contract) {
         $contract->refresh();
@@ -58,5 +87,8 @@ test('generate reference from a new contract', function (array $contact_params, 
         expect($contract->mortgage->getBorrower()->getGrossMonthlyIncome()->inclusive()->compareTo($contact_params['monthly_gross_income']))->toBe(Amount::EQUAL);
         expect($contract->mortgage->getProperty()->getSKU())->toBe($product_params['sku']);
     }
-//    dd(\Homeful\Contracts\Data\ContractData::fromModel($contract));
-})->with('contact_params', 'product_params');
+
+    expect($contract->checkin)->toBeNull();
+    Verify::run($contract, $checkin_payload);
+    expect($contract->checkin)->toBeInstanceOf(CheckinData::class);
+})->with('contact_params', 'product_params', 'checkin_payload');
