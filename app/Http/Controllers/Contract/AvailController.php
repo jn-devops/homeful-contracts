@@ -8,26 +8,36 @@ use Homeful\References\Models\Reference;
 use App\Http\Controllers\Controller;
 use Inertia\{Inertia, Response};
 use App\Actions\Contract\Avail;
+use App\Classes\ProductOptions;
 use Illuminate\Support\Arr;
 use App\Actions\GetMatches;
-use App\Classes\ProductOptions;
 
 class AvailController extends Controller
 {
+    /**
+     *  Verbosity
+     *
+     *  0 - SKU only
+     *  1 - Product Attributes
+     *  2 - Mortgage Attributes
+     *
+     * */
+    const VERBOSE = 2;
+
     public function create(Request $request): Response
     {
         $matches = [];
         $options = [];
         if ($reference_code = $request->get('reference')) {
             if ($reference = Reference::where('code', $reference_code)->first()) {
-                $matches = GetMatches::run($reference, 5, 2);
+                //TODO: cache this
+                $matches = GetMatches::run($reference, config('homeful-contracts.records-limit', 3), self::VERBOSE);
                 ProductOptions::setMatches($matches);
                 $options = ProductOptions::records();
             }
         }
 
         return Inertia::render('Contract/Avail', [
-            'matches' => $matches,
             'buttonOptions' => $options
         ]);
     }

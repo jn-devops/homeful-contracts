@@ -7,4 +7,5 @@ return [
         'register-contact' => env('REGISTER_CONTACT_ENDPOINT', 'http://homeful-contacts.test/register'),
         'matches' => env('MATCHES_ENDPOINT', 'http://homeful-match.test/api/match')
     ],
+    'records-limit' => env('MATCHED_RECORDS_LIMIT', 3),
 ];

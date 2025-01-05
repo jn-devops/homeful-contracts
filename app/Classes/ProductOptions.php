@@ -3,10 +3,10 @@
 namespace App\Classes;
 
 use App\Data\{MatchDescriptionData, MatchNameData};
+use Homeful\Common\Classes\OptionsType;
 use Illuminate\Support\Arr;
 
-
-class ProductOptions extends BarkerType
+class ProductOptions extends OptionsType
 {
     protected static array $matches;
 

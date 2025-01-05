@@ -7,8 +7,8 @@ use Spatie\LaravelData\Data;
 class MatchNameData extends Data
 {
     public function __construct(
-        public float $selling_price,
-        public string $housing_type,
-        public float $floor_area,
+        public string $name,//include project and brand
+        public string $brand,
+        public string $category,
     ) {}
 }

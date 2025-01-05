@@ -2912,16 +2912,16 @@
         },
         {
             "name": "jn-devops/common",
-            "version": "v1.3.3",
+            "version": "v1.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/common.git",
-                "reference": "2c208c1e2e487f59755b896b706c72741fb319bc"
+                "reference": "a127e174a7c7eb471589a874cb62a8c9923fd331"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/common/zipball/2c208c1e2e487f59755b896b706c72741fb319bc",
-                "reference": "2c208c1e2e487f59755b896b706c72741fb319bc",
+                "url": "https://api.github.com/repos/jn-devops/common/zipball/a127e174a7c7eb471589a874cb62a8c9923fd331",
+                "reference": "a127e174a7c7eb471589a874cb62a8c9923fd331",
                 "shasum": ""
             },
             "require": {
@@ -2985,7 +2985,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/common/issues",
-                "source": "https://github.com/jn-devops/common/tree/v1.3.3"
+                "source": "https://github.com/jn-devops/common/tree/v1.3.4"
             },
             "funding": [
                 {
@@ -2993,7 +2993,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-02T08:01:34+00:00"
+            "time": "2025-01-05T14:21:10+00:00"
         },
         {
             "name": "jn-devops/contacts",
@@ -3498,16 +3498,16 @@
         },
         {
             "name": "jn-devops/property",
-            "version": "v1.1.8",
+            "version": "v1.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/property.git",
-                "reference": "6d9f97c12352f66a8e154f08d6bd96c287392703"
+                "reference": "3144b01450bbdc5cf0b930e74422ff4f0b9c80b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/property/zipball/6d9f97c12352f66a8e154f08d6bd96c287392703",
-                "reference": "6d9f97c12352f66a8e154f08d6bd96c287392703",
+                "url": "https://api.github.com/repos/jn-devops/property/zipball/3144b01450bbdc5cf0b930e74422ff4f0b9c80b1",
+                "reference": "3144b01450bbdc5cf0b930e74422ff4f0b9c80b1",
                 "shasum": ""
             },
             "require": {
@@ -3568,7 +3568,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/property/issues",
-                "source": "https://github.com/jn-devops/property/tree/v1.1.8"
+                "source": "https://github.com/jn-devops/property/tree/v1.1.9"
             },
             "funding": [
                 {
@@ -3576,7 +3576,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-25T23:44:18+00:00"
+            "time": "2025-01-05T12:24:26+00:00"
         },
         {
             "name": "kelunik/certificate",
