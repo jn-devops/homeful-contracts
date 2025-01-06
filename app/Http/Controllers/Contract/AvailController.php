@@ -26,19 +26,8 @@ class AvailController extends Controller
 
     public function create(Request $request): Response
     {
-        $matches = [];
-        $options = [];
-        if ($reference_code = $request->get('reference')) {
-            if ($reference = Reference::where('code', $reference_code)->first()) {
-                //TODO: cache this
-                $matches = GetMatches::run($reference, config('homeful-contracts.records-limit', 3), self::VERBOSE);
-                ProductOptions::setMatches($matches);
-                $options = ProductOptions::records();
-            }
-        }
-
         return Inertia::render('Contract/Avail', [
-            'buttonOptions' => $options
+            'buttonOptions' => $this->getOptions($request)
         ]);
     }
 
@@ -53,5 +42,20 @@ class AvailController extends Controller
         Avail::run($reference, $validated);
 
         return redirect()->route('dashboard');
+    }
+
+    protected function getOptions(Request $request): array
+    {
+        $options = [];
+        if ($reference_code = $request->get('reference')) {
+            if ($reference = Reference::where('code', $reference_code)->first()) {
+                //TODO: cache this
+                $matches = GetMatches::run($reference, config('homeful-contracts.records-limit', 3), self::VERBOSE);
+                ProductOptions::setMatches($matches);
+                $options = ProductOptions::records();
+            }
+        }
+
+        return $options;
     }
 }

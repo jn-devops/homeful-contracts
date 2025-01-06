@@ -73,10 +73,6 @@ test('generate reference from a new contract', function (array $contact_params, 
     expect($contract->property)->toBeNull();
     expect($contract->mortgage)->toBeNull();
 
-//    $matches = (GetMatches::run($reference, 1, 2));
-//    ProductOptions::setMatches($matches);
-//    dd(ProductOptions::records());
-
     Avail::run($reference, $product_params);
     if ($contract instanceof Contract) {
         $contract->refresh();

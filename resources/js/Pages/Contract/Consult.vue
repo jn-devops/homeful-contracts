@@ -8,7 +8,19 @@ import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import {ref, watch} from "vue";
 
 const props = defineProps({
-    contact_reference_code: String
+    contact_reference_code: String,
+    contact_reference_label: {
+        type: String,
+        default: "User Reference Code"
+    },
+    contact_reference_placeholder: {
+        type: String,
+        default: "Enter user reference code"
+    },
+    contact_reference_note: {
+        type: String,
+        default: "*user reference"
+    }
 });
 
 const form = useForm({
@@ -28,17 +40,19 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="contact_reference_code" value="Contact Reference Code" />
+                <InputLabel for="contact_reference_code" :value="contact_reference_label" />
 
                 <TextInput
                     id="contact_reference_code"
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.contact_reference_code"
+                    :placeholder="contact_reference_placeholder"
                     required
                     autofocus
                 />
 
+                <div class="text-xs text-gray-600 dark:text-gray-400">{{ contact_reference_note }}"</div>
                 <InputError class="mt-2" :message="form.errors.contact_reference_code" />
             </div>
 

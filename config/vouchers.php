@@ -27,7 +27,7 @@ return [
      *
      * Ex. FOO-1234-5678
      */
-    'prefix' => 'H',
+    'prefix' => 'JN',
 
     /*
      * Code suffix.
