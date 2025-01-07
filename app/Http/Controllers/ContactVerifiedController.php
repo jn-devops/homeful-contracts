@@ -13,9 +13,8 @@ class ContactVerifiedController extends Controller
     {
         $checkin_payload = $request->all();
         $reference_code = CheckinData::fromObject($checkin_payload)->inputs->identifier;
-        $reference = Reference::where('code', $reference_code)->first();
-        $contract = $reference->getContract();
-        Verify::run($contract, $checkin_payload);
+        $reference = Reference::where('code', $reference_code)->firstOrFail();
+        Verify::run($reference, $checkin_payload);
 
         $response = [
             'reference_code' => $reference_code,

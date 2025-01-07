@@ -65,6 +65,7 @@ test('consult, avail, verify, paid actions work', function (array $contact_param
     $contract = $reference->getContract();
     expect($contract)->toBeInstanceOf(Contract::class);
     expect($contract->state)->toBeInstanceOf(Consulted::class);
+    expect($contract->consulted)->toBeTrue();
     expect($contract->contact)->toBeInstanceOf(ContactMetaData::class);
     expect($contract->property)->toBeNull();
     expect($contract->mortgage)->toBeNull();
@@ -75,15 +76,18 @@ test('consult, avail, verify, paid actions work', function (array $contact_param
         expect($contract->property)->toBeInstanceOf(PropertyData::class);
         expect($contract->mortgage)->toBeInstanceOf(Mortgage::class);
         expect($contract->state)->toBeInstanceOf(Availed::class);
+        expect($contract->availed)->toBeTrue();
         expect($contract->mortgage->getBorrower()->getBirthdate()->isSameDay($contact_params['date_of_birth']))->toBeTrue();
         expect($contract->mortgage->getBorrower()->getGrossMonthlyIncome()->inclusive()->compareTo($contact_params['monthly_gross_income']))->toBe(Amount::EQUAL);
         expect($contract->mortgage->getProperty()->getSKU())->toBe($product_params['sku']);
     }
 
     expect($contract->checkin)->toBeNull();
-    Verify::run($contract, $checkin_payload);
+    Verify::run($reference, $checkin_payload);
+    $contract->refresh();
     expect($contract->checkin)->toBeInstanceOf(CheckinData::class);
     expect($contract->state)->toBeInstanceOf(Verified::class);
+    expect($contract->verified)->toBeTrue();
 })->with('contact_params', 'product_params', 'checkin_payload');
 
 test('consult, avail, verify, paid end points work', function (array $contact_params, array $product_params) {
@@ -103,11 +107,12 @@ test('consult, avail, verify, paid end points work', function (array $contact_pa
     $contract = $reference->getContract();
     expect($contract)->toBeInstanceOf(Contract::class);
     expect($contract->state)->toBeInstanceOf(Consulted::class);
+    expect($contract->consulted)->toBeTrue();
     expect($contract->contact)->toBeInstanceOf(ContactMetaData::class);
     expect($contract->property)->toBeNull();
     expect($contract->mortgage)->toBeNull();
 
-    $sku = 'JN-PVMP-HLDU-54-h';
+    $sku = Arr::get($product_params, 'sku');
     $response = $this->postJson(route('avail.store'), compact('reference_code', 'sku'));
     expect($response->status())->toBe(302);
     $response->assertRedirect(route('verify.create', compact('reference_code')));
@@ -116,6 +121,7 @@ test('consult, avail, verify, paid end points work', function (array $contact_pa
         expect($contract->property)->toBeInstanceOf(PropertyData::class);
         expect($contract->mortgage)->toBeInstanceOf(Mortgage::class);
         expect($contract->state)->toBeInstanceOf(Availed::class);
+        expect($contract->availed)->toBeTrue();
         expect($contract->mortgage->getBorrower()->getBirthdate()->isSameDay($contact_params['date_of_birth']))->toBeTrue();
         expect($contract->mortgage->getBorrower()->getGrossMonthlyIncome()->inclusive()->compareTo($contact_params['monthly_gross_income']))->toBe(Amount::EQUAL);
         expect($contract->mortgage->getProperty()->getSKU())->toBe($product_params['sku']);
@@ -145,4 +151,5 @@ test('consult, avail, verify, paid end points work', function (array $contact_pa
     $contract->refresh();
     expect($contract->checkin)->toBeInstanceOf(CheckinData::class);
     expect($contract->state)->toBeInstanceOf(Verified::class);
+    expect($contract->verified)->toBeTrue();
 })->with('contact_params', 'product_params');

@@ -4,8 +4,8 @@ namespace App\Actions\Contract;
 
 use Homeful\KwYCCheck\Actions\ProcessLeadAction;
 use Illuminate\Support\Facades\Validator;
+use Homeful\References\Models\Reference;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Homeful\Contracts\Models\Contract;
 use Homeful\Contracts\States\Verified;
 
 class Verify
@@ -15,25 +15,20 @@ class Verify
     public function __construct(protected ProcessLeadAction $processLeadAction){}
 
     /**
-     * This would have been better if we use reference
-     * instead of contract, but there seems to be a
-     * problem if we use it. Something to do with
-     * the checkin payload. Instead of an array
-     * the attribute cast is a string. Weird.
-     *
-     * @param Contract $contract
+     * @param Reference $reference
      * @param array $checkin_payload
-     * @return Contract
+     * @return Reference
      * @throws \Spatie\ModelStates\Exceptions\CouldNotPerformTransition
      */
-    public function handle(Contract $contract, array $checkin_payload): Contract
+    public function handle(Reference $reference, array $checkin_payload): Reference
     {
         Validator::validate($checkin_payload, $this->rules());
+        $contract = $reference->getContract();
         $contract->checkin = $checkin_payload;
         $contract->save();
         $contract->state->transitionTo(Verified::class);
 
-        return $contract;
+        return $reference;
     }
 
     /**

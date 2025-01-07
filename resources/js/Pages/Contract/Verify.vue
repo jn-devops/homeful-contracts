@@ -2,7 +2,6 @@
 
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import ButtonOptions from "@/Components/ButtonOptions.vue";
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
@@ -57,10 +56,6 @@ const submit = () => {
                 />
 
                 <InputError class="mt-2" :message="form.errors.reference_code" />
-            </div>
-
-            <div class="mt-4 col-span-6 lg:col-span-4">
-                <ButtonOptions :options="buttonOptions" v-model:option="form.sku"/>
             </div>
 
             <div class="mt-4 flex items-center justify-end">
