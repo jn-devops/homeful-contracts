@@ -41,7 +41,7 @@ class AvailController extends Controller
         $reference = Reference::where('code', $reference_code)->firstOrFail();
         Avail::run($reference, $validated);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('verify.create', compact('reference_code'));
     }
 
     protected function getOptions(Request $request): array

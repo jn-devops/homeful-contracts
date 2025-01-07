@@ -3082,16 +3082,16 @@
         },
         {
             "name": "jn-devops/contracts",
-            "version": "v1.4.9",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contracts.git",
-                "reference": "5eb020956df4dc83c67874e760b12795923ed833"
+                "reference": "effacd49ee7ba73a41c7ec64974db83e7c4a4708"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contracts/zipball/5eb020956df4dc83c67874e760b12795923ed833",
-                "reference": "5eb020956df4dc83c67874e760b12795923ed833",
+                "url": "https://api.github.com/repos/jn-devops/contracts/zipball/effacd49ee7ba73a41c7ec64974db83e7c4a4708",
+                "reference": "effacd49ee7ba73a41c7ec64974db83e7c4a4708",
                 "shasum": ""
             },
             "require": {
@@ -3158,7 +3158,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contracts/issues",
-                "source": "https://github.com/jn-devops/contracts/tree/v1.4.9"
+                "source": "https://github.com/jn-devops/contracts/tree/v1.5.0"
             },
             "funding": [
                 {
@@ -3166,7 +3166,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-04T16:25:39+00:00"
+            "time": "2025-01-06T23:55:53+00:00"
         },
         {
             "name": "jn-devops/mortgage",
@@ -3965,16 +3965,16 @@
         },
         {
             "name": "laravel/sanctum",
-            "version": "v4.0.6",
+            "version": "v4.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sanctum.git",
-                "reference": "9e069e36d90b1e1f41886efa0fe9800a6b354694"
+                "reference": "698064236a46df016e64a7eb059b1414e0b281df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sanctum/zipball/9e069e36d90b1e1f41886efa0fe9800a6b354694",
-                "reference": "9e069e36d90b1e1f41886efa0fe9800a6b354694",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/698064236a46df016e64a7eb059b1414e0b281df",
+                "reference": "698064236a46df016e64a7eb059b1414e0b281df",
                 "shasum": ""
             },
             "require": {
@@ -4025,7 +4025,7 @@
                 "issues": "https://github.com/laravel/sanctum/issues",
                 "source": "https://github.com/laravel/sanctum"
             },
-            "time": "2024-11-26T21:18:33+00:00"
+            "time": "2024-12-11T16:40:21+00:00"
         },
         {
             "name": "laravel/serializable-closure",
