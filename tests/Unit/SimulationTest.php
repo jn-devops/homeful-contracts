@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use Homeful\Contracts\States\{Availed, Consulted, Verified};
-use App\Actions\Contract\{Avail, Consult, Verify};
+use App\Actions\Contract\{Avail, Consult, Pay, Onboard, Verify};
 use Homeful\Contacts\Classes\ContactMetaData;
 use Homeful\Properties\Data\PropertyData;
 use Homeful\References\Models\Reference;
@@ -88,6 +88,18 @@ test('consult, avail, verify, paid actions work', function (array $contact_param
     expect($contract->checkin)->toBeInstanceOf(CheckinData::class);
     expect($contract->state)->toBeInstanceOf(Verified::class);
     expect($contract->verified)->toBeTrue();
+
+    expect($contract->onboarded)->toBeFalse();
+    Onboard::run($reference);
+    $contract->refresh();
+    expect($contract->onboarded)->toBeTrue();
+
+    expect($contract->paid)->toBeFalse();
+    $payment_payload = ['amount' => 10000.0, 'date' => '2025-01-07'];
+    Pay::run($reference, $payment_payload);
+    $contract->refresh();
+    expect($contract->paid)->toBeTrue();
+
 })->with('contact_params', 'product_params', 'checkin_payload');
 
 test('consult, avail, verify, paid end points work', function (array $contact_params, array $product_params) {
@@ -152,4 +164,5 @@ test('consult, avail, verify, paid end points work', function (array $contact_pa
     expect($contract->checkin)->toBeInstanceOf(CheckinData::class);
     expect($contract->state)->toBeInstanceOf(Verified::class);
     expect($contract->verified)->toBeTrue();
+
 })->with('contact_params', 'product_params');

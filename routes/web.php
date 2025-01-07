@@ -3,9 +3,11 @@
 use App\Http\Controllers\Contract\{AvailController, ConsultController, VerifyController};
 use App\Http\Controllers\RegisterContactController;
 use App\Http\Controllers\VerifyContactController;
-use App\Http\Controllers\ContactVerifiedController;
 use App\Http\Controllers\ContactOnboardedController;
+use App\Http\Controllers\ContactVerifiedController;
+use App\Http\Controllers\Contract\PayController;
 use App\Http\Controllers\ProfileController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,5 +37,6 @@ Route::resource('avail', AvailController::class)->only(['create', 'store']);
 Route::get('verify-contact', VerifyContactController::class)->name('verify-contact');
 Route::resource('verify', VerifyController::class)->only(['create', 'store']);
 Route::get('contact-onboarded', ContactOnboardedController::class)->name('contact-onboarded');
+Route::resource('pay', PayController::class)->only(['create', 'store']);
 
 require __DIR__.'/auth.php';
