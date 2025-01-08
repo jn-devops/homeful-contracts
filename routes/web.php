@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\Contract\{AvailController, ConsultController, VerifyController};
+use App\Http\Controllers\ContactOnboardedController;
 use App\Http\Controllers\RegisterContactController;
 use App\Http\Controllers\VerifyContactController;
-use App\Http\Controllers\ContactOnboardedController;
-use App\Http\Controllers\ContactVerifiedController;
+use App\Http\Controllers\CollectContactController;
 use App\Http\Controllers\Contract\PayController;
 use App\Http\Controllers\ProfileController;
 
@@ -38,5 +38,6 @@ Route::get('verify-contact', VerifyContactController::class)->name('verify-conta
 Route::resource('verify', VerifyController::class)->only(['create', 'store']);
 Route::get('contact-onboarded/{reference}', ContactOnboardedController::class)->name('contact-onboarded');
 Route::resource('pay', PayController::class)->only(['create', 'store']);
+Route::get('collect-contact', CollectContactController::class)->name('collect-contact');
 
 require __DIR__.'/auth.php';

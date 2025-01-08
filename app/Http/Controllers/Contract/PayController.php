@@ -24,6 +24,6 @@ class PayController extends Controller
         ]);
         $reference_code = Arr::pull($validated, 'reference_code');
 
-        return redirect()->route('dashboard');
+        return redirect()->route('collect-contact', compact('reference_code'));
     }
 }
