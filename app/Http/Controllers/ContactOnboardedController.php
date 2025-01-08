@@ -11,6 +11,6 @@ class ContactOnboardedController extends Controller
     {
         Onboard::run($reference);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('pay.create', ['reference_code' => $reference->code]);
     }
 }
