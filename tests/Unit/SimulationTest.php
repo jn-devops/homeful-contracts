@@ -1,8 +1,8 @@
 <?php
 
+use App\Actions\Contract\{Avail, Consult, Pay, Onboard, Verify};
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use Homeful\Contracts\States\{Availed, Consulted, Verified};
-use App\Actions\Contract\{Avail, Consult, Pay, Onboard, Verify};
 use Homeful\Contacts\Classes\ContactMetaData;
 use Homeful\Properties\Data\PropertyData;
 use Homeful\References\Models\Reference;
@@ -57,7 +57,7 @@ dataset('checkin_payload', function () {
 });
 
 test('consult, avail, verify, paid actions work', function (array $contact_params, array $product_params, array $checkin_payload) {
-    $response = Http::acceptJson()->post('http://homeful-contacts.test/api/register', $contact_params);
+    $response = Http::acceptJson()->post(config('homeful-contracts.end-points.api-register-contact'), $contact_params);
     expect($response->status())->toBe(201);
     $contact_reference_code = $response->json('code');
     $reference = Consult::run($contact_reference_code);
@@ -103,7 +103,7 @@ test('consult, avail, verify, paid actions work', function (array $contact_param
 })->with('contact_params', 'product_params', 'checkin_payload');
 
 test('consult, avail, verify, paid end points work', function (array $contact_params, array $product_params) {
-    $response = Http::acceptJson()->post('http://homeful-contacts.test/api/register', $contact_params);
+    $response = Http::acceptJson()->post(config('homeful-contracts.end-points.api-register-contact'), $contact_params);
     expect($response->status())->toBe(201);
     $contact_reference_code = $response->json('code');
 

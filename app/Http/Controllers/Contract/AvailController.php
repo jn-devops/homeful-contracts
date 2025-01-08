@@ -36,6 +36,7 @@ class AvailController extends Controller
         $validated = Validator::validate($request->all(), [
             'reference_code' => ['required', 'string', 'min:4'],
             'sku' => ['required', 'string', 'min:4'],
+            'seller_voucher_code' => ['nullable', 'string', 'min:4'],
         ]);
         $reference_code = Arr::pull($validated, 'reference_code');
         $reference = Reference::where('code', $reference_code)->firstOrFail();
