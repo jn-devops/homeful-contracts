@@ -2,9 +2,9 @@
 
 namespace App\Actions\Contract;
 
-use Illuminate\Support\Facades\Validator;
-use Homeful\References\Models\Reference;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Homeful\References\Models\Reference;
+use Homeful\Contracts\Models\Contract;
 use Homeful\Contracts\States\Paid;
 
 class Pay
@@ -19,23 +19,13 @@ class Pay
      */
     public function handle(Reference $reference, array $payment_payload): Reference
     {
-        Validator::validate($payment_payload, $this->rules());
         $contract = $reference->getContract();
-        $contract->payment = $payment_payload;
-        $contract->save();
-        $contract->state->transitionTo(Paid::class);
+        if ($contract instanceof Contract) {
+            $contract->payment = $payment_payload;
+            $contract->save();
+            $contract->state->transitionTo(Paid::class);
+        }
 
         return $reference;
-    }
-
-    /**
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            'amount' => ['nullable', 'numeric'],
-            'paid_at' => ['nullable', 'date'],
-        ];
     }
 }
