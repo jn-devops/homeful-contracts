@@ -34,6 +34,7 @@ watch (
 const form = useForm({
     reference_code: reference.value,
     sku: null,
+    seller_voucher_code: null
 });
 
 const submit = () => {
@@ -49,23 +50,38 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="reference_code" value="Reference Code" />
+                <div class="mt-4 col-span-6 lg:col-span-4">
+                    <InputLabel for="sku" value="Choose Product SKU" />
+                    <ButtonOptions id="sku" :options="buttonOptions" v-model:option="form.sku" autofocus/>
+                    <InputError class="mt-2" :message="form.errors.sku" />
+                </div>
 
-                <TextInput
-                    id="reference_code"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.reference_code"
-                    required
-                    autofocus
-                />
+                <div class="mt-4" >
+                    <InputLabel for="seller_voucher_code" value="Seller Code" />
+                    <TextInput
+                        id="seller_voucher_code"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.seller_voucher_code"
+                    />
+                    <InputError class="mt-2" :message="form.errors.seller_voucher_code" />
+                </div>
 
-                <InputError class="mt-2" :message="form.errors.reference_code" />
+                <div class="mt-4" >
+                    <InputLabel for="reference_code" value="Reference Code" />
+                    <TextInput
+                        id="reference_code"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.reference_code"
+                        readonly
+                        required
+                    />
+                    <InputError class="mt-2" :message="form.errors.reference_code" />
+                </div>
             </div>
 
-            <div class="mt-4 col-span-6 lg:col-span-4">
-                <ButtonOptions :options="buttonOptions" v-model:option="form.sku"/>
-            </div>
+
 
             <div class="mt-4 flex items-center justify-end">
                 <a

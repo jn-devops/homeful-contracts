@@ -32,6 +32,11 @@ class Avail
 
                 /** update the contract property attribute */
                 $contract->property = $property_attributes;
+
+                /** update the contract seller_commission_code attribute if otp is valid */
+                if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code'))
+                    $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
+#
                 $contract->save();
 
                 /** update the state to Availed */
@@ -64,7 +69,13 @@ class Avail
     protected function rules(): array
     {
         return [
-            'sku' => ['required', 'string', 'min:5']
+            'sku' => ['required', 'string', 'min:5'],
+            'seller_voucher_code' => ['nullable', 'string', 'min:4'],
         ];
+    }
+
+    protected function getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code): string|false
+    {
+        return 'TEST-123';
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
+use Homeful\Contracts\States\{Assigned, Availed, Consulted, Onboarded, Paid, Verified};
+use App\Actions\Contract\{Assign, Avail, Consult, Pay, Onboard, Verify};
+use Homeful\Notifications\Notifications\PaidToAssignedBuyerNotification;
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
-use Homeful\Contracts\States\{Availed, Consulted, Verified};
-use App\Actions\Contract\{Avail, Consult, Pay, Onboard, Verify};
+use Illuminate\Support\Facades\Notification;
 use Homeful\Contacts\Classes\ContactMetaData;
 use Homeful\Properties\Data\PropertyData;
 use Homeful\References\Models\Reference;
@@ -56,8 +58,18 @@ dataset('checkin_payload', function () {
     ];
 });
 
-test('consult, avail, verify, paid actions work', function (array $contact_params, array $product_params, array $checkin_payload) {
-    $response = Http::acceptJson()->post('http://homeful-contacts.test/api/register', $contact_params);
+dataset('payment_payload', function () {
+    return [
+        [fn() => json_decode('{"code":"00","data":{"orderInformation":{"amount":5000,"attach":"attach","currency":"PHP","goodsDetail":"Processing Fee","orderAmount":0,"orderId":"JN123456722","paymentBrand":"MasterCard","paymentType":"PAYMENT","qrTag":1,"referencedId":"202410302883035985507708928","responseDate":"2024-10-30T15:23:29+08:00","surcharge":0,"tipFee":0,"transactionResult":"SUCCESS"}},"message":"Success"}',true)]
+    ];
+});
+
+beforeEach(function () {
+    Notification::fake();
+});
+
+test('consult, avail, verify, paid actions work', function (array $contact_params, array $product_params, array $checkin_payload, array $payment_payload) {
+    $response = Http::acceptJson()->post(config('homeful-contracts.end-points.api-register-contact'), $contact_params);
     expect($response->status())->toBe(201);
     $contact_reference_code = $response->json('code');
     $reference = Consult::run($contact_reference_code);
@@ -95,15 +107,22 @@ test('consult, avail, verify, paid actions work', function (array $contact_param
     expect($contract->onboarded)->toBeTrue();
 
     expect($contract->paid)->toBeFalse();
-    $payment_payload = ['amount' => 10000.0, 'date' => '2025-01-07'];
     Pay::run($reference, $payment_payload);
     $contract->refresh();
     expect($contract->paid)->toBeTrue();
 
-})->with('contact_params', 'product_params', 'checkin_payload');
+    expect($contract->assigned)->toBeFalse();
+    $assign_payload = ['assigned_contact' => fake()->name()];
+    Assign::run($reference, $assign_payload);
+    $contract->refresh();
+    expect($contract->state)->toBeInstanceOf(Assigned::class);
+    expect($contract->assigned)->toBeTrue();
+    Notification::assertSentTo($contract, PaidToAssignedBuyerNotification::class);
 
-test('consult, avail, verify, paid end points work', function (array $contact_params, array $product_params) {
-    $response = Http::acceptJson()->post('http://homeful-contacts.test/api/register', $contact_params);
+})->with('contact_params', 'product_params', 'checkin_payload', 'payment_payload');
+
+test('consult, avail, verify, pay end points work', function (array $contact_params, array $product_params) {
+    $response = Http::acceptJson()->post(config('homeful-contracts.end-points.api-register-contact'), $contact_params);
     expect($response->status())->toBe(201);
     $contact_reference_code = $response->json('code');
 
@@ -165,4 +184,35 @@ test('consult, avail, verify, paid end points work', function (array $contact_pa
     expect($contract->state)->toBeInstanceOf(Verified::class);
     expect($contract->verified)->toBeTrue();
 
+    $onboarding_payload = ['reference' => $reference_code];
+    $response = $this->get(route('contact-onboarded', $onboarding_payload));
+    expect($response->status())->toBe(302);
+    $contract->refresh();
+    expect($contract->state)->toBeInstanceOf(Onboarded::class);
+    expect($contract->onboarded)->toBeTrue();
+    $response->assertRedirect(route('pay.create', compact('reference_code')));
+    $response = $this->postJson(route('pay.store'), compact('reference_code'));
+    $response->assertRedirect(route('collect-contact', compact('reference_code')));
+    expect($contract->paid)->toBeFalse();
+    $payment_payload = json_decode(__('{"code":"00","data":{"orderInformation":{"amount":5000,"attach":"attach","currency":"PHP","goodsDetail":"Processing Fee","orderAmount":0,"orderId":":reference_code","paymentBrand":"MasterCard","paymentType":"PAYMENT","qrTag":1,"referencedId":"202410302883035985507708928","responseDate":"2024-10-30T15:23:29+08:00","surcharge":0,"tipFee":0,"transactionResult":"SUCCESS"}},"message":"Success"}', ['reference_code' => $reference_code]),true);
+    $response = $this->postJson(route('payment-collected'), $payment_payload);
+    expect($response->status())->toBe(200);
+    $contract->refresh();
+    expect($contract->state)->toBeInstanceOf(Paid::class);
+    expect($contract->paid)->toBeTrue();
+
+    $payment_payload = ['reference' => $reference_code];
+    $response = $this->get(route('contact-paid', $payment_payload));
+    expect($response->status())->toBe(302);
+    $response->assertRedirect(route('assign.create', compact('reference_code')));
+    $assign_payload = ['reference_code' => $reference_code, 'assigned_contact' => fake()->name()];
+
+    $response = $this->postJson(route('assign.store'), $assign_payload);
+    expect($response->status())->toBe(302);
+    $contract->refresh();
+    expect($contract->state)->toBeInstanceOf(Assigned::class);
+    expect($contract->assigned)->toBeTrue();
+    $response->assertRedirect(route('dashboard', compact('reference_code')));
+
+    Notification::assertSentTo($contract, PaidToAssignedBuyerNotification::class);
 })->with('contact_params', 'product_params');

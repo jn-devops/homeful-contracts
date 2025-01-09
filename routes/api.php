@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ContactVerifiedController;
 use Homeful\Paymate\Paymate;
+use App\Http\Controllers\{ContactVerifiedController, PaymentCollectedController};
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -20,3 +20,4 @@ Route::post('homeful-wallet' , function (Request $request) { $response = (new Pa
 Route::post('inquiry' , function (Request $request) { $response = (new Paymate())->payment_inquiry($request)  ; return $response;});
 Route::get('generatekey' , function (Request $request) { $response = (new Paymate())->generateKey()  ; return $response;});
 
+Route::post('payment-collected', PaymentCollectedController::class)->name('payment-collected');

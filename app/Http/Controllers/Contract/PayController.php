@@ -21,10 +21,15 @@ class PayController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = Validator::validate($request->all(), [
-            'reference_code' => ['required', 'string', 'min:4'],
+            'reference_code' => ['required', 'string', 'exists:vouchers,code'],
         ]);
         $reference_code = Arr::pull($validated, 'reference_code');
+<<<<<<< HEAD
         return redirect()->route('dashboard');
+=======
+
+        return redirect()->route('collect-contact', compact('reference_code'));
+>>>>>>> 294ce777c6eca8950eb21f59c2e71dc1427e77c9
     }
     public function confirmation(Request $request): RedirectResponse
     {   dd($request);
