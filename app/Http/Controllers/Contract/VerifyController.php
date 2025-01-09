@@ -20,7 +20,7 @@ class VerifyController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = Validator::validate($request->all(), [
-            'reference_code' => ['required', 'string', 'min:4'],
+            'reference_code' => ['required', 'string', 'exists:vouchers,code'],
         ]);
         $reference_code = Arr::pull($validated, 'reference_code');
 

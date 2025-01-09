@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PaymentAcknowledgedRequest;
+use App\Http\Requests\PaymentCollectedRequest;
 use Homeful\References\Models\Reference;
 use App\Actions\Contract\Pay;
 use Illuminate\Support\Arr;
 
-class PaymentAcknowledgedController extends Controller
+class PaymentCollectedController extends Controller
 {
-    public function __invoke(PaymentAcknowledgedRequest $request): \Illuminate\Http\JsonResponse
+    public function __invoke(PaymentCollectedRequest $request): \Illuminate\Http\JsonResponse
     {
         $payment_payload = $request->all();
         $reference_code = Arr::get($payment_payload, 'data.orderInformation.orderId');

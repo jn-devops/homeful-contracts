@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{ContactVerifiedController, PaymentAcknowledgedController};
+use App\Http\Controllers\{ContactVerifiedController, PaymentCollectedController};
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -9,4 +9,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('contact-verified', ContactVerifiedController::class)->name('contact-verified');
-Route::post('payment-acknowledged', PaymentAcknowledgedController::class)->name('payment-acknowledged');
+Route::post('payment-collected', PaymentCollectedController::class)->name('payment-collected');

@@ -34,12 +34,12 @@ class AvailController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = Validator::validate($request->all(), [
-            'reference_code' => ['required', 'string', 'min:4'],
+            'reference_code' => ['required', 'string', 'exists:vouchers,code'],
             'sku' => ['required', 'string', 'min:4'],
             'seller_voucher_code' => ['nullable', 'string', 'min:4'],
         ]);
         $reference_code = Arr::pull($validated, 'reference_code');
-        $reference = Reference::where('code', $reference_code)->firstOrFail();
+        $reference = Reference::where('code', $reference_code)->first();
         Avail::run($reference, $validated);
 
         return redirect()->route('verify.create', compact('reference_code'));
