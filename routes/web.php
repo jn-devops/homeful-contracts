@@ -38,5 +38,6 @@ Route::get('verify-contact', VerifyContactController::class)->name('verify-conta
 Route::resource('verify', VerifyController::class)->only(['create', 'store']);
 Route::get('contact-onboarded', ContactOnboardedController::class)->name('contact-onboarded');
 Route::resource('pay', PayController::class)->only(['create', 'store']);
+Route::get('payment-confirmation/{reservation_code}', [PayController::class, 'confirmation'])->name('pay.success');
 
 require __DIR__.'/auth.php';

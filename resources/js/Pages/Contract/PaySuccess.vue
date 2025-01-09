@@ -2,7 +2,6 @@
 
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import eWallet from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
@@ -10,8 +9,7 @@ import TextInput from '@/Components/TextInput.vue';
 import { ref, watch } from "vue";
 import axios from "axios";
 const props = defineProps({
-    reference_code: String,
-    amount: String
+    reference_code: String
 });
 
 const reference = ref({});
@@ -31,43 +29,18 @@ watch (
 
 const form = useForm({
     reference_code: props.reference_code,
-    amount: props.amount
 });
 
-// let data = JSON.stringify({
-//   "referenceCode": props.reference_code,
-//   "amount": props.amount,
-// //   "callbackParam": route('pay.success')
-// });
-const submit = (paymentMethod) => {
-
-const baseURL = window.location.origin;
-let postUrl;
-let data ;
-console.log(paymentMethod);
-if(paymentMethod=="cashier")
-{
-    data  = JSON.stringify({
+let data = JSON.stringify({
   "referenceCode": props.reference_code,
-  "amount": props.amount,
-//   "callbackParam": route('pay.success')
+  "amount": 600,
+  "callbackParam": ""
 });
-     postUrl = `${baseURL}/api/homeful-cashier`
-}
-else(paymentMethod=="eWallet")
-{
-     data = JSON.stringify({
-  "referenceCode": props.reference_code,
-  "amount": props.amount,
-  "wallet":"grabpay",
-//   "callbackParam": route('pay.success')
-});
-    postUrl = `${baseURL}/api/homeful-wallet` 
-}
+const submit = () => {
 let config = {
   method: 'post',
   maxBodyLength: Infinity,
-  url: postUrl,
+  url: 'http://127.0.0.1:8081/api/homeful-cashier',
   headers: { 
     'Content-Type': 'application/json'
   },
@@ -76,19 +49,14 @@ let config = {
 
 axios.request(config)
 .then((response) => {
-    console.log(response.data);
-
-  if(paymentMethod=="cashier" && response.data.data.cashierUrl)
+  if(response.data.data.cashierUrl)
   {
-    window.location.href = response.data.data.cashierUrl;
+           // Redirect to the cashier URL
+           window.location.href = response.data.data.cashierUrl;
   } 
-  else if(paymentMethod=="eWallet" && response.data.pay_url)
-  {
-    window.location.href = response.data.pay_url;
-  }
   else 
   {
-    console.log('Cashier URL not found in response.');
+            console.log('Cashier URL not found in response.');
   }
   
   console.log(response.data.data.cashierUrl);
@@ -99,6 +67,7 @@ axios.request(config)
 });
 };
 // const submit = () => {
+//     form.post('/api/homeful-cashier')
 //     form.post(route('pay.store'), {
 //         onFinish: () => form.reset(),
 //     });
@@ -124,38 +93,15 @@ axios.request(config)
 
                 <InputError class="mt-2" :message="form.errors.reference_code" />
             </div>
-            <div>
-                <InputLabel for="amount" value="Amount" />
 
-                <TextInput
-                    id="amount"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.amount"
-                    required
-                    autofocus
-                />
-            <InputError class="mt-2" :message="form.errors.amount" />
-            </div>
             <div class="mt-4 flex items-center justify-end">
                 <PrimaryButton
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
-                    @click.prevent="submit('cashier')"
                 >
-                    Pay via Debit/Credit
+                    Pay
                 </PrimaryButton>
-            </div>
-            <div class="mt-4 flex items-center justify-end">
-                <eWallet
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                    @click.prevent="submit('eWallet')"
-                >
-                    Pay via eWallet
-                </eWallet>
             </div>
         </form>
     </GuestLayout>

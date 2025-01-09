@@ -13,8 +13,9 @@ class PayController extends Controller
     public function create(Request $request): Response
     {
         $reference_code = Arr::get($request->all(), 'reference_code');
-
-        return Inertia::render('Contract/Pay', compact('reference_code'));
+        $amount = Arr::get($request->all(), 'amount');
+        // dd($amount);
+        return Inertia::render('Contract/Pay', compact('reference_code','amount'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -23,7 +24,14 @@ class PayController extends Controller
             'reference_code' => ['required', 'string', 'min:4'],
         ]);
         $reference_code = Arr::pull($validated, 'reference_code');
-
         return redirect()->route('dashboard');
+    }
+    public function confirmation(Request $request): RedirectResponse
+    {   dd($request);
+        $validated = Validator::validate($request->all(), [
+            'reference_code' => ['required', 'string', 'min:4'],
+        ]);
+        $reference_code = Arr::pull($validated, 'reference_code');
+        return Inertia::render('Contract/PaySuccess', compact('reference_code'));
     }
 }
