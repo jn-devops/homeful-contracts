@@ -5,6 +5,7 @@ namespace App\Actions\Contract;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\References\Models\Reference;
+use App\Actions\GetSellerCommissionCode;
 use Homeful\Contracts\States\Availed;
 use App\Actions\GetInventory;
 use Illuminate\Support\Arr;
@@ -74,8 +75,8 @@ class Avail
         ];
     }
 
-    protected function getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code): string|false
+    protected function getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code): ?string
     {
-        return 'TEST-123';
+        return GetSellerCommissionCode::run($seller_voucher_code);
     }
 }
