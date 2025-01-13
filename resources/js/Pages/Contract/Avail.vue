@@ -57,7 +57,7 @@ const submit = () => {
                 </div>
 
                 <div class="mt-4" >
-                    <InputLabel for="seller_voucher_code" value="Seller Code" />
+                    <InputLabel for="seller_voucher_code" value="Voucher Code" />
                     <TextInput
                         id="seller_voucher_code"
                         type="text"
@@ -80,8 +80,6 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.reference_code" />
                 </div>
             </div>
-
-
 
             <div class="mt-4 flex items-center justify-end">
                 <a
