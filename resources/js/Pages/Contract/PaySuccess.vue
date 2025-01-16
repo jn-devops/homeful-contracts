@@ -37,14 +37,17 @@ let data = JSON.stringify({
   "callbackParam": ""
 });
 const submit = () => {
+
+// console.log(`${window.location.origin}/contact-paid/${props.reference_code}`);
+window.location.href = `${window.location.origin}/contact-paid/${props.reference_code}`;
 let config = {
-  method: 'post',
+  method: 'get',
   maxBodyLength: Infinity,
-  url: 'http://127.0.0.1:8081/api/homeful-cashier',
+  url: `${window.location.origin}/contact-paid/${props.reference_code}`,
   headers: { 
     'Content-Type': 'application/json'
   },
-  data : data
+//   data : data
 };
 
 axios.request(config)
@@ -76,31 +79,16 @@ axios.request(config)
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head title="Payment Confirmation" />
 
         <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="reference_code" value="Reference Code" />
-
-                <TextInput
-                    id="reference_code"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.reference_code"
-                    required
-                    autofocus
-                />
-
-                <InputError class="mt-2" :message="form.errors.reference_code" />
-            </div>
-
             <div class="mt-4 flex items-center justify-end">
                 <PrimaryButton
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Pay
+                    OK - Paid
                 </PrimaryButton>
             </div>
         </form>

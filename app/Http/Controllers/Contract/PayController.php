@@ -27,12 +27,14 @@ class PayController extends Controller
 
         return redirect()->route('collect-contact', compact('reference_code'));
     }
-    public function confirmation(Request $request): RedirectResponse
+    public function confirmation(Request $request)
     {   
-        $validated = Validator::validate($request->all(), [
-            'reference_code' => ['required', 'string', 'min:4'],
-        ]);
-        $reference_code = Arr::pull($validated, 'reference_code');
+        // $validated = Validator::validate($request->all(), [
+        //     'reference_code' => ['required', 'string', 'min:4'],
+        // ]);
+        // dd($reference_code);
+        $reference_code = "test";//Arr::pull($validated, 'reference_code');
+        // dd($reference_code);
         return Inertia::render('Contract/PaySuccess', compact('reference_code'));
     }
 }
