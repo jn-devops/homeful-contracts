@@ -11,9 +11,11 @@ class RegisterContactController extends Controller
     public function __invoke(Request $request)
     {
         $url = Url::fromString(config('homeful-contracts.end-points.register-contact'));
-        $showExtra = true;
+
         $callback = route('consult.create');
-        $location = $url->withQueryParameters(compact('showExtra', 'callback'));
+        $showExtra = true;
+        $hidePassword = true;
+        $location = $url->withQueryParameters(compact('showExtra', 'callback', 'hidePassword'));
 
         return Inertia::location($location);
     }
