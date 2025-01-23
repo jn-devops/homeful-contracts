@@ -4,6 +4,7 @@ return [
     'end-points' => [
         'customer' => env('CUSTOMER_CONTACT','http://homeful-contacts.test/api/references/:contact_reference_code'),
         'inventory' => env('PROPERTY_SKU','https://properties.homeful.ph/api/next-property-details/:sku'),
+        'product' => env('PRODUCT_SKU_ENDPOINT','https://properties.homeful.ph/api/product-details/:sku'),
         'register-contact' => env('REGISTER_CONTACT_ENDPOINT', 'http://homeful-contacts.test/register'),
         'api-register-contact' => env('REGISTER_API_CONTACT_ENDPOINT', 'http://homeful-contacts.test/api/register'),
         'matches' => env('MATCHES_ENDPOINT', 'http://homeful-match.test/api/match'),

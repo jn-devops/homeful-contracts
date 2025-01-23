@@ -112,6 +112,40 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'contacts-mysql' => [
+            'driver' => 'mysql',
+            'url' => env('CONTACTS_DB_URL'),
+            'host' => env('CONTACTS_DB_HOST', '127.0.0.1'),
+            'port' => env('CONTACTS_DB_PORT', '42170'),
+            'database' => env('CONTACTS_DB_DATABASE', 'forge'),
+            'username' => env('CONTACTS_DB_USERNAME', 'forge'),
+            'password' => env('CONTACTS_DB_PASSWORD', ''),
+            'unix_socket' => env('CONTACTS_DB_SOCKET', ''),
+            'charset' => env('CONTACTS_DB_CHARSET', 'utf8mb4'),
+            'collation' => env('CONTACTS_DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
+        'properties-pgsql' => [
+            'driver' => 'pgsql',
+            'url' => env('PROPERTIES_DB_URL'),
+            'host' => env('PROPERTIES_DB_HOST', '127.0.0.1'),
+            'port' => env('PROPERTIES_DB_PORT', '31799'),
+            'database' => env('PROPERTIES_DB_DATABASE', 'forge'),
+            'username' => env('PROPERTIES_DB_USERNAME', 'forge'),
+            'password' => env('PROPERTIES_DB_PASSWORD', ''),
+            'charset' => env('PROPERTIES_DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
     ],
 
     /*

@@ -7,8 +7,8 @@ use App\Http\Controllers\VerifyContactController;
 use App\Http\Controllers\CollectContactController;
 use App\Http\Controllers\Contract\PayController;
 use App\Http\Controllers\ContactPaidController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ProfileController;
-
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,5 +43,7 @@ Route::get('payment-confirmation/{reservation_code}', [PayController::class, 'co
 Route::get('collect-contact', CollectContactController::class)->name('collect-contact');
 Route::get('contact-paid/{reference}', ContactPaidController::class)->name('contact-paid');
 Route::resource('assign', AssignController::class)->only(['create', 'store']);
+
+Route::resource('contracts', ContractController::class);
 
 require __DIR__.'/auth.php';
