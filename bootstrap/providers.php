@@ -1,12 +1,9 @@
 <?php
 
-use Homeful\Contracts\Providers\EventServiceProvider as ContractEventServiceProvider;
-use Homeful\Mortgage\Providers\EventServiceProvider as MortgageServiceProvider;
-use Spatie\SchemalessAttributes\SchemalessAttributesServiceProvider;
-
 return [
     App\Providers\AppServiceProvider::class,
-    SchemalessAttributesServiceProvider::class,
-    MortgageServiceProvider::class,
-    ContractEventServiceProvider::class,
+    App\Providers\Filament\AdminPanelProvider::class,
+    Homeful\Contracts\Providers\EventServiceProvider::class,
+    Homeful\Mortgage\Providers\EventServiceProvider::class,
+    Spatie\SchemalessAttributes\SchemalessAttributesServiceProvider::class,
 ];
