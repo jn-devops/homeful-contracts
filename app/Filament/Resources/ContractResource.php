@@ -15,6 +15,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Contracts\HasTable;
+use stdClass;
 
 class ContractResource extends Resource
 {
@@ -33,13 +35,27 @@ class ContractResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
+            ->defaultPaginationPageOption(50)
             ->columns([
-                TextColumn::make('id'),
-                TextColumn::make('name')
+                TextColumn::make('state'),
+                TextColumn::make('created_at')
+                    ->label('Date Created')
+                    ->date(),
+                TextColumn::make('updated_at')
+                    ->label('Due Date')
                     ->formatStateUsing(function (Model $record) {
-                        return $record->contact->first_name . ' ' . $record->contact->last_name;
-                    })
-
+                        return $record->created_at->addDays(7)->format('M d, Y');
+                    }),
+                TextColumn::make('aging')
+                    ->label('Aging')
+                    ->state(
+                        static function (Model $record): string {
+                            return $record->created_at->diffForHumans(['short' => true]);
+                        }
+                    ),
+                TextColumn::make('contact.name')
+                    ->label('Name'),
             ])
             ->filters([
                 //
