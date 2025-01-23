@@ -38,7 +38,7 @@ const proxyChecked = computed({
                 <!-- Role Name -->
                 <div class="flex items-center">
                     <div class="text-sm text-gray-600 dark:text-gray-400" :class="{'font-semibold': proxyChecked == opt.key}">
-                        {{ opt.name }}
+                        {{ JSON.parse(opt.name).name }}
                     </div>
 
                     <svg v-if="proxyChecked == opt.key" class="ml-2 h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -48,7 +48,7 @@ const proxyChecked = computed({
 
                 <!-- Role Description -->
                 <div class="mt-2 text-xs text-gray-600 dark:text-gray-400 text-left">
-                    {{ opt.description }}
+                    Loan Amortization : {{ JSON.parse(opt.description).loan_amortization }}
                 </div>
             </div>
         </button>

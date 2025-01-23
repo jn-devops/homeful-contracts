@@ -40,6 +40,9 @@ class HandleInertiaRequests extends Middleware
                 'data' => fn () => $request->session()->get('data'),
                 'event' => fn () => $request->session()->get('event'),
             ],
+            'data' => [
+                'appLink' => env('APP_URL', 'http://homeful-contracts.test/'),
+            ]
         ];
     }
 }
