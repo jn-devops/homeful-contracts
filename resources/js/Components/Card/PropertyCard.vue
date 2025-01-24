@@ -30,34 +30,21 @@ const props = defineProps({
         type: String,
         default: '',
     },
-    modelValue: {
+    sku: {
         type: String,
-        default: null,
-    },
-    skuKey: {
-        type: String,
-        default: null,
-    },
-    selected: {
-        type: Boolean,
-        default: false,
+        default: '',
     },
 })
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['showDiscoverPage']);
 
-const proxyChecked = computed({
-    get() {
-        return props.modelValue;
-    },
-    set(val) {
-        emit('update:modelValue', val)
-    },
-});
+function showDiscover(sku) {
+    emit('showDiscoverPage', sku);
+}
 
 </script>
 <template>
-    <div class="relative w-full mx-auto rounded-xl my-3" :class="{'border-4 border-gray-600' : selected}" @click="proxyChecked = skuKey">
+    <div class="relative w-full mx-auto rounded-xl my-3">
         <div class="absolute bottom-0 left-0 w-full rounded-b-xl bg-gradient-to-b from-transparent to-black text-white pt-12 pb-3 shadow-lg px-5">
             <div class="flex flex-row items-center">
                 <div class="basis-4/6 leading-none">
@@ -69,7 +56,7 @@ const proxyChecked = computed({
                 </div>
                 <div class="basis-2/6">
                     <a :href="discoverLink">
-                    <button class="font-bold px-5 py-2 bg-black/10 backdrop-blur-sm">
+                    <button class="font-bold px-5 py-2 bg-black/10 backdrop-blur-sm" @click.prevent="showDiscover(sku)">
                         Discover
                     </button>
                     </a>

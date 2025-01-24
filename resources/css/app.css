@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer utilities {
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px; /* Fully round */
+      background-color: #000000; /* Black thumb */
+      cursor: pointer;
+      border: 2px solid #4b5563; /* Optional border for visibility */
+    }
+  
+    input[type="range"]::-moz-range-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      background-color: #000000;
+      cursor: pointer;
+      border: 2px solid #4b5563;
+    }
+  
+    input[type="range"]::-ms-thumb {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      background-color: #000000;
+      cursor: pointer;
+      border: 2px solid #4b5563;
+    }
+  }
