@@ -4,7 +4,9 @@ use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use App\Models\{Product, Project, Property};
 use Illuminate\Support\Facades\Http;
 
-uses(RefreshDatabase::class, WithFaker::class);
+uses(
+//    RefreshDatabase::class,
+    WithFaker::class);
 
 test('fetch products from server', function () {
     $sku = 'JN-PPMP-HLTH-EUWF';
