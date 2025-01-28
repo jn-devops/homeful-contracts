@@ -225,6 +225,7 @@ class EditContract extends EditRecord
 
         $new_data['contact'] = $new_data;
         $data['contact_data']=$new_data;
+//        dd($data);
         return $data;
     }
 }
