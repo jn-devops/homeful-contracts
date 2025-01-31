@@ -44,8 +44,10 @@ use Homeful\Contracts\Transitions\{
     OverriddenToCancelled
 };
 
-use App\Models\Project as Inventory;
-use App\Models\Contact as Customer;
+// use App\Models\Project as Inventory;
+// use App\Models\Contact as Customer;
+use Homeful\Properties\Models\Property as Inventory;
+use Homeful\Contacts\Models\Customer;
 
 return [
     'models' => [
