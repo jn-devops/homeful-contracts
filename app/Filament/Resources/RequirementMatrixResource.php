@@ -23,6 +23,7 @@ class RequirementMatrixResource extends Resource
     protected static ?string $model = RequirementMatrix::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Maintenance';
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
