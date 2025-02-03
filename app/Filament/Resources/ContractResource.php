@@ -5,11 +5,18 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ContractResource\Pages;
 use App\Filament\Resources\ContractResource\RelationManagers;
 use App\Helpers\LoanTermOptions;
+use App\Livewire\RequirementsTable;
 use App\Models\Contact;
+use App\Models\Requirement;
+use App\Models\RequirementMatrix;
 use Exception;
+use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Get;
@@ -26,6 +33,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -57,18 +65,18 @@ class ContractResource extends Resource
                                 ->schema([
                                     //Personal Information
                                     Forms\Components\Fieldset::make('Personal')->schema([
-                                        TextInput::make('contact_data.buyer.last_name')
+                                        TextInput::make('contact_data.last_name')
                                             ->label('Last Name')
                                             ->required()
                                             ->maxLength(255)
                                             ->columnSpan(3),
-                                        TextInput::make('contact_data.buyer.first_name')
+                                        TextInput::make('contact_data.first_name')
                                             ->label('First Name')
                                             ->required()
                                             ->maxLength(255)
                                             ->columnSpan(3),
 
-                                        TextInput::make('contact_data.buyer.middle_name')
+                                        TextInput::make('contact_data.middle_name')
                                             ->label('Middle Name')
                                             ->maxLength(255)
                                             ->required(fn (Get $get): bool => ! $get('contact_data.no_middle_name'))
@@ -81,7 +89,7 @@ class ContractResource extends Resource
     //                                                    ->native(false)
     //                                                    ->options(NameSuffix::all()->pluck('description','code'))
     //                                                    ->columnSpan(2),
-                                        TextInput::make('contact_data.buyer.name_suffix')
+                                        TextInput::make('contact_data.name_suffix')
                                             ->label('Suffix')
                                             ->maxLength(255)
                                             ->columnSpan(2),
@@ -94,7 +102,7 @@ class ContractResource extends Resource
     //                                                }
                                             })
                                             ->columnSpan(1),
-                                        TextInput::make('contact_data.buyer.civil_status')
+                                        TextInput::make('contact_data.civil_status')
                                             ->label('Civil Status')
                                             ->maxLength(255)
                                             ->columnSpan(3),
@@ -105,7 +113,7 @@ class ContractResource extends Resource
     //                                                    ->native(false)
     //                                                    ->options(CivilStatus::all()->pluck('description','code'))
     //                                                    ->columnSpan(3),
-                                        Select::make('contact_data.buyer.sex')
+                                        Select::make('contact_data.sex')
                                             ->label('Gender')
                                             ->required()
                                             ->native(false)
@@ -114,12 +122,12 @@ class ContractResource extends Resource
                                                 'Female'=>'Female'
                                             ])
                                             ->columnSpan(3),
-                                        DatePicker::make('contact_data.buyer.date_of_birth')
+                                        DatePicker::make('contact_data.date_of_birth')
                                             ->label('Date of Birth')
                                             ->required()
                                             ->native(false)
                                             ->columnSpan(3),
-                                        TextInput::make('contact_data.buyer.nationality')
+                                        TextInput::make('contact_data.nationality')
                                             ->label('Nationality')
                                             ->required()
                                             ->columnSpan(3),
@@ -133,7 +141,7 @@ class ContractResource extends Resource
                                     ])->columns(12)->columnSpanFull(),
                                     \Filament\Forms\Components\Fieldset::make('Contact Information')
                                         ->schema([
-                                            Forms\Components\TextInput::make('contact_data.buyer.email')
+                                            Forms\Components\TextInput::make('contact_data.email')
                                                 ->label('Email')
                                                 // ->email()
                                                 ->required()
@@ -145,7 +153,7 @@ class ContractResource extends Resource
                                                 ->unique(ignoreRecord: true,table: Contact::class,column: 'email')
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('contact_data.buyer.mobile')
+                                            Forms\Components\TextInput::make('contact_data.mobile')
                                                 ->label('Mobile')
                                                 ->required()
                                                 ->prefix('+63')
@@ -158,7 +166,7 @@ class ContractResource extends Resource
                                                 })
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('contact_data.buyer.other_mobile')
+                                            Forms\Components\TextInput::make('contact_data.other_mobile')
                                                 ->label('Other Mobile')
                                                 ->prefix('+63')
                                                 ->regex("/^[0-9]+$/")
@@ -170,7 +178,7 @@ class ContractResource extends Resource
                                                 })
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('contact_data.buyer.landline')
+                                            Forms\Components\TextInput::make('contact_data.landline')
                                                 ->label('Landline')
                                                 ->columnSpan(3),
                                         ])->columns(12)->columnSpanFull(),
@@ -2299,9 +2307,38 @@ class ContractResource extends Resource
                             ]),
                         Forms\Components\Tabs\Tab::make('Upload Documents')
                             ->icon('heroicon-m-cloud-arrow-up')
-                            ->schema([
+                            ->schema(function(){
+                                $requirements = RequirementMatrix::first();
+                                $mappedRequirements = collect(json_decode($requirements->requirements, true))
+                                    ->map(function($requirement) {
+                                        return FileUpload::make(htmlspecialchars($requirement) )
+                                            ->label(htmlspecialchars($requirement))
+                                            ->columnSpan(2);
+                                    })->toArray();
 
-                            ]),
+//                                dd($mappedRequirements);
+                                return [
+                                    TableRepeater::make('requirements')
+                                        ->label('')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('requirements')
+                                        ])
+                                        ->extraItemActions([
+                                            Forms\Components\Actions\Action::make('sendEmail')
+                                                ->icon('heroicon-m-envelope')
+                                                ->action(function (array $arguments, Repeater $component): void {
+                                                    dd($arguments,$component);
+                                                }),
+                                        ])
+                                        ->reorderable(false)
+                                        ->deletable(false)
+                                        ->addable(false)
+                                        ->columnSpan('full'),
+                                    Forms\Components\Section::make()
+                                        ->schema($mappedRequirements)
+                                        ->columns(12)
+                                ];
+                            }),
                         Forms\Components\Tabs\Tab::make('Generated Documents')
                             ->icon('heroicon-m-document-duplicate')
                             ->schema([
