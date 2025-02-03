@@ -12,6 +12,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Table;
+use Homeful\Contacts\Enums\CivilStatus;
+use Homeful\Property\Enums\MarketSegment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -26,12 +28,20 @@ class RequirementMatrixResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('civil_status')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('employment_status')
-                    ->maxLength(255),
+                Forms\Components\Select::make('civil_status')
+                    ->label('Civil Status')
+                    ->options(collect(\Homeful\Contacts\Enums\CivilStatus::cases())->pluck('value', 'value'))
+                    ->native(false)
+                    ->required(),
+                Forms\Components\Select::make('employment_status')
+                    ->label('Employment Status')
+                    ->options(collect(\Homeful\Contacts\Enums\EmploymentStatus::cases())->pluck('value', 'value'))
+                    ->native(false)
+                    ->required(),
                 Forms\Components\TextInput::make('market_segment')
-                    ->maxLength(255),
+                    ->label('Market Segment')
+                    ->maxLength(255)
+                    ->required(),
                 Forms\Components\Select::make('requirements')
                     ->native(false)
                     ->options(Requirement::all()->pluck('description','description'))
