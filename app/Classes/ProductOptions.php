@@ -4,6 +4,8 @@ namespace App\Classes;
 
 use App\Data\{MatchDescriptionData, MatchNameData};
 use Homeful\Common\Classes\OptionsType;
+use Homeful\Products\Data\ProductData;
+use Homeful\Products\Models\Product;
 use Illuminate\Support\Arr;
 
 /**
@@ -36,10 +38,17 @@ class ProductOptions extends OptionsType
         $recs = [];
         foreach (static::$matches as $match) {
             $key = Arr::get($match, 'property.sku');
+            context([$key => app(Product::class)->where('sku', $key)->first()]);
             $name = MatchNameData::from(Arr::get($match, 'property'))->toJson();
             tap(new ProductOptions($key, $name), function (ProductOptions $rec) use (&$recs, $key, $match) {
                 $data = MatchDescriptionData::from($match);
                 $rec->description($data->toJson());
+
+                /** @var  $product */
+                $product = app(Product::class)->where('sku', $key)->first();
+                $product_data = ProductData::fromModel($product);
+                $rec->details($product_data->toArray());
+
                 $recs[$key] = $rec->jsonSerialize();
             });
         }
