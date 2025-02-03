@@ -7,6 +7,7 @@ use App\Helpers\LoanTermOptions;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
+use Homeful\Contacts\Actions\GetContactMetadataFromContactModel;
 use Homeful\Contacts\Data\ContactData;
 use Homeful\Contacts\Models\Contact;
 use Homeful\Contracts\Models\Contract;
@@ -49,8 +50,11 @@ class EditContract extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-//        $contact = Contact::where('id', $data['contact_id'])->first();
-////        dd(Contact::latest()->first());
+        $contact = Contact::where('id', $data['contact_id'])->first();
+//        dd($contact);
+//        $data = app(GetContactMetadataFromContactModel::class)->run($contact);
+//        dd($data);
+//        dd(Contact::latest()->first());
 //        $contact->middle_name = $contact->middle_name??'';
 //        $order=$contact->order;
 //        $order['sku'] = $order['sku']??'';
