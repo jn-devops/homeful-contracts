@@ -4,12 +4,13 @@ namespace App\Filament\Resources\ContractResource\Pages;
 
 use App\Filament\Resources\ContractResource;
 use App\Helpers\LoanTermOptions;
+use App\Models\RequirementMatrix;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use Homeful\Contacts\Actions\GetContactMetadataFromContactModel;
 use Homeful\Contacts\Data\ContactData;
-use Homeful\Contacts\Models\Contact;
+use Homeful\Contacts\Models\Customer as Contact;
 use Homeful\Contracts\Models\Contract;
 use Homeful\Properties\Models\Project;
 use Illuminate\Database\Eloquent\Model;
@@ -51,6 +52,11 @@ class EditContract extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $contact = Contact::where('id', $data['contact_id'])->first();
+//        dd($contact->getData()->toArray());
+        $data['contact_data']=$contact->getData()->toArray();
+
+        $requirements = RequirementMatrix::first();
+        $data['requirements']=json_decode($requirements->requirements, true);
 //        dd($contact);
 //        $data = app(GetContactMetadataFromContactModel::class)->run($contact);
 //        dd($data);
