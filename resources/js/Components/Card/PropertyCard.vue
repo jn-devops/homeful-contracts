@@ -63,10 +63,12 @@ function showDiscover(sku) {
                 </div>
             </div>
         </div>
-        <img 
-            :src="imgLink" 
-            alt="Sample Image" 
-            class="w-full h-auto"
-        />
+        <div class="w-full h-[300px]">
+            <img 
+                :src="imgLink" 
+                alt="Property Image" 
+                class="object-cover w-full h-full rounded-xl"
+            />
+        </div>
     </div> 
 </template>

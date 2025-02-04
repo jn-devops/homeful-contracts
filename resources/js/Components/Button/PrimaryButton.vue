@@ -2,6 +2,6 @@
 </script>
 <template>
     <button class="bg-black text-white w-full p-3 font-bold">
-        Apply and Show
+        <slot />
     </button>
 </template>
