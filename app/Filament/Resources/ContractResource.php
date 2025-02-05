@@ -33,6 +33,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use http\Env\Response;
 use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +41,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\HtmlString;
+use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
+use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 use stdClass;
 use Carbon\Carbon;
 
@@ -65,22 +68,22 @@ class ContractResource extends Resource
                                 ->schema([
                                     //Personal Information
                                     Forms\Components\Fieldset::make('Personal')->schema([
-                                        TextInput::make('contact_data.last_name')
+                                        TextInput::make('contact_data.buyer.last_name')
                                             ->label('Last Name')
                                             ->required()
                                             ->maxLength(255)
                                             ->columnSpan(3),
-                                        TextInput::make('contact_data.first_name')
+                                        TextInput::make('contact_data.buyer.first_name')
                                             ->label('First Name')
                                             ->required()
                                             ->maxLength(255)
                                             ->columnSpan(3),
 
-                                        TextInput::make('contact_data.middle_name')
+                                        TextInput::make('contact_data.buyer.middle_name')
                                             ->label('Middle Name')
                                             ->maxLength(255)
-                                            ->required(fn (Get $get): bool => ! $get('contact_data.no_middle_name'))
-                                            ->readOnly(fn (Get $get): bool => $get('contact_data.no_middle_name'))
+                                            ->required(fn (Get $get): bool => ! $get('contact_data.buyer.no_middle_name'))
+                                            ->readOnly(fn (Get $get): bool => $get('contact_data.buyer.no_middle_name'))
     //                                            ->hidden(fn (Get $get): bool =>  $get('no_middle_name'))
                                             ->columnSpan(3),
     //                                                Select::make('buyer.name_suffix')
@@ -89,11 +92,11 @@ class ContractResource extends Resource
     //                                                    ->native(false)
     //                                                    ->options(NameSuffix::all()->pluck('description','code'))
     //                                                    ->columnSpan(2),
-                                        TextInput::make('contact_data.name_suffix')
+                                        TextInput::make('contact_data.buyer.name_suffix')
                                             ->label('Suffix')
                                             ->maxLength(255)
                                             ->columnSpan(2),
-                                        Forms\Components\Checkbox::make('contact_data.no_middle_name')
+                                        Forms\Components\Checkbox::make('contact_data.buyer.no_middle_name')
                                             ->live()
                                             ->inline(false)
                                             ->afterStateUpdated(function(Get $get,Set $set){
@@ -102,7 +105,7 @@ class ContractResource extends Resource
     //                                                }
                                             })
                                             ->columnSpan(1),
-                                        TextInput::make('contact_data.civil_status')
+                                        TextInput::make('contact_data.buyer.civil_status')
                                             ->label('Civil Status')
                                             ->maxLength(255)
                                             ->columnSpan(3),
@@ -113,7 +116,7 @@ class ContractResource extends Resource
     //                                                    ->native(false)
     //                                                    ->options(CivilStatus::all()->pluck('description','code'))
     //                                                    ->columnSpan(3),
-                                        Select::make('contact_data.sex')
+                                        Select::make('contact_data.buyer.sex')
                                             ->label('Gender')
                                             ->required()
                                             ->native(false)
@@ -122,12 +125,12 @@ class ContractResource extends Resource
                                                 'Female'=>'Female'
                                             ])
                                             ->columnSpan(3),
-                                        DatePicker::make('contact_data.date_of_birth')
+                                        DatePicker::make('contact_data.buyer.date_of_birth')
                                             ->label('Date of Birth')
                                             ->required()
                                             ->native(false)
                                             ->columnSpan(3),
-                                        TextInput::make('contact_data.nationality')
+                                        TextInput::make('contact_data.buyer.nationality')
                                             ->label('Nationality')
                                             ->required()
                                             ->columnSpan(3),
@@ -141,7 +144,7 @@ class ContractResource extends Resource
                                     ])->columns(12)->columnSpanFull(),
                                     \Filament\Forms\Components\Fieldset::make('Contact Information')
                                         ->schema([
-                                            Forms\Components\TextInput::make('contact_data.email')
+                                            Forms\Components\TextInput::make('contact_data.buyer.email')
                                                 ->label('Email')
                                                 // ->email()
                                                 ->required()
@@ -153,7 +156,7 @@ class ContractResource extends Resource
                                                 ->unique(ignoreRecord: true,table: Contact::class,column: 'email')
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('contact_data.mobile')
+                                            Forms\Components\TextInput::make('contact_data.buyer.mobile')
                                                 ->label('Mobile')
                                                 ->required()
                                                 ->prefix('+63')
@@ -166,7 +169,7 @@ class ContractResource extends Resource
                                                 })
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('contact_data.other_mobile')
+                                            Forms\Components\TextInput::make('contact_data.buyer.other_mobile')
                                                 ->label('Other Mobile')
                                                 ->prefix('+63')
                                                 ->regex("/^[0-9]+$/")
@@ -178,7 +181,7 @@ class ContractResource extends Resource
                                                 })
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('contact_data.landline')
+                                            Forms\Components\TextInput::make('contact_data.buyer.landline')
                                                 ->label('Landline')
                                                 ->columnSpan(3),
                                         ])->columns(12)->columnSpanFull(),
@@ -2341,9 +2344,30 @@ class ContractResource extends Resource
                             }),
                         Forms\Components\Tabs\Tab::make('Generated Documents')
                             ->icon('heroicon-m-document-duplicate')
-                            ->schema([
+                            ->schema(function(Get $get){
 
-                            ]),
+                                $maped_documents=collect($get('documents'))
+                                    ->map(function($document) {
+                                       return Forms\Components\Section::make($document['name'])
+                                           ->headerActions([
+                                               Forms\Components\Actions\Action::make('download')
+                                               ->icon('heroicon-m-arrow-down-tray')
+                                            ->url(fn () => route('download.pdf', ['url' => $document['url']]), true),
+                                           ])
+                                            ->schema([
+                                                Placeholder::make('url')
+                                                    ->label('Url')
+                                                    ->content(fn () => $document['url']),
+                                                Placeholder::make($document['name'])
+                                                    ->label('')
+                                                    ->content(fn () => new HtmlString(
+                                                        '<iframe src="https://docs.google.com/gview?url=' . urlencode($document['url']) . '&embedded=true" width="100%" height="1200px"></iframe>'
+                                                    )),
+                                            ])->collapsible()->collapsed();
+                                    })->toArray();
+                                return $maped_documents;
+                            }),
+
                     ])
                     ->columnSpan(3),
                     Forms\Components\Section::make()

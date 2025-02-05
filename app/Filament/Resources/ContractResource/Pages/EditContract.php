@@ -14,6 +14,7 @@ use Homeful\Contacts\Models\Customer as Contact;
 use Homeful\Contracts\Models\Contract;
 use Homeful\Properties\Models\Project;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Http;
 
 class EditContract extends EditRecord
 {
@@ -52,8 +53,39 @@ class EditContract extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $contact = Contact::where('id', $data['contact_id'])->first();
+
+        $response = Http::post('https://merge.homeful.ph/api/folder-documents/RRC-SHDG-S', [
+            'code' => 'RRC-SHDG-S-2',
+            'data' => [
+                "buyer_name"=>"Renzo"
+            ],
+        ]);
+        $contact_data =$contact->getData()->toArray();
+//        $response = Http::post('http://homeful-merge.test/api/folder-documents/test', [
+//            'code' => 'test',
+//            'data' => [
+//                'first_name' => $contact_data['first_name'],
+//                'last_name' => $contact_data['last_name'],
+//                'middle_name' => $contact_data['middle_name'],
+//                'name_suffix' => $contact_data['name_suffix'],
+//                'mothers_maiden_name' => $contact_data['mothers_maiden_name'],
+//                'email' => $contact_data['email'],
+//                'mobile' => $contact_data['mobile'],
+//                'other_mobile' => $contact_data['other_mobile'],
+//                'help_number' => $contact_data['help_number'],
+//                'landline' => $contact_data['landline'],
+//                'civil_status' => $contact_data['civil_status'],
+//                'sex' => $contact_data['sex'],
+//                'nationality' => $contact_data['nationality'],
+//                'date_of_birth' => $contact_data['date_of_birth'],
+//            ],
+//        ]);
+//
+        $data['documents']=$response->json()['generatedFiles'];
+//        dd($data['documents']);
+
+
 //        dd($contact->getData()->toArray());
-        $data['contact_data']=$contact->getData()->toArray();
 
         $requirements = RequirementMatrix::first();
         $data['requirements']=json_decode($requirements->requirements, true);
@@ -61,13 +93,14 @@ class EditContract extends EditRecord
 //        $data = app(GetContactMetadataFromContactModel::class)->run($contact);
 //        dd($data);
 //        dd(Contact::latest()->first());
-//        $contact->middle_name = $contact->middle_name??'';
+            $contact->middle_name = $contact->middle_name??'';
 //        $order=$contact->order;
 //        $order['sku'] = $order['sku']??'';
 //        $order['seller_commission_code'] = $order['seller_commission_code']??'';
 //        $order['property_code'] = $order['property_code']??'';
 //        $contact->order = $order;
 //        $contact_data = ContactData::fromModel($contact);
+          $contact_data =$contact->getData()->toArray();
 //        $new_data = [];
 //
 //
@@ -76,21 +109,22 @@ class EditContract extends EditRecord
 //
 //
 //        // Extracting data from contact_data for form
-//        $buyer_address_present = collect($contact_data->addresses)
-//            ->filter(fn($address) => in_array($address['type'], ['primary','present']))
-//            ->first() ?? [];
-//        $buyer_address_permanent = collect($contact_data->addresses)
-//            ->filter(fn($address) => in_array($address['type'], ['sencondary','permanent']))
-//            ->first() ?? [];
-//        $buyer_employment = collect($contact_data->employment)->firstWhere('type', 'buyer') ?? [];
-//        $new_data['buyer_employment']=$buyer_employment;
+        $buyer_address_present = collect($contact_data['addresses'])
+            ->filter(fn($address) => in_array($address['type'], ['Primary','Present']))
+            ->first() ?? [];
+        $buyer_address_permanent = collect($contact_data['addresses'])
+            ->filter(fn($address) => in_array($address['type'], ['Sencondary','Permanent']))
+            ->first() ?? [];
+        $buyer_employment = collect($contact_data['employment'])->firstWhere('type', 'Primary') ?? [];
+//        dd($contact_data,$buyer_address_present,$buyer_address_permanent,$buyer_employment);
+        $new_data['buyer_employment']=$buyer_employment;
 //
-//        // Spouse details if available
-//        if($contact_data->spouse){
-//            $new_data['spouse'] = $contact_data->spouse->toArray() ?? [];
-//            $new_data['spouse']['no_middle_name']=$new_data['spouse']['middle_name']==''||$new_data['spouse']['middle_name']==null;
+        // Spouse details if available
+        if($contact_data['spouse']){
+            $new_data['spouse'] = $contact_data['spouse'] ?? [];
+            $new_data['spouse']['no_middle_name']=$new_data['spouse']['middle_name']==''||$new_data['spouse']['middle_name']==null;
 //            $new_data['spouse']['tin'] = $contact_data->employment?->toCollection()->firstWhere('type', 'spouse')->id->tin ?? '';
-//        }
+        }
 //
 //
 //
@@ -110,39 +144,55 @@ class EditContract extends EditRecord
 ////        $new_data['seller'] = $contact_data->order->toArray()['seller'] ?? [];
 //        $new_data['reference_code'] = $contact_data->reference_code;
 //        $new_data['uploads']=$contact_data->uploads->toArray();
-//        $new_data['buyer'] = $contact_data->profile->toArray();
 //        $new_data['buyer']['mobile'] = $this->record->mobile;
+//        $new_data['buyer'] = $contact_data->profile->toArray();
+        $new_data['buyer'] = [
+            'first_name' => $contact_data['first_name'],
+            'last_name' => $contact_data['last_name'],
+            'middle_name' => $contact_data['middle_name'],
+            'name_suffix' => $contact_data['name_suffix'],
+            'mothers_maiden_name' => $contact_data['mothers_maiden_name'],
+            'email' => $contact_data['email'],
+            'mobile' => $contact_data['mobile'],
+            'other_mobile' => $contact_data['other_mobile'],
+            'help_number' => $contact_data['help_number'],
+            'landline' => $contact_data['landline'],
+            'civil_status' => $contact_data['civil_status'],
+            'sex' => $contact_data['sex'],
+            'nationality' => $contact_data['nationality'],
+            'date_of_birth' => $contact_data['date_of_birth'],
+        ];
 //
-//        $new_data['no_middle_name']=$new_data['buyer']['middle_name']==''||$new_data['buyer']['middle_name']==null;
-//        $new_data['buyer']['address']['present'] = $buyer_address_present;
-//        $new_data['buyer']['address']['permanent'] = $buyer_address_permanent;
+        $new_data['buyer']['no_middle_name']=$new_data['buyer']['middle_name']==''||$new_data['buyer']['middle_name']==null;
+        $new_data['buyer']['address']['present'] = $buyer_address_present;
+        $new_data['buyer']['address']['permanent'] = $buyer_address_permanent;
 //
-//        $new_data['buyer']['address']['present']['address1'] = $buyer_address_present['address1'];
-//        $new_data['buyer']['address']['present']['locality'] = $buyer_address_present['locality'];
+        $new_data['buyer']['address']['present']['address1'] = $buyer_address_present['address1'];
+        $new_data['buyer']['address']['present']['locality'] = $buyer_address_present['locality'];
 //        $new_data['buyer']['address']['present']['sublocality'] = $buyer_address_present['sublocality'];
-//        $new_data['buyer']['address']['present']['administrative_area'] = $buyer_address_present['administrative_area'];
-//        $new_data['buyer']['address']['present']['region'] = $buyer_address_present['region'];
-//        $new_data['buyer']['address']['present']['country'] = $buyer_address_present['country'];
+        $new_data['buyer']['address']['present']['administrative_area'] = $buyer_address_present['administrative_area'];
+        $new_data['buyer']['address']['present']['region'] = $buyer_address_present['region'];
+        $new_data['buyer']['address']['present']['country'] = $buyer_address_present['country'];
 //
-//        $new_data['buyer']['address']['permanent']['address1'] = $buyer_address_permanent['address1'];
-//        $new_data['buyer']['address']['permanent']['city'] = $buyer_address_permanent['locality'];
+        $new_data['buyer']['address']['permanent']['address1'] = $buyer_address_permanent['address1'];
+        $new_data['buyer']['address']['permanent']['city'] = $buyer_address_permanent['locality'];
 //        $new_data['buyer']['address']['permanent']['barangay'] = $buyer_address_permanent['sublocality'];
-//        $new_data['buyer']['address']['permanent']['province'] = $buyer_address_permanent['administrative_area'];
-//        $new_data['buyer']['address']['permanent']['region'] = $buyer_address_permanent['region'];
-//        $new_data['buyer']['address']['permanent']['country'] = $buyer_address_permanent['country'];
-//
-//        $is_same_address = (
-//            $buyer_address_present['address1'] === $buyer_address_permanent['address1'] &&
-//            $buyer_address_present['locality'] === $buyer_address_permanent['locality'] &&
+        $new_data['buyer']['address']['permanent']['province'] = $buyer_address_permanent['administrative_area'];
+        $new_data['buyer']['address']['permanent']['region'] = $buyer_address_permanent['region'];
+        $new_data['buyer']['address']['permanent']['country'] = $buyer_address_permanent['country'];
+
+        $is_same_address = (
+            $buyer_address_present['address1'] === $buyer_address_permanent['address1'] &&
+            $buyer_address_present['locality'] === $buyer_address_permanent['locality'] &&
 //            $buyer_address_present['sublocality'] === $buyer_address_permanent['sublocality'] &&
-//            $buyer_address_present['administrative_area'] === $buyer_address_permanent['administrative_area']&&
-//            $buyer_address_present['region'] === $buyer_address_permanent['region'] &&
-//            $buyer_address_present['country'] === $buyer_address_permanent['country']
-//        );
+            $buyer_address_present['administrative_area'] === $buyer_address_permanent['administrative_area']&&
+            $buyer_address_present['region'] === $buyer_address_permanent['region'] &&
+            $buyer_address_present['country'] === $buyer_address_permanent['country']
+        );
 //
-//        $new_data['buyer']['address']['present']['same_as_permanent'] = $is_same_address;
+        $new_data['address']['present']['same_as_permanent'] = $is_same_address;
 //
-//        $new_data['buyer']['gender'] =$contact_data->profile->sex;
+        $new_data['gender'] =$contact_data['sex'];
 //
 //        $cobo_address=  collect($contact_data->addresses)
 //            ->filter(fn($address) => in_array($address['type'], ['co_borrower']))
@@ -244,7 +294,7 @@ class EditContract extends EditRecord
 //        }
 //
 //        $new_data['contact'] = $new_data;
-//        $data['contact_data']=$new_data;
+        $data['contact_data']=$new_data;
 //        dd($data);
         return $data;
     }

@@ -10,7 +10,10 @@ use App\Http\Controllers\ContactPaidController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -30,6 +33,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/download-pdf', function (Request $request) {
+        $data = Validator::validate($request->all(), ['url' => 'required|url']);
+        return Response::stream(
+            fn () => print(file_get_contents($data['url']) ?: abort(404, 'File not found')),
+            200,
+            ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'attachment; filename="'.basename(parse_url($data['url'], PHP_URL_PATH)).'"']
+        );
+    })->name('download.pdf');
 });
 
 Route::get('register-contact', RegisterContactController::class)->name('register-contact');
