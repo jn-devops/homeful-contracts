@@ -77,52 +77,56 @@ onMounted(() => {
 </script>
 <template>
     <div class="fixed inset-0 bg-opacity-50 flex items-center justify-center z-10">
-        <div class="bg-white w-full max-w-[450px] h-screen overflow-y-auto rounded shadow-lg pt-24">
-            <div class="grid grid-cols-3 gap-2">
-                <div class="px-5 cursor-pointer" @click="toggleHomeMatch">
-                    <h3 class="underline text-sm font-semibold">Back</h3>
+        <div class="bg-white w-full max-w-[450px] h-screen overflow-y-auto rounded shadow-lg pt-24 flex flex-col justify-between">
+            <div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="px-5 cursor-pointer" @click="toggleHomeMatch">
+                        <h3 class="underline text-sm font-semibold">Back</h3>
+                    </div>
+                    <div class="text-center">
+                        <h1 class="font-bold">HomeMatch</h1>
+                    </div>
+                    <div class="px-5 text-right cursor-pointer">
+                        <h3 class="text-sm font-semibold">Clear All</h3>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <h1 class="font-bold">HomeMatch</h1>
-                </div>
-                <div class="px-5 text-right cursor-pointer">
-                    <h3 class="text-sm font-semibold">Clear All</h3>
-                </div>
-            </div>
-            <hr class="mt-4 mb-8 mx-3" />
-            <TagSelector
-                :lists="houseTypes"
-                label="House Type"
-                :listSelected="selectedHouseType"
-                @update:listSelected="updateSelectedHouseType"
-            />
-            <hr class="my-8 mx-3" />
-            <TagSelector
-                :lists="locations"
-                label="Location"
-                :listSelected="selectedLocation"
-                @update:listSelected="updateSelectedLocation"
-            />
-            <hr class="mt-8 mb-2 mx-3" />
-            <div class="px-6">
-                <h3 class="text-sm font-semibold mb-1">Gross Monthly Income</h3>
-                <InputAmount 
-                    :rawValue="grossMonthlyIncome"
-                    @update:raw-value="updateGrossMonthlyIncome"
+                <hr class="mt-4 mb-8 mx-3" />
+                <TagSelector
+                    :lists="houseTypes"
+                    label="House Type"
+                    :listSelected="selectedHouseType"
+                    @update:listSelected="updateSelectedHouseType"
                 />
+                <hr class="my-8 mx-3" />
+                <TagSelector
+                    :lists="locations"
+                    label="Location"
+                    :listSelected="selectedLocation"
+                    @update:listSelected="updateSelectedLocation"
+                />
+                <hr class="mt-8 mb-2 mx-3" />
+                <div class="px-6">
+                    <h3 class="text-sm font-semibold mb-1">Gross Monthly Income</h3>
+                    <InputAmount 
+                        :rawValue="grossMonthlyIncome"
+                        @update:raw-value="updateGrossMonthlyIncome"
+                    />
+                </div>
+                <hr class="mt-8 mb-2 mx-3" />
+                <div class="px-6">
+                    <h3 class="text-sm font-semibold mb-1">Birthday</h3>
+                    <Datepicker 
+                        v-model="localBirthdate" 
+                        :enable-time-picker="false" 
+                        format="LLL d, yyyy"
+                        :class="{'bg-green-200': true}"
+                     />
+                </div>
             </div>
-            <hr class="mt-8 mb-2 mx-3" />
-            <div class="px-6">
-                <h3 class="text-sm font-semibold mb-1">Birthday</h3>
-                <Datepicker 
-                    v-model="localBirthdate" 
-                    :enable-time-picker="false" 
-                    format="LLL d, yyyy"
-                    :class="{'bg-green-200': true}"
-                 />
-            </div>
-            <div class="absolute bottom-0 left-0 w-full p-3">
-                <PrimaryButton />
+            <div class="bottom-0 left-0 w-full p-3">
+                <PrimaryButton>
+                    Apply and Show
+                </PrimaryButton>
             </div>
         </div>
     </div>

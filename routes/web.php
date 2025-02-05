@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Contract\{AssignController, AvailController, ConsultController, VerifyController};
 use App\Http\Controllers\ContactOnboardedController;
 use App\Http\Controllers\RegisterContactController;
@@ -56,5 +57,9 @@ Route::get('contact-paid/{reference}', ContactPaidController::class)->name('cont
 Route::resource('assign', AssignController::class)->only(['create', 'store']);
 
 Route::resource('contracts', ContractController::class);
+
+Route::get('booking/authentication',[ BookingController::class, 'authentication']);
+Route::get('booking/payment',[ BookingController::class, 'payment']);
+Route::get('booking/complete-form',[ BookingController::class, 'complete_form']);
 
 require __DIR__.'/auth.php';
