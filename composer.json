@@ -9,6 +9,7 @@
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.3",
+        "codewithdennis/filament-theme-inspector": "^0.0.7",
         "filament/filament": "^3.2",
         "homeful/references": "^1.2",
         "icetalker/filament-table-repeater": "^1.3",

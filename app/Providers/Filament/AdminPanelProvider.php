@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use CodeWithDennis\FilamentThemeInspector\FilamentThemeInspectorPlugin;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -29,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->topNavigation()
+//            ->topNavigation()
             ->maxContentWidth(MaxWidth::Full)
             ->colors([
                 'primary' => Color::Amber,
@@ -56,6 +57,9 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
+//                FilamentThemeInspectorPlugin::make()
+//                    ->disabled(false),
+//                    ->disabled(fn () => ! app()->hasDebugModeEnabled()),
                 FilamentShieldPlugin::make(),
 //                \TomatoPHP\FilamentUsers\FilamentUsersPlugin::make(),
             ])

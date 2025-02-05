@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ContractResource\Pages;
 use App\Filament\Resources\ContractResource\RelationManagers;
 use App\Helpers\LoanTermOptions;
+use App\Livewire\DocumentPreviewComponent;
 use App\Livewire\RequirementsTable;
 use App\Models\Contact;
 use App\Models\Requirement;
@@ -2310,36 +2311,15 @@ class ContractResource extends Resource
                             ]),
                         Forms\Components\Tabs\Tab::make('Upload Documents')
                             ->icon('heroicon-m-cloud-arrow-up')
-                            ->schema(function(){
-                                $requirements = RequirementMatrix::first();
-                                $mappedRequirements = collect(json_decode($requirements->requirements, true))
-                                    ->map(function($requirement) {
-                                        return FileUpload::make(htmlspecialchars($requirement) )
-                                            ->label(htmlspecialchars($requirement))
-                                            ->columnSpan(2);
-                                    })->toArray();
+                            ->schema(function(Model $record) {
 
-//                                dd($mappedRequirements);
                                 return [
-                                    TableRepeater::make('requirements')
-                                        ->label('')
-                                        ->schema([
-                                            Forms\Components\TextInput::make('requirements')
-                                        ])
-                                        ->extraItemActions([
-                                            Forms\Components\Actions\Action::make('sendEmail')
-                                                ->icon('heroicon-m-envelope')
-                                                ->action(function (array $arguments, Repeater $component): void {
-                                                    dd($arguments,$component);
-                                                }),
-                                        ])
-                                        ->reorderable(false)
-                                        ->deletable(false)
-                                        ->addable(false)
-                                        ->columnSpan('full'),
                                     Forms\Components\Section::make()
-                                        ->schema($mappedRequirements)
-                                        ->columns(12)
+                                        ->schema([
+                                            Livewire::make(RequirementsTable::class, ['record' => $record])
+                                                ->key(Carbon::now()->format('Y-m-d H:i:s'))
+                                                ->columnSpanFull(),
+                                        ]),
                                 ];
                             }),
                         Forms\Components\Tabs\Tab::make('Generated Documents')

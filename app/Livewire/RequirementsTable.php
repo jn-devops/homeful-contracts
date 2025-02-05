@@ -2,32 +2,23 @@
 
 namespace App\Livewire;
 
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Table;
+
+use App\Models\RequirementMatrix;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
-use Filament\Tables\Concerns\InteractsWithTable;
 
-class RequirementsTable extends Component implements HasForms, HasTable
+class RequirementsTable extends Component
 {
-    use InteractsWithTable;
-    use InteractsWithForms;
-
-    public function table(Table $table): Table
+    public $requirements=[];
+    public $record;
+    public function mount(Model $record)
     {
-        return $table
-            ->columns([
-            ])
-            ->filters([
-                // ...
-            ])
-            ->actions([
-                // ...
-            ])
-            ->bulkActions([
-                // ...
-            ]);
+        $requirements = RequirementMatrix::first();
+        $this->requirements = collect(json_decode($requirements->requirements, true))
+        ->sort()
+        ->values();
+        $this->record = $record;
     }
     public function render()
     {
