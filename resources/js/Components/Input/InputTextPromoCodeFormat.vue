@@ -1,5 +1,6 @@
 <script setup>
 import { defineProps, defineEmits, onMounted, ref } from 'vue'
+import DefaultGradientBorder from '../Container/DefaultGradientBorder.vue';
 
 const props = defineProps({
   label: {
@@ -88,10 +89,11 @@ onMounted(() => {
 <template>
     <div class="w-full">
         <label class="text-sm font-semibold mb-1" :class="errorMessage ? 'text-red-600' : 'text-gray-900'">{{label}} <span v-if="required" class="text-red-600">*</span></label>
-        <div 
+        <!-- <div 
             class="w-full border border-gray-500 focus-within:border-black focus-within:border-2"
             :class="errorMessage ? 'border-red-700' : ''"
-        >
+        > -->
+        <DefaultGradientBorder :has-error="(errorMessage) ? true : false">
             <input
                 :type="type"
                 :value="localValue"
@@ -104,7 +106,8 @@ onMounted(() => {
                 :maxlength="max"
                 :readonly="readOnly"
             />
-        </div>
+          </DefaultGradientBorder>
+        <!-- </div> -->
         <p class="text-xs text-red-700 mt-1" v-if="errorMessage">{{ errorMessage }}</p>
         <p class="text-xs text-gray-600 mt-1" v-if="helperMessage">{{ helperMessage }}</p>
     </div>

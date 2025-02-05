@@ -81,7 +81,7 @@ class EditContract extends EditRecord
 //            ],
 //        ]);
 //
-        $data['documents']=$response->json()['generatedFiles'];
+        // $data['documents']=$response->json()['generatedFiles'];
 //        dd($data['documents']);
 
 
