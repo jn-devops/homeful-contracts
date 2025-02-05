@@ -2355,9 +2355,6 @@ class ContractResource extends Resource
                                             ->url(fn () => route('download.pdf', ['url' => $document['url']]), true),
                                            ])
                                             ->schema([
-                                                Placeholder::make('url')
-                                                    ->label('Url')
-                                                    ->content(fn () => $document['url']),
                                                 Placeholder::make($document['name'])
                                                     ->label('')
                                                     ->content(fn () => new HtmlString(
