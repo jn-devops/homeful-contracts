@@ -12,10 +12,6 @@ const props = defineProps({
 
 const reference = ref({});
 
-const goToEkyc = () => {
-
-}
-
 watch (
     () => usePage().props.flash.event,
     (event) => {
@@ -61,7 +57,7 @@ const submit = () => {
                     </ol>
                 </div>
                 <form @submit.prevent="submit" class="w-full">
-                    <PrimaryButton>
+                    <PrimaryButton type="submit">
                         <div class="flex flex-row gap 3 items-center justify-center">
                             Continue
                             <svg class="w-6 h-6text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
