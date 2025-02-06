@@ -61,6 +61,7 @@ class EditContract extends EditRecord
             ],
         ]);
         $contact_data =$contact->getData()->toArray();
+//        dd($contact_data);
 //        $response = Http::post('http://homeful-merge.test/api/folder-documents/test', [
 //            'code' => 'test',
 //            'data' => [
@@ -81,7 +82,9 @@ class EditContract extends EditRecord
 //            ],
 //        ]);
 //
-        $data['documents']=$response->json()['generatedFiles'];
+        if ($response->status() === 200) {
+            $data['documents']=$response->json()['generatedFiles'];
+        }
 //        dd($data['documents']);
 
 
@@ -120,7 +123,7 @@ class EditContract extends EditRecord
         $new_data['buyer_employment']=$buyer_employment;
 //
         // Spouse details if available
-        if($contact_data['spouse']){
+        if( !empty($contact_data['spouse'])){
             $new_data['spouse'] = $contact_data['spouse'] ?? [];
             $new_data['spouse']['no_middle_name']=$new_data['spouse']['middle_name']==''||$new_data['spouse']['middle_name']==null;
 //            $new_data['spouse']['tin'] = $contact_data->employment?->toCollection()->firstWhere('type', 'spouse')->id->tin ?? '';
