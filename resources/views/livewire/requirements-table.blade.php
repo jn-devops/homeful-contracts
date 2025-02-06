@@ -7,7 +7,12 @@
         <table class="fi-ta-table w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
             <thead class="fi-ta-header bg-gray-50 dark:bg-gray-700">
             <tr class="fi-ta-row">
-                <th class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-state">
+                <th class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-state text-left">
+                    <span class="fi-ta-header-cell-label text-sm font-semibold text-gray-950 dark:text-white">
+                        No
+                    </span>
+                </th>
+                <th class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-state text-left">
                     <span class="fi-ta-header-cell-label text-sm font-semibold text-gray-950 dark:text-white">
                         Status
                     </span>
@@ -27,6 +32,9 @@
             <tbody class="fi-ta-body divide-y divide-gray-200 dark:divide-gray-700">
             @foreach ($requirements as $requirement)
                 <tr class="fi-ta-row hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td class="fi-ta-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-300 text-center">
+                        {{ $loop->iteration }}
+                    </td>
                     <td class="fi-ta-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-300">
                         {{ $requirement['status'] ?? 'Pending' }} <!-- Default to 'Pending' if status is missing -->
                     </td>

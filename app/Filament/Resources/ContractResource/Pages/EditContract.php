@@ -54,12 +54,7 @@ class EditContract extends EditRecord
     {
         $contact = Contact::where('id', $data['contact_id'])->first();
 
-        $response = Http::post('https://merge.homeful.ph/api/folder-documents/RRC-SHDG-S', [
-            'code' => 'RRC-SHDG-S-2',
-            'data' => [
-                "buyer_name"=>"Renzo"
-            ],
-        ]);
+
         $contact_data =$contact->getData()->toArray();
 //        dd($contact_data);
 //        $response = Http::post('http://homeful-merge.test/api/folder-documents/test', [
@@ -82,9 +77,7 @@ class EditContract extends EditRecord
 //            ],
 //        ]);
 //
-        if ($response->status() === 200) {
-            $data['documents']=$response->json()['generatedFiles'];
-        }
+
 //        dd($data['documents']);
 
 

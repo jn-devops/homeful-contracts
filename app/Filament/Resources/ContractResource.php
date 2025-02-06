@@ -6,6 +6,7 @@ use App\Filament\Resources\ContractResource\Pages;
 use App\Filament\Resources\ContractResource\RelationManagers;
 use App\Helpers\LoanTermOptions;
 use App\Livewire\DocumentPreviewComponent;
+use App\Livewire\GeneratedDocumentsTable;
 use App\Livewire\RequirementsTable;
 use App\Models\Contact;
 use App\Models\Requirement;
@@ -2326,26 +2327,34 @@ class ContractResource extends Resource
                             }),
                         Forms\Components\Tabs\Tab::make('Generated Documents')
                             ->icon('heroicon-m-document-duplicate')
-                            ->schema(function(Get $get){
-
-                                $maped_documents=collect($get('documents'))
-                                    ->map(function($document) {
-                                       return Forms\Components\Section::make($document['name'])
-                                           ->headerActions([
-                                               Forms\Components\Actions\Action::make('download')
-                                               ->icon('heroicon-m-arrow-down-tray')
-                                            ->url(fn () => route('download.pdf', ['url' => $document['url']]), true),
-                                           ])
-                                            ->schema([
-                                                Placeholder::make($document['name'])
-                                                    ->label('')
-                                                    ->content(fn () => new HtmlString(
-                                                        '<iframe src="https://docs.google.com/gview?url=' . urlencode($document['url']) . '&embedded=true" width="100%" height="1200px"></iframe>'
-                                                    )),
-                                            ])->collapsible()->collapsed();
-                                    })->toArray();
-                                return $maped_documents;
-                            }),
+                        ->schema(function(Model $record) {
+                            return [
+                                Livewire::make(GeneratedDocumentsTable::class, ['record' => $record])
+                                    ->key(Carbon::now()->format('Y-m-d H:i:s'))
+                                    ->columnSpanFull()
+                                    ->lazy(),
+                            ];
+                        }),
+//                            ->schema(function(Get $get){
+//
+//                                $maped_documents=collect($get('documents'))
+//                                    ->map(function($document) {
+//                                       return Forms\Components\Section::make($document['name'])
+//                                           ->headerActions([
+//                                               Forms\Components\Actions\Action::make('download')
+//                                               ->icon('heroicon-m-arrow-down-tray')
+//                                            ->url(fn () => route('download.pdf', ['url' => $document['url']]), true),
+//                                           ])
+//                                            ->schema([
+//                                                Placeholder::make($document['name'])
+//                                                    ->label('')
+//                                                    ->content(fn () => new HtmlString(
+//                                                        '<iframe src="https://docs.google.com/gview?url=' . urlencode($document['url']) . '&embedded=true" width="100%" height="1200px"></iframe>'
+//                                                    )),
+//                                            ])->collapsible()->collapsed();
+//                                    })->toArray();
+//                                return $maped_documents;
+//                            }),
 
                     ])
                     ->columnSpan(3),
