@@ -7,14 +7,20 @@
         <table class="fi-ta-table w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
             <thead class="fi-ta-header bg-gray-50 dark:bg-gray-700">
             <tr class="fi-ta-row">
-                <th class="fi-ta-column px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Status
+                <th class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-state">
+                    <span class="fi-ta-header-cell-label text-sm font-semibold text-gray-950 dark:text-white">
+                        Status
+                    </span>
                 </th>
-                <th class="fi-ta-column px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Document Name
+                <th class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-state text-left">
+                    <span class="fi-ta-header-cell-label text-sm font-semibold text-gray-950 dark:text-white">
+                        Document Name
+                    </span>
                 </th>
-                <th class="fi-ta-column px-4 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Actions
+                <th class="fi-ta-header-cell px-3 py-3.5 sm:first-of-type:ps-6 sm:last-of-type:pe-6 fi-table-header-cell-state">
+                    <span class="fi-ta-header-cell-label text-sm font-semibold text-gray-950 dark:text-white">
+                        Actions
+                    </span>
                 </th>
             </tr>
             </thead>
@@ -54,9 +60,9 @@
                                     <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd"/>
                                 </svg>
                             </div>
-                            
+
                         @endif
-                          
+
                     </td>
                 </tr>
             @endforeach
