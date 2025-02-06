@@ -6,6 +6,7 @@ use App\Filament\Resources\ContractResource\Pages;
 use App\Filament\Resources\ContractResource\RelationManagers;
 use App\Helpers\LoanTermOptions;
 use App\Livewire\DocumentPreviewComponent;
+use App\Livewire\GeneratedDocumentsTable;
 use App\Livewire\RequirementsTable;
 use App\Models\Contact;
 use App\Models\Requirement;
@@ -1062,33 +1063,33 @@ class ContractResource extends Resource
                                         ->collapsible()
                                         ->collapsed(false)
                                         ->schema([
-                                            Forms\Components\TextInput::make('order.seller_commission_code')
+                                            Forms\Components\TextInput::make('contact_data.order.seller_commission_code')
                                                 ->label('Seller Commission Code')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.seller.name')
+                                            Forms\Components\TextInput::make('contact_data.order.seller.name')
                                                 ->label('Seller Name')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.seller.id')
+                                            Forms\Components\TextInput::make('contact_data.order.seller.id')
                                                 ->label('Seller ID')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.seller.superior')
+                                            Forms\Components\TextInput::make('contact_data.order.seller.superior')
                                                 ->label('Superior')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.seller.team_head')
+                                            Forms\Components\TextInput::make('contact_data.order.seller.team_head')
                                                 ->label('Team Head')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.seller.chief_seller_officer')
+                                            Forms\Components\TextInput::make('contact_data.order.seller.chief_seller_officer')
                                                 ->label('Chief Sales Officer')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.exec_tin_no')
+                                            Forms\Components\TextInput::make('contact_data.order.exec_tin_no')
                                                 ->label('CSO TIN')
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('order.seller.deputy_chief_seller_officer')
+                                            Forms\Components\TextInput::make('contact_data.order.seller.deputy_chief_seller_officer')
                                                 ->label('Deputy Chief Sales Officer')
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('order.seller.unit')
+                                            Forms\Components\TextInput::make('contact_data.order.seller.unit')
                                                 ->label('Seller Unit')
                                                 ->columnSpan(3),
                                         ])
@@ -1099,7 +1100,7 @@ class ContractResource extends Resource
                                         ->schema([
                                             Group::make()
                                                 ->schema([
-                                                    Forms\Components\TextInput::make('order.payment_scheme.discount_rate')
+                                                    Forms\Components\TextInput::make('contact_data.order.payment_scheme.discount_rate')
                                                         ->label('Discount')
                                                         ->hint('In Pesos')
                                                         ->numeric()
@@ -1118,54 +1119,54 @@ class ContractResource extends Resource
                                                         })
                                                         ->live(onBlur: true)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.payment_scheme.conditional_discount')
+                                                    Forms\Components\TextInput::make('contact_data.order.payment_scheme.conditional_discount')
                                                         ->label('Conditional Discount')
                                                         ->numeric()
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.promo_code')
+                                                    Forms\Components\TextInput::make('contact_data.order.promo_code')
                                                         ->label('Promo Code')
                                                         ->maxLength(255)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.payment_scheme.net_total_contract_price')
+                                                    Forms\Components\TextInput::make('contact_data.order.payment_scheme.net_total_contract_price')
                                                         ->label('NTCP')
                                                         ->numeric()
-                                                        ->hint(fn (Get $get ): string =>'TCP: '.$get('order.payment_scheme.total_contract_price'))
+                                                        ->hint(fn (Get $get ): string =>'TCP: '.$get('contact_data.order.payment_scheme.total_contract_price'))
                                                         ->columnSpan(3),
                                                 ])
                                                 ->columns(12)
                                                 ->columnSpanFull(),
-                                            Forms\Components\Select::make('order.loan_term')
+                                            Forms\Components\Select::make('contact_data.contact_data.order.loan_term')
                                                 ->label('Loan Term')
                                                 ->options(fn()=>LoanTermOptions::getOptions())
                                                 ->default(0)
                                                 ->afterStateUpdated(function(Set $set, Get $get, String $state = null, Contact $record){
-                                                    $set('order.loan_period_months', $state);
-                                                    $set('order.hdmf.input.LOAN_PERIOD_YEARS', LoanTermOptions::getDataByMonthsTerm($state)['loanable_years']);
+                                                    $set('contact_data.order.loan_period_months', $state);
+                                                    $set('contact_data.order.hdmf.input.LOAN_PERIOD_YEARS', LoanTermOptions::getDataByMonthsTerm($state)['loanable_years']);
                                                     $option = LoanTermOptions::getDataByMonthsTerm($state);
-                                                    $set('order.term_1', $option['term_1']);
-                                                    $set('order.term_2', $option['term_2']);
-                                                    $set('order.term_3', $option['term_3']);
+                                                    $set('contact_data.order.term_1', $option['term_1']);
+                                                    $set('contact_data.order.term_2', $option['term_2']);
+                                                    $set('contact_data.order.term_3', $option['term_3']);
                                                 })
                                                 ->live()
                                                 ->native(false)
                                                 ->helperText(fn($state)=>'equivalent to '.(($state != null && !empty(LoanTermOptions::getDataByMonthsTerm($state))) ? LoanTermOptions::getDataByMonthsTerm($state)['loanable_years'] : ' - ').' Years')
                                                 ->hint('In Months')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.loan_interest_rate')
+                                            Forms\Components\TextInput::make('contact_data.order.loan_interest_rate')
                                                 ->label('Loan Interest Rate (%)')
                                                 ->numeric()
                                                 ->columnSpan(3),
-                                            Forms\Components\DatePicker::make('order.reservation_date')
+                                            Forms\Components\DatePicker::make('contact_data.order.reservation_date')
                                                 ->native(false)
                                                 ->label('Reservation Date')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.payment_scheme.scheme')
+                                            Forms\Components\TextInput::make('contact_data.order.payment_scheme.scheme')
                                                 ->label('Payment Scheme')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.payment_scheme.method')
+                                            Forms\Components\TextInput::make('contact_data.order.payment_scheme.method')
                                                 ->label('Payment Method')
                                                 ->columnSpan(3),
-                                            Forms\Components\Select::make('order.repricing_period')
+                                            Forms\Components\Select::make('contact_data.order.repricing_period')
                                                 ->label('Repricing Period')
                                                 ->hint('If End User')
                                                 ->default(3)
@@ -1186,16 +1187,16 @@ class ContractResource extends Resource
                                                 ->collapsed(true)
                                                 ->schema([
                                                     //                                                Downpayment Equity Start
-                                                    Forms\Components\TextInput::make('order.equity_1_amount')
+                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_amount')
                                                         ->label('Amount')
                                                         ->afterStateUpdated(function(Set $set, Get $get, String $state = null, Contact $record){
-                                                            $ntcp = $get('order.payment_scheme.net_total_contract_price');
-                                                            $set('order.loan_value_after_downpayment', ($ntcp - $state));
-                                                            $set('order.equity_1_percentage_rate',  number_format($state / $ntcp * 100, 2, '.', ''));
-                                                            if($get('order.equity_1_terms')){
-                                                                $set('order.equity_1_monthly_payment', number_format(($state / ($get('order.equity_1_terms') ?? 0)), 2, '.', ''));
+                                                            $ntcp = $get('contact_data.order.payment_scheme.net_total_contract_price');
+                                                            $set('contact_data.order.loan_value_after_downpayment', ($ntcp - $state));
+                                                            $set('contact_data.order.equity_1_percentage_rate',  number_format($state / $ntcp * 100, 2, '.', ''));
+                                                            if($get('contact_data.order.equity_1_terms')){
+                                                                $set('contact_data.order.equity_1_monthly_payment', number_format(($state / ($get('contact_data.order.equity_1_terms') ?? 0)), 2, '.', ''));
                                                             }else{
-                                                                $set('order.equity_1_monthly_payment', $get('order.equity_1_amount'));
+                                                                $set('contact_data.order.equity_1_monthly_payment', $get('order.equity_1_amount'));
                                                             }
                                                         })
                                                         ->numeric()
@@ -1203,39 +1204,39 @@ class ContractResource extends Resource
                                                         ->default(0)
                                                         ->minValue(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.equity_1_percentage_rate')
+                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_percentage_rate')
                                                         ->label('Percentage Rate (%)')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->disabled()
                                                         ->minValue(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.equity_1_interest_rate')
+                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_interest_rate')
                                                         ->label('Interest Rate')
                                                         ->numeric()
                                                         ->disabled()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.equity_1_terms')
+                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_terms')
                                                         ->label('Terms')
                                                         ->numeric()
                                                         ->afterStateUpdated(function(Set $set, Get $get, String $state = null, Contact $record){
                                                             if($state){
-                                                                $set('order.equity_1_monthly_payment', number_format((($get('order.equity_1_amount') ?? 0) / ($state ?? 0)), 2, '.', ''));
+                                                                $set('contact_data.order.equity_1_monthly_payment', number_format((($get('order.equity_1_amount') ?? 0) / ($state ?? 0)), 2, '.', ''));
                                                             }else{
-                                                                $set('order.equity_1_monthly_payment', ($get('order.equity_1_amount')));
+                                                                $set('contact_data.order.equity_1_monthly_payment', ($get('contact_data.order.equity_1_amount')));
                                                             }
                                                         })
                                                         ->live(onBlur: true)
                                                         ->hint('In Months')
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.equity_1_monthly_payment')
+                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_monthly_payment')
                                                         ->label('Monthly Payment')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.loan_value_after_downpayment')
+                                                    Forms\Components\TextInput::make('contact_data.order.loan_value_after_downpayment')
                                                         ->label('Loan Value After Downpayment')
                                                         ->numeric()
                                                         ->default(0)
@@ -1252,32 +1253,32 @@ class ContractResource extends Resource
                                                 ->collapsed(true)
                                                 ->schema([
 //                                                      BP Amount Start
-                                                    Forms\Components\TextInput::make('order.bp_1_amount')
+                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_amount')
                                                         ->label('Loan BP Amount')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.bp_1_percentage_rate')
+                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_percentage_rate')
                                                         ->label('Loan BP Percentage Rate')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.bp_1_interest_rate')
+                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_interest_rate')
                                                         ->label('Loan BP Interest Rate')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.bp_1_terms')
+                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_terms')
                                                         ->label('Loan BP Terms')
                                                         ->numeric()
                                                         ->default(30)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('order.bp_1_monthly_payment')
+                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_monthly_payment')
                                                         ->label('Loan BP Monthly Payment')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\DatePicker::make('order.bp_1_effective_date')
+                                                    Forms\Components\DatePicker::make('contact_data.order.bp_1_effective_date')
                                                         ->label('Loan BP Effective Date')
                                                         ->native(false)
                                                         ->columnSpan(3),
@@ -1289,7 +1290,7 @@ class ContractResource extends Resource
                                         ->columns(12)
                                         ->columnSpanFull(),
                                     //Transaction End
-                                    Forms\Components\Textarea::make('order.technical_description')
+                                    Forms\Components\Textarea::make('contact_data.order.technical_description')
                                         ->hintAction(Forms\Components\Actions\Action::make('Get Technical Description from MFiles')
                                             ->label('Get Technical Description from MFiles')
                                             ->icon('heroicon-m-clipboard')
@@ -1355,7 +1356,7 @@ class ContractResource extends Resource
                                         ->collapsible(true)
                                         ->collapsed()
                                         ->schema([
-                                            Forms\Components\Repeater::make('order.payment_scheme.fees')
+                                            Forms\Components\Repeater::make('contact_data.order.payment_scheme.fees')
                                                 ->collapsible(true)
                                                 ->collapsed()
                                                 ->label('Fees')
@@ -1511,12 +1512,12 @@ class ContractResource extends Resource
                                         ->schema([
                                             Forms\Components\Fieldset::make('Inputs')
                                                 ->schema([
-                                                    Forms\Components\TextInput::make('order.hdmf.input.TITLE')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.TITLE')
                                                         ->label('Title')
                                                         ->inlineLabel(true)
                                                         ->default('EVALUATION SHEET  V1.0.2')
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.GUIDELINE')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.GUIDELINE')
                                                         ->label('Guideline')
                                                         ->options([
                                                             '396/349' => '396/349',
@@ -1525,7 +1526,7 @@ class ContractResource extends Resource
                                                         ->native(false)
                                                         ->inlineLabel(true)
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.PROGRAM')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.PROGRAM')
                                                         ->label('Program')
                                                         ->options([
                                                             'CTS' => 'CTS',
@@ -1538,46 +1539,46 @@ class ContractResource extends Resource
                                                         ->inlineLabel(true)
                                                         ->native(false)
                                                         ->columnSpan(1),
-                                                    Forms\Components\DatePicker::make('order.hdmf.input.APPLICATION_DATE')
+                                                    Forms\Components\DatePicker::make('contact_data.order.hdmf.input.APPLICATION_DATE')
                                                         ->label('Application Date')
                                                         ->native(false)
                                                         ->inlineLabel(true)
-                                                        ->formatStateUsing(fn(Get $get)=>($get('order.hdmf.input.APPLICATION_DATE')) ? $get('order.hdmf.input.APPLICATION_DATE') : Carbon::now()->format('Y-m-d'))
+                                                        ->formatStateUsing(fn(Get $get)=>($get('contact_data.order.hdmf.input.APPLICATION_DATE')) ? $get('contact_data.order.hdmf.input.APPLICATION_DATE') : Carbon::now()->format('Y-m-d'))
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.PRINCIPAL_BORROWER')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.PRINCIPAL_BORROWER')
                                                         ->label('Principal Borrower')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.COBORROWER_1')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.COBORROWER_1')
                                                         ->label('Co-Borrower 1')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.COBORROWER_2')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.COBORROWER_2')
                                                         ->label('Co-Borrower 2')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\DatePicker::make('order.hdmf.input.BIRTH_DATE')
+                                                    Forms\Components\DatePicker::make('contact_data.order.hdmf.input.BIRTH_DATE')
                                                         ->label('Birth Date')
                                                         ->native(false)
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\DatePicker::make('order.hdmf.input.BIRTH_DATE_COBORROWER_1')
+                                                    Forms\Components\DatePicker::make('contact_data.order.hdmf.input.BIRTH_DATE_COBORROWER_1')
                                                         ->label('Birth Date (Co-Borrower 1)')
                                                         ->native(false)
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\DatePicker::make('order.hdmf.input.BIRTH_DATE_COBORROWER_2')
+                                                    Forms\Components\DatePicker::make('contact_data.order.hdmf.input.BIRTH_DATE_COBORROWER_2')
                                                         ->label('Birth Date (Co-Borrower 2)')
                                                         ->native(false)
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.WORK_AREA')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.WORK_AREA')
                                                         ->label('Work Area')
                                                         ->options([
                                                             'HUC' => 'HUC',
@@ -1586,7 +1587,7 @@ class ContractResource extends Resource
                                                         ->inlineLabel(true)
                                                         ->native(false)
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.EMPLOYMENT')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.EMPLOYMENT')
                                                         ->label('Employment')
                                                         ->options([
                                                             'PRIVATE' => 'PRIVATE',
@@ -1596,7 +1597,7 @@ class ContractResource extends Resource
                                                         ->native(false)
                                                         ->default('PRIVATE')
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.PAY_MODE')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.PAY_MODE')
                                                         ->label('Pay Mode')
                                                         ->options([
                                                             'Salary deduction' => 'Salary deduction',
@@ -1605,7 +1606,7 @@ class ContractResource extends Resource
                                                         ->inlineLabel(true)
                                                         ->native(false)
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.TYPE_OF_DEVELOPMENT')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.TYPE_OF_DEVELOPMENT')
                                                         ->label('Type of Development')
                                                         ->options([
                                                             'PD 957' => 'PD 957',
@@ -1614,7 +1615,7 @@ class ContractResource extends Resource
                                                         ->inlineLabel(true)
                                                         ->native(false)
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.PROJECT_TYPE')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.PROJECT_TYPE')
                                                         ->label('Project Type')
                                                         ->options([
                                                             'ECONOMIC' => 'ECONOMIC',
@@ -1623,14 +1624,14 @@ class ContractResource extends Resource
                                                         ->inlineLabel(true)
                                                         ->afterStateUpdated(function(Set $set, $state){
                                                             if($state == 'ECONOMIC'){
-                                                                $set('order.hdmf.input.PRICE_CEILING', config('property.market.ceiling.horizontal.economic'));
+                                                                $set('contact_data.order.hdmf.input.PRICE_CEILING', config('property.market.ceiling.horizontal.economic'));
                                                             }else{
-                                                                $set('order.hdmf.input.PRICE_CEILING', config('property.market.ceiling.horizontal.socialized'));
+                                                                $set('contact_data.order.hdmf.input.PRICE_CEILING', config('property.market.ceiling.horizontal.socialized'));
                                                             }
                                                         })
                                                         ->native(false)
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.HOUSING_TYPE')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.HOUSING_TYPE')
                                                         ->label('Housing Type')
                                                         ->options([
                                                             'CONDOMINIUM' => 'CONDOMINIUM',
@@ -1644,32 +1645,32 @@ class ContractResource extends Resource
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.TOTAL_FLOOR_NUMBER')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.TOTAL_FLOOR_NUMBER')
                                                         ->label('Total Floor Number')
                                                         ->inlineLabel(true)
                                                         ->default('2')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.TOTAL_FLOOR_AREA')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.TOTAL_FLOOR_AREA')
                                                         ->label('Total Floor Area')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.PRICE_CEILING')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.PRICE_CEILING')
                                                         ->label('Price Ceiling')
                                                         ->inlineLabel(true)
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.LTS_NUMBER')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.LTS_NUMBER')
                                                         ->label('LTS Number')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\DatePicker::make('order.hdmf.input.LTS_DATE')
+                                                    Forms\Components\DatePicker::make('contact_data.order.hdmf.input.LTS_DATE')
                                                         ->label('LTS Date')
                                                         ->native(false)
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.SELLING_PRICE')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.SELLING_PRICE')
                                                         ->label('Selling Price')
                                                         ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Equal to TCP')
                                                         ->afterStateUpdated(function(Set $set, $state){
@@ -1680,17 +1681,17 @@ class ContractResource extends Resource
                                                         ->inlineLabel(true)
                                                         ->default(0)
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.APPRAISED_VALUE_LOT')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.APPRAISED_VALUE_LOT')
                                                         ->label('Appraised Value Lot')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.APPRAISED_VALUE_HOUSE')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.APPRAISED_VALUE_HOUSE')
                                                         ->label('Appraised Value House')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.DESIRED_LOAN')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.DESIRED_LOAN')
                                                         ->label('Desired Loan')
                                                         ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: TCP - Discount Rate and Equity')
                                                         ->afterStateUpdated(function(Set $set, $state){
@@ -1700,22 +1701,22 @@ class ContractResource extends Resource
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.GROSS_INCOME_PRINCIPAL')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.GROSS_INCOME_PRINCIPAL')
                                                         ->label('Gross Income Principal')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.GROSS_INCOME_COBORROWER_1')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.GROSS_INCOME_COBORROWER_1')
                                                         ->label('Gross Income Co-Borrower 1')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.GROSS_INCOME_COBORROWER_2')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.GROSS_INCOME_COBORROWER_2')
                                                         ->label('Gross Income Co-Borrower 2')
                                                         ->inlineLabel(true)
                                                         ->default('')
                                                         ->columnSpan(1),
-                                                    Forms\Components\Select::make('order.hdmf.input.REPRICING_PERIOD')
+                                                    Forms\Components\Select::make('contact_data.order.hdmf.input.REPRICING_PERIOD')
                                                         ->label('Repricing Period')
                                                         ->options([
                                                             '1 yr' => '1 yr',
@@ -1729,7 +1730,7 @@ class ContractResource extends Resource
                                                         ])
                                                         ->inlineLabel(true)
                                                         ->columnSpan(1),
-                                                    Forms\Components\TextInput::make('order.hdmf.input.LOAN_PERIOD_YEARS')
+                                                    Forms\Components\TextInput::make('contact_data.order.hdmf.input.LOAN_PERIOD_YEARS')
                                                         ->label('Loan Period Year')
                                                         ->numeric()
                                                         ->rules(['max:30'])
@@ -2165,29 +2166,29 @@ class ContractResource extends Resource
                                     Forms\Components\Fieldset::make('Evaluation')
                                         ->schema([
 
-                                            Forms\Components\TextInput::make('order.net_loan_proceeds')
+                                            Forms\Components\TextInput::make('contact_data.order.net_loan_proceeds')
                                                 ->label('Net Loan Proceeds')
                                                 ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Loan Base - Deduction from Loan Proceeds')
                                                 ->default(0)
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.disclosure_statement_on_loan_transaction_total')
+                                            Forms\Components\TextInput::make('contact_data.order.disclosure_statement_on_loan_transaction_total')
                                                 ->label('Deduction from Loan Proceeds')
                                                 ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: MRISRI Docstamp Total + Non Life Insurance + Retention Fee + 5,000 + 2,000 + 1,000')
                                                 ->default(0)
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.interest')
+                                            Forms\Components\TextInput::make('contact_data.order.interest')
                                                 ->label('Interest')
                                                 ->default(0)
                                                 ->columnSpan(3),
-                                            Forms\Components\Select::make('order.loan_period_months')
+                                            Forms\Components\Select::make('contact_data.order.loan_period_months')
                                                 ->label('Loan Period in Months')
-                                                ->afterStateUpdated(function(Set $set, Get $get, String $state = null, Contact $record){
-                                                    $set('order.loan_term', $state);
-                                                    $set('order.hdmf.input.LOAN_PERIOD_YEARS', LoanTermOptions::getDataByMonthsTerm($state)['loanable_years']);
+                                                ->afterStateUpdated(function(Set $set, Get $get, String $state = null){
+                                                    $set('contact_data.order.loan_term', $state);
+                                                    $set('contact_data.order.hdmf.input.LOAN_PERIOD_YEARS', LoanTermOptions::getDataByMonthsTerm($state)['loanable_years']);
                                                     $option = LoanTermOptions::getDataByMonthsTerm($state);
-                                                    $set('order.term_1', $option['term_1']);
-                                                    $set('order.term_2', $option['term_2']);
-                                                    $set('order.term_3', $option['term_3']);
+                                                    $set('contact_data.order.term_1', $option['term_1']);
+                                                    $set('contact_data.order.term_2', $option['term_2']);
+                                                    $set('contact_data.order.term_3', $option['term_3']);
                                                 })
                                                 ->helperText(fn($state)=>'equivalent to '.(($state != null && !empty(LoanTermOptions::getDataByMonthsTerm($state))) ? LoanTermOptions::getDataByMonthsTerm($state)['loanable_years'] : ' - ').' Years')
                                                 ->options(fn()=>LoanTermOptions::getOptions())
@@ -2195,111 +2196,111 @@ class ContractResource extends Resource
                                                 ->live()
                                                 ->native(false)
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.comencement_period')
+                                            Forms\Components\TextInput::make('contact_data.order.comencement_period')
                                                 ->label('Comencement Period')
                                                 ->hint('If Affordable')
                                                 ->default(0)
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.repricing_period_affordable')
+                                            Forms\Components\TextInput::make('contact_data.order.repricing_period_affordable')
                                                 ->label('Repricing Period Affordable')
                                                 ->hint('If Affordable')
                                                 ->default(0)
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.non_life_insurance')
+                                            Forms\Components\TextInput::make('contact_data.order.non_life_insurance')
                                                 ->label('Non Life Insurance')
                                                 ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                 ->numeric()
                                                 ->default(0)
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('order.mrisri_docstamp_total')
+                                            Forms\Components\TextInput::make('contact_data.order.mrisri_docstamp_total')
                                                 ->label('MRISRI Docstamp Total')
                                                 ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                 ->numeric()
                                                 ->default(0)
                                                 ->columnSpan(3),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('order.term_1')
+                                                Forms\Components\TextInput::make('contact_data.order.term_1')
                                                     ->label('Term 1')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Loan Term/Period')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.term_2')
+                                                Forms\Components\TextInput::make('contact_data.order.term_2')
                                                     ->label('Term 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Loan Term/Period')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.term_3')
+                                                Forms\Components\TextInput::make('contact_data.order.term_3')
                                                     ->label('Term 3')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Loan Term/Period')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('order.amort_princ_int1')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_princ_int1')
                                                     ->label('Amort PRINC INT 1')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->numeric()
                                                     ->default(0)
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.amort_princ_int2')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_princ_int2')
                                                     ->label('Amort PRINC INT 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.amort_princ_int3')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_princ_int3')
                                                     ->label('Amort PRINC INT 3')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('order.amort_nonlife1')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_nonlife1')
                                                     ->label('Amort Nonlife 1')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->numeric()
                                                     ->default(0)
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.amort_nonlife2')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_nonlife2')
                                                     ->label('Amort Nonlife 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.amort_nonlife3')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_nonlife3')
                                                     ->label('Amort Nonlife 3')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('order.amort_mrisri1')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_mrisri1')
                                                     ->label('Amort MRISRI 1')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->numeric()
                                                     ->default(0)
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.amort_mrisri2')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_mrisri2')
                                                     ->label('Amort MRISRI 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.amort_mrisri3')
+                                                Forms\Components\TextInput::make('contact_data.order.amort_mrisri3')
                                                     ->label('Amort MRISRI 3')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('order.monthly_amort1')
+                                                Forms\Components\TextInput::make('contact_data.order.monthly_amort1')
                                                     ->label('Monthly Amort 1')
                                                     ->numeric()
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->default(0)
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.monthly_amort2')
+                                                Forms\Components\TextInput::make('contact_data.order.monthly_amort2')
                                                     ->label('Monthly Amort 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('order.monthly_amort3')
+                                                Forms\Components\TextInput::make('contact_data.order.monthly_amort3')
                                                     ->label('Monthly Amort 3')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
-                                            Forms\Components\TextInput::make('order.loan_base')
+                                            Forms\Components\TextInput::make('contact_data.order.loan_base')
                                                 ->label('Loan Base')
                                                 ->numeric()
                                                 ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
@@ -2326,26 +2327,37 @@ class ContractResource extends Resource
                             }),
                         Forms\Components\Tabs\Tab::make('Generated Documents')
                             ->icon('heroicon-m-document-duplicate')
-                            ->schema(function(Get $get){
-
-                                $maped_documents=collect($get('documents'))
-                                    ->map(function($document) {
-                                       return Forms\Components\Section::make($document['name'])
-                                           ->headerActions([
-                                               Forms\Components\Actions\Action::make('download')
-                                               ->icon('heroicon-m-arrow-down-tray')
-                                            ->url(fn () => route('download.pdf', ['url' => $document['url']]), true),
-                                           ])
-                                            ->schema([
-                                                Placeholder::make($document['name'])
-                                                    ->label('')
-                                                    ->content(fn () => new HtmlString(
-                                                        '<iframe src="https://docs.google.com/gview?url=' . urlencode($document['url']) . '&embedded=true" width="100%" height="1200px"></iframe>'
-                                                    )),
-                                            ])->collapsible()->collapsed();
-                                    })->toArray();
-                                return $maped_documents;
-                            }),
+                        ->schema(function(Model $record) {
+                            return [
+                                Section::make()
+                                ->schema([
+                                    Livewire::make(GeneratedDocumentsTable::class, ['record' => $record])
+                                        ->key(Carbon::now()->format('Y-m-d H:i:s'))
+                                        ->columnSpanFull()
+                                        ->lazy(),
+                                ])->columnSpanFull()
+                            ];
+                        }),
+//                            ->schema(function(Get $get){
+//
+//                                $maped_documents=collect($get('documents'))
+//                                    ->map(function($document) {
+//                                       return Forms\Components\Section::make($document['name'])
+//                                           ->headerActions([
+//                                               Forms\Components\Actions\Action::make('download')
+//                                               ->icon('heroicon-m-arrow-down-tray')
+//                                            ->url(fn () => route('download.pdf', ['url' => $document['url']]), true),
+//                                           ])
+//                                            ->schema([
+//                                                Placeholder::make($document['name'])
+//                                                    ->label('')
+//                                                    ->content(fn () => new HtmlString(
+//                                                        '<iframe src="https://docs.google.com/gview?url=' . urlencode($document['url']) . '&embedded=true" width="100%" height="1200px"></iframe>'
+//                                                    )),
+//                                            ])->collapsible()->collapsed();
+//                                    })->toArray();
+//                                return $maped_documents;
+//                            }),
 
                     ])
                     ->columnSpan(3),
