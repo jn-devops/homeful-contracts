@@ -31,7 +31,7 @@ const dashboardButtonAction = () => {
                 <div>
                     <div class="w-full flex items-center justify-center">
                         <img 
-                            :src="usePage().props.data.appLink+'images/successpayment.gif'" alt="Success"
+                            :src="usePage().props.data.appLink+'/images/successpayment.gif'" alt="Success"
                             class="w-48"    
                         >
                     </div>

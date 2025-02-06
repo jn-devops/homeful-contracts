@@ -46,6 +46,8 @@ use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 use stdClass;
 use Carbon\Carbon;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\ViewField;
 
 class ContractResource extends Resource
 {

@@ -5,6 +5,7 @@ import InputTextPromoCodeFormat from '@/Components/Input/InputTextPromoCodeForma
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import axios from "axios";
 
 const form = useForm({
     voucher_code: null,
@@ -13,11 +14,12 @@ const form = useForm({
 
 const totalBill = ref(12070.25);
 const projectName = ref("Agapeya Towns");
-const projectImgLink = ref(usePage().props.data.appLink + 'images/project.png');
+const projectImgLink = ref(usePage().props.data.appLink + '/images/project.png');
 const projectLocation = ref("Calamba Laguna");
 
 const cardPaymentAction = () =>{
     // TODO: For Debit/Credit Card Action
+    submit("cashier");
 }
 const GCashPaymentAction = () =>{
     // TODO: For GCash Action
@@ -29,6 +31,69 @@ const instapayPaymentAction = () =>{
 const formatNumber = (value) => {
   return parseFloat(value).toLocaleString("en-US");
 }
+
+const submit = (paymentMethod,ewallet = null) => {
+    const baseURL = window.location.origin;
+    let postUrl;
+    let data ;
+    // console.log(paymentMethod);
+    if(paymentMethod=="cashier")
+    {
+        data  = JSON.stringify({
+            "referenceCode": "JN-LLB2KL",
+            "amount": 1000,
+            "callbackParam": route('booking.payment.success')
+        });
+        postUrl = `${baseURL}/api/homeful-cashier`
+    }
+
+    else if(paymentMethod=="eWallet")
+    {
+        data = JSON.stringify({
+        "referenceCode": "JN-LLB2KK",
+        "amount": 1000,
+        "wallet": ewallet,
+        "callbackParam": route('booking.payment.success')
+        });
+        postUrl = `${baseURL}/api/homeful-wallet` 
+    }
+    console.log(postUrl);
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: postUrl,
+        headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin':'*'
+        },
+        data : data
+    };
+
+    axios.request(config)
+            .then((response) => {
+                if (paymentMethod === "cashier") {
+                    const cashierUrl = response.data?.data?.cashierUrl;
+                    if (cashierUrl) {
+                        window.location.href = cashierUrl;
+                    } else {
+                        // errorBox.value = response.data.message;
+                        console.log(response.data.message);
+                    }
+                } else if (paymentMethod === "eWallet") {
+                    const payUrl = response.data?.pay_url;
+                    if (payUrl) {
+                        window.location.href = payUrl;
+                    } else {
+                        // errorBox.value = response.data.message;
+                        console.log(response.data.message);
+                    }
+                }
+            })
+            .catch((error) => {
+                // errorBox.value = error.response?.data?.message || 'An unexpected error occurred. Please try again.';
+                console.log(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
+            });
+};
 
 </script>
 <template>
@@ -44,7 +109,7 @@ const formatNumber = (value) => {
                 <h1 class="text-2xl font-extrabold">Pay Home Loan <br> Consultation Fee.</h1>
 
                 <div class="w-full mt-4">
-                    <h5 class="text-gray-600 font-semibold">Desired Project</h5>
+                    <h5 class="text-gray-600 font-semibold md:text-green-400">Desired Project</h5>
                     <div class="w-full bg-[#F8F9FE] p-2 rounded-xl flex flex-row items-center gap-4">
                         <div class="basis-4/12">
                             <img 

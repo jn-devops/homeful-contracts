@@ -2,18 +2,25 @@
 import { usePage } from '@inertiajs/vue3'
 import { ref, watch } from 'vue'
 import ImageSliderDiscoverPage from './ImageSliderDiscoverPage.vue'
+import InputTextVoucherCode from '../Input/InputTextVoucherCode.vue'
+import PrimaryButton from '../Button/PrimaryButton.vue'
 
 const props = defineProps({
     discoverPage: {
         type: Boolean,
         default: false
-    }
+    },
+    voucherCode: {
+        type: String,
+        default: ''
+    },
+    submitEvent: Function,
 })
 
-const imgLink = ref(usePage().props.data.appLink + '/images/PropertyDiscoverImg.png')
 const elanvitalLogo = ref(usePage().props.data.appLink + '/logos/elanvital_logo.png')
+const voucher_code = ref(props.voucherCode)
 
-const emit = defineEmits(['update:discoverPage'])
+const emit = defineEmits(['update:discoverPage', 'update:voucherCode'])
 
 const localDiscoverPage = ref(props.discoverPage)
 
@@ -50,6 +57,10 @@ const currentImgIndex = ref(
 const updateCurrentImg = (newIndex) => {
     currentImg.value = imgList.value[newIndex]
 }
+
+watch(() => voucher_code.value, (newVal) => {
+    emit('update:voucherCode', newVal)
+})  
 
 </script>
 <template>
@@ -122,7 +133,7 @@ const updateCurrentImg = (newIndex) => {
                     <p class="leading-none text-sm pb-5">Its efficient use of space and modern design make Agapeya a compelling choice for individuals or families seeking affordable yet stylish housing solutions.</p>
 
                 </div>
-                <div>
+                <div class="mb-4">
                     <h5 class="text-base font-bold underline mt-5 mb-7">House Features</h5>
                     <div class="border-2 border-gray-700 mt-3 p-3">
                         <div class="grid grid-cols-2 gap-4">
@@ -168,9 +179,17 @@ const updateCurrentImg = (newIndex) => {
                         </div>
                     </div>
                 </div>
-                <button class="text-center w-full p-3 bg-black text-white text-base font-bold shadow-lg mt-4 cursor-pointer">
+                <InputTextVoucherCode 
+                    v-model="voucher_code"
+                    label="Voucher Code"
+                    placeholder="ex. H98K28"
+                    helper-message="If you are a seller's assistant, please enter the seller voucher code. If not, kindly click the Book Now button below."
+                    :max="8"
+                />
+                <div class="mt-5"></div>
+                <PrimaryButton @click="submitEvent">
                     Book Now
-                </button>
+                </PrimaryButton>
             </div>
         </div>
     </div>

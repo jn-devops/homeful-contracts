@@ -60,6 +60,6 @@ Route::resource('contracts', ContractController::class);
 
 Route::get('booking/authentication',[ BookingController::class, 'authentication']);
 Route::get('booking/payment',[ BookingController::class, 'payment']);
-Route::get('booking/complete-form',[ BookingController::class, 'complete_form']);
+Route::get('booking/complete-form',[ BookingController::class, 'complete_form'])->name("booking.payment.success");
 
 require __DIR__.'/auth.php';

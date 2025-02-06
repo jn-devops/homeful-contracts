@@ -56,7 +56,7 @@ const numberFormatter = (num) => new Intl.NumberFormat('en-US', {
 }).format(num);
 
 const showDiscoverPage = (sku) => {
-    console.log(sku)
+    form.sku = sku
     discoverPage.value = true
 }
 
@@ -85,7 +85,6 @@ const updateBirthdate = (newData) => {
 const houseTypes = [
     {name: "House & Lot", id: "1"},
     {name: "Condominium", id: "2"},
-    {name: "House", id: "3"},
 ]
 
 const locations = [
@@ -96,10 +95,10 @@ const locations = [
     {name: "Rizal", id: "5"},
 ]
 
-const notif = ref(true)
-const startRange = props.buttonOptions[Object.keys(props.buttonOptions)[0]]
+const notif = ref(false)
 const keys = Object.keys(props.buttonOptions)
-const lastRange = props.buttonOptions[keys[keys.length - 1]]
+const startRange = props.buttonOptions[keys[keys.length - 1]]
+const lastRange = props.buttonOptions[Object.keys(props.buttonOptions)[0]]
 
 const formatNumber = (num) => {
     if (num >= 1000000) {
@@ -119,7 +118,7 @@ provide('locations', locations)
     <DefaultLayout>
         <div>
             <div class="h-80 w-full relative ">
-                <img :src="usePage().props.data.appLink + 'images/ModelUnitWalkthrough.gif'" alt="GIF" class="object-cover w-full h-full absolute top-0 left-0 -z-10">
+                <img :src="usePage().props.data.appLink + '/images/ModelUnitWalkthrough.gif'" alt="GIF" class="object-cover w-full h-full absolute top-0 left-0 -z-10">
                 <div class="flex items-end h-full">
                     <div class="inset-0 bg-gradient-to-t from-white to-transparent opacity-100 h-40 w-full bottom-0 flex items-end pb-4 ps-4">
                         <div class="flex flex-col">
@@ -185,7 +184,8 @@ provide('locations', locations)
                 <PropertyDiscoverPage 
                     v-if="discoverPage" 
                     v-model:discoverPage="discoverPage"
-
+                    v-model:voucherCode="form.seller_voucher_code"
+                    :submitEvent="submit"
                 />
             </Transition>
             <Transition
