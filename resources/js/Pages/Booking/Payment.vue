@@ -7,6 +7,14 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import axios from "axios";
 
+const props = defineProps({
+    referenceCode: String,
+    totalBill: Number,
+    projectName: String,
+    projectImgLink: String,
+    projectLocation: String,
+})
+
 const form = useForm({
     voucher_code: null,
     promo_code: null,
@@ -109,7 +117,7 @@ const submit = (paymentMethod,ewallet = null) => {
                 <h1 class="text-2xl font-extrabold">Pay Home Loan <br> Consultation Fee.</h1>
 
                 <div class="w-full mt-4">
-                    <h5 class="text-gray-600 font-semibold md:text-green-400">Desired Project</h5>
+                    <h5 class="text-gray-600 font-semibold">Desired Project</h5>
                     <div class="w-full bg-[#F8F9FE] p-2 rounded-xl flex flex-row items-center gap-4">
                         <div class="basis-4/12">
                             <img 

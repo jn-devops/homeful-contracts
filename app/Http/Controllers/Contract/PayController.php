@@ -8,14 +8,22 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Inertia\{Inertia, Response};
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class PayController extends Controller
 {
     public function create(Request $request): Response
     {
-        $reference_code = Arr::get($request->all(), 'reference_code');
+        $referenceCode = Arr::get($request->all(), 'reference_code');
+        $reference = Reference::where('code', $referenceCode)->first();
+        $contract = $reference->getContract();
+        $property = $contract->property;
+        // dd($property);
         $amount = Arr::get($request->all(), 'amount');
-        return Inertia::render('Contract/Pay', compact('reference_code','amount'));
+        $projectName = $property->project->name ?? '';
+        $projectImgLink = $property->product->facade_url ?? '';
+        $projectLocation = $property->project->location ?? '';
+        return Inertia::render('Contract/Pay', compact('referenceCode','amount','projectName', 'projectImgLink','projectLocation'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -29,10 +37,8 @@ class PayController extends Controller
     }
     public function confirmation(Request $request)
     {   
-        $validated = Validator::validate($request->all(), [
-            'reference_code' => ['required', 'string', 'min:4'],
-        ]);
-        $reference_code = Arr::pull($validated, 'reference_code');
-        return Inertia::render('Contract/PaySuccess', compact('reference_code'));
+        // TODO: Create Validation for Request -> reference_code
+        // TODO: Update State to Availed 
+        return Inertia::render('Contract/PaySuccess', ['reference_code' => $request->reference_code]);
     }
 }
