@@ -5,6 +5,7 @@ namespace App\Livewire;
 
 use App\Models\RequirementMatrix;
 use Filament\Forms\Components\FileUpload;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -17,20 +18,27 @@ class RequirementsTable extends Component
     public $requirements=[];
     public $record;
     public $chosenFile;
+    public $currentReq;
 
     #[Validate('max:1024')]
     public $document;
 
     public function mount(Model $record)
     {
-        $requirements = RequirementMatrix::first();
-        $this->requirements = collect(json_decode($requirements->requirements, true))
-        ->sort()
-        ->values();
         $this->record = $record;
         $this->chosenFile = "";
-        $contact = $this->record->customer;
-        // dd($contact->photo4x1WhiteBackground);
+        $requirements = RequirementMatrix::first();
+        $reqs = collect(json_decode($requirements->requirements, true))
+        ->sort()
+        ->values();
+        $this->requirements = $reqs->map(function($requirement) {
+            $uploader_label = $this->getUploaderName($requirement);
+            return [
+                'description' => $requirement,
+                'status' => ($this->record->customer->$uploader_label !== null) ? 'Uploaded' : 'Pending',
+            ];
+        });
+        // dd($this->requirements);
     }
     public function render()
     {
@@ -42,23 +50,138 @@ class RequirementsTable extends Component
         $this->chosenFile = $file_desc;
     }
 
-    public function uploadDoc(){
-        if($this->chosenFile == "4 pcs. of 1x1 Photo with White Background")
+    public function uploadDoc($chosenFile){
+        if($chosenFile)
         {
             $customer = $this->record->customer;
-            $uploader_label = $this->getUploaderName($this->chosenFile);
-            dd($customer->$uploader_label->getUrl());
+            $uploader_label = $this->getUploaderName($chosenFile);
+            try {
+                $customer->$uploader_label = $this->document->temporaryUrl();
+                Notification::make()
+                    ->success()
+                    ->title('Saved successfully')
+                    ->send();
+            } catch (\Exception $e) {
+                Notification::make()
+                    ->danger()
+                    ->title('File Upload Unsuccessful')
+                    ->body($e->getMessage())
+                    ->send();
+            }
+           
         }
     }
 
     public function viewImage($name){
-        $this->dispatch('openNewTab', 'https://www.google.com');
+        $customer = $this->record->customer;
+        $uploader_label = $this->getUploaderName($name);
+        try {
+            if ($customer->$uploader_label !== null) {
+                $url = $customer->$uploader_label->getUrl();
+                $this->dispatch('openNewTab', $url);
+            } else {
+                throw new \Exception('There is no file found');
+            }
+        } catch (\Exception $e) {
+            Notification::make()
+                ->danger()
+                ->title('Error Encountered')
+                ->body($e->getMessage())
+                ->send();
+        }
     }
 
     public function getUploaderName($name){
         switch ($name) {
-            case '4 pcs. of 1x1 Photo with White Background':
+            case 'Government ID 1 Image':
+                return 'governmentId1Image';
+                break;
+            case 'Government ID 2 Image':
+                return 'governmentId2Image';
+                break;
+            case 'Certificate of Employment Document':
+                return 'certificateOfEmploymentDocument';
+                break;
+            case 'One Month Latest Payslip Document':
+                return 'oneMonthLatestPayslipDocument';
+                break;
+            case 'ESAV Document':
+                return 'esavDocument';
+                break;
+            case 'Birth Certificate Document':
+                return 'birthCertificateDocument';
+                break;
+            case 'Photo Image':
                 return 'photoImage';
+                break;
+            case 'Proof of Billing Address Document':
+                return 'proofOfBillingAddressDocument';
+                break;
+            case 'Letter of Consent Employer Document':
+                return 'letterOfConsentEmployerDocument';
+                break;
+            case 'Three Months Certified Payslips Document':
+                return 'threeMonthsCertifiedPayslipsDocument';
+                break;
+            case 'Employment Contract Document':
+                return 'employmentContractDocument';
+                break;
+            case 'OFW Employment Certificate Document':
+                return 'ofwEmploymentCertificateDocument';
+                break;
+            case 'Passport With Visa Image':
+                return 'passportWithVisaImage';
+                break;
+            case 'Working Permit Document':
+                return 'workingPermitDocument';
+                break;
+            case 'Notarized SPA Document':
+                return 'notarizedSpaDocument';
+                break;
+            case 'Authorized Representative Info Sheet Document':
+                return 'authorizedRepInfoSheetDocument';
+                break;
+            case 'Valid ID of AIF Image':
+                return 'validIdAifImage';
+                break;
+            case 'Working Permit Card Document':
+                return 'workingPermitCardDocument';
+                break;
+            case 'ITR BIR 1701 Document':
+                return 'itrBir1701Document';
+                break;
+            case 'Audited Financial Statement Document':
+                return 'auditedFinancialStatementDocument';
+                break;
+            case 'Official Receipt Tax Payment Document':
+                return 'officialReceiptTaxPaymentDocument';
+                break;
+            case 'Business Mayor\'s Permit Document':
+                return 'businessMayorsPermitDocument';
+                break;
+            case 'DTI Business Registration Document':
+                return 'dtiBusinessRegistrationDocument';
+                break;
+            case 'Sketch of Business Location Document':
+                return 'sketchOfBusinessLocationDocument';
+                break;
+            case 'Letter of Consent Credit Background Investigation Document':
+                return 'letterOfConsentCreditBackgroundInvestigationDocument';
+                break;
+            case 'Marriage Certificate Document':
+                return 'marriageCertificateDocument';
+                break;
+            case 'Government ID of Spouse Image':
+                return 'governmentIdOfSpouseImage';
+                break;
+            case 'Court Decision Annulment Document':
+                return 'courtDecisionAnnulmentDocument';
+                break;
+            case 'Marraige Contract Document':
+                return 'marraigeContractDocument';
+                break;
+            case 'Death Certificate Document':
+                return 'deathCertificateDocument';
                 break;
         }
     }

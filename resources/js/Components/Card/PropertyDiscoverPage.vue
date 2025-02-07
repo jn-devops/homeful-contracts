@@ -184,7 +184,7 @@ watch(() => voucher_code.value, (newVal) => {
                     label="Voucher Code"
                     placeholder="ex. H98K28"
                     helper-message="If you are a seller's assistant, please enter the seller voucher code. If not, kindly click the Book Now button below."
-                    :max="8"
+                    :max="10"
                 />
                 <div class="mt-5"></div>
                 <PrimaryButton @click="submitEvent">
