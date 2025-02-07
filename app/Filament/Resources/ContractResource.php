@@ -2333,8 +2333,8 @@ class ContractResource extends Resource
                                 ->schema([
                                     Livewire::make(GeneratedDocumentsTable::class, ['record' => $record])
                                         ->key(Carbon::now()->format('Y-m-d H:i:s'))
-                                        ->columnSpanFull()
-                                        ->lazy(),
+                                        ->lazy()
+                                        ->columnSpanFull(),
                                 ])->columnSpanFull()
                             ];
                         }),
