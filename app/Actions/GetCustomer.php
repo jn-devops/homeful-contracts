@@ -16,7 +16,8 @@ class GetCustomer
      */
     public function handle(array $attribs): mixed
     {
-        $route = __(config('homeful-contracts.end-points.customer'), $attribs);
+        $validated = validator($attribs, ['contact_reference_code' => ['required', 'string']])->validate();
+        $route = __(config('homeful-contracts.end-points.customer'), $validated);
         $response = Http::acceptJson()->get($route);
 
         return $response->ok() ? $response->json('contact') : false;

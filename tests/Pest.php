@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Config;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -41,7 +43,8 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function getHomefulId()
 {
-    // ..
+    return config('homeful-contracts.test_homeful-id');
 }
+

@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Exceptions\UpdateContractContactException;
 use Homeful\Contacts\Classes\ContactMetaData;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\Contracts\Models\Contract;
@@ -10,15 +11,34 @@ class UpdateContractContact
 {
     use AsAction;
 
-    public function handle(Contract $contract, string $contact_reference_code): ContactMetaData
+    /**
+     * @throws UpdateContractContactException
+     */
+    public function handle(Contract $contract, string $contact_reference_code): ?Contract
     {
-        //get customer from contact reference code
-        $metadata = GetCustomer::run(compact('contact_reference_code'));
+        try {
+            //retrieve contact metadata from contacts server
+            $contact_metadata = ContactMetaData::from(GetCustomer::run(compact('contact_reference_code')));
+            //assign contact metadata to contract contact json attribute
+            $contract->contact = $contact_metadata;
 
-        //assign metadata to contract contact json attribute
-        $contract->contact = $metadata;
-        $contract->save();
+            //associate contact to contract customer directly, no need to instantiate customer
+            $contract->forceFill([
+                'contact_id' => $contact_metadata->id
+            ]);
+            $contract->save();
 
-        return $contract->contact;
+        } catch (\Exception $exception) {
+            throw new UpdateContractContactException(
+                $contact_reference_code,
+                'An error occurred while updating the contact for the contract.',
+                $exception->getCode(),
+                $exception
+            );
+        }
+
+        $contract->refresh();
+
+        return $contract;
     }
 }
