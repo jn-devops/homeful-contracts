@@ -6,6 +6,7 @@ namespace App\Livewire;
 use App\Models\RequirementMatrix;
 use Filament\Forms\Components\FileUpload;
 use Filament\Notifications\Notification;
+use Homeful\Contacts\Models\Customer as Contact;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -14,7 +15,7 @@ use Livewire\Attributes\Validate;
 class RequirementsTable extends Component
 {
     use WithFileUploads;
-    
+
     public $requirements=[];
     public $record;
     public $chosenFile;
@@ -26,8 +27,11 @@ class RequirementsTable extends Component
     public function mount(Model $record)
     {
         $this->record = $record;
+        $contact = Contact::where('id', $record->contact_id)->first()->getData()->toArray();
+        $employment_status = collect($contact['employment'])->firstWhere('type','Primary')['employment_type'];
         $this->chosenFile = "";
         $requirements = RequirementMatrix::first();
+    $requirements = RequirementMatrix::where('civil_status',$contact['civil_status'])->where('employment_status',$employment_status)->first();
         $reqs = collect(json_decode($requirements->requirements, true))
         ->sort()
         ->values();
@@ -38,7 +42,6 @@ class RequirementsTable extends Component
                 'status' => ($this->record->customer->$uploader_label !== null) ? 'Uploaded' : 'Pending',
             ];
         });
-        // dd($this->requirements);
     }
     public function render()
     {
@@ -68,7 +71,7 @@ class RequirementsTable extends Component
                     ->body($e->getMessage())
                     ->send();
             }
-           
+
         }
     }
 
