@@ -7,29 +7,20 @@ import HomeMatch from '@/Components/Match/HomeMatch.vue';
 import SuccessToast from '@/Components/Toast/SuccessToast.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { provide, ref, watch } from "vue";
+import { onMounted, provide, ref, watch } from "vue";
 
 const props = defineProps({
     buttonOptions: {
         type: [Object, Boolean],
         default: [],
+    },
+    contactData: {
+        type: Object,
+        default: [],
     }
 });
 
 const reference = ref({});
-
-watch (
-    () => usePage().props.flash.event,
-    (event) => {
-        switch (event?.name) {
-            case 'reference':
-                console.log('event:', event?.data);
-                reference.value = event?.data;
-                break;
-        }
-    },
-    { immediate: true }
-);
 
 const form = useForm({
     reference_code: reference.value,
@@ -55,9 +46,12 @@ const numberFormatter = (num) => new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
 }).format(num);
 
+const propertyDetail = ref(null)
+
 const showDiscoverPage = (sku) => {
     form.sku = sku
     discoverPage.value = true
+    propertyDetail.value = props.buttonOptions[sku]
 }
 
 const homeMatch = ref(false)
@@ -111,6 +105,19 @@ const formatNumber = (num) => {
 
 provide('houseTypes', houseTypes)
 provide('locations', locations)
+
+watch (
+    () => usePage().props.flash.event,
+    (event) => {
+        switch (event?.name) {
+            case 'reference':
+                console.log('event:', event?.data);
+                reference.value = event?.data;
+                break;
+        }
+    },
+    { immediate: true }
+);
 
 </script>
 
@@ -185,6 +192,8 @@ provide('locations', locations)
                     v-if="discoverPage" 
                     v-model:discoverPage="discoverPage"
                     v-model:voucherCode="form.seller_voucher_code"
+                    :property-detail="propertyDetail"
+                    :contact-data="contactData"
                     :submitEvent="submit"
                 />
             </Transition>
