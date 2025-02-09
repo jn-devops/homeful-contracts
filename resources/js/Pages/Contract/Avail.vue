@@ -29,6 +29,7 @@ const form = useForm({
 });
 
 const submit = () => {
+    form.reference_code = reference.value;
     form.post(route('avail.store'), {
         onFinish: () => form.reset(),
     });
