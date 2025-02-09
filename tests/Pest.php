@@ -48,3 +48,8 @@ function getHomefulId()
     return config('homeful-contracts.test_homeful-id');
 }
 
+function getProductSKU()
+{
+    return config('homeful-contracts.test_product-sku');
+}
+

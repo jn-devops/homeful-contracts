@@ -9,6 +9,7 @@ use App\Actions\GetSellerCommissionCode;
 use Homeful\Contracts\States\Availed;
 use App\Actions\GetInventory;
 use Illuminate\Support\Arr;
+use App\Actions\UpdateContractProperty;
 
 class Avail
 {
@@ -25,28 +26,34 @@ class Avail
         /** extract sku (in associative array) from attribs */
         $product_params = Arr::only($validated, 'sku');
 
-        /** retrieve property attributes from inventory */
-        if ($property_attributes = GetInventory::run($product_params)) {
+        $contract = app(UpdateContractProperty::class)->run($reference, $validated);
+        if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code'))
+            $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
 
-            /** extract the contract model from reference */
-            if ($contract = $reference->getContract()) {
+        $contract->state->transitionTo(Availed::class, $reference);
 
-                /** update the contract property attribute */
-                $contract->property = $property_attributes;
-
-                /** update the contract seller_commission_code attribute if otp is valid */
-                if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code'))
-                    $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
-#
-                $contract->save();
-
-                /** update the state to Availed */
-                $contract->state->transitionTo(Availed::class, $reference);
-
-                /** prepare the refresh model for a return */
-                $reference->refresh();
-            }
-        }
+//        /** retrieve property attributes from inventory */
+//        if ($property_attributes = GetInventory::run($product_params)) {
+//
+//            /** extract the contract model from reference */
+//            if ($contract = $reference->getContract()) {
+//
+//                /** update the contract property attribute */
+//                $contract->property = $property_attributes;
+//
+//                /** update the contract seller_commission_code attribute if otp is valid */
+//                if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code'))
+//                    $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
+//#
+//                $contract->save();
+//
+//                /** update the state to Availed */
+//                $contract->state->transitionTo(Availed::class, $reference);
+//
+//                /** prepare the refresh model for a return */
+//                $reference->refresh();
+//            }
+//        }
 
         return $reference;
     }
