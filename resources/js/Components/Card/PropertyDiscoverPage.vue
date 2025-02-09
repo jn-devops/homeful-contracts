@@ -1,6 +1,6 @@
 <script setup>
 import { usePage } from '@inertiajs/vue3'
-import { ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import ImageSliderDiscoverPage from './ImageSliderDiscoverPage.vue'
 import InputTextVoucherCode from '../Input/InputTextVoucherCode.vue'
 import PrimaryButton from '../Button/PrimaryButton.vue'
@@ -14,6 +14,14 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    propertyDetail: {
+        type: Object,
+        default: null
+    },
+    contactData: {
+        type: Object,
+        default: []
+    },
     submitEvent: Function,
 })
 
@@ -24,9 +32,18 @@ const emit = defineEmits(['update:discoverPage', 'update:voucherCode'])
 
 const localDiscoverPage = ref(props.discoverPage)
 
-watch(() => props.discoverPage, (newVal) => {
-    localDiscoverPage.value = newVal
-})
+const age = computed(() => {
+  const birthDate = new Date(props.contactData.date_of_birth);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+});
 
 const toggleDiscoverPage = () => {
     localDiscoverPage.value = !localDiscoverPage.value
@@ -58,9 +75,26 @@ const updateCurrentImg = (newIndex) => {
     currentImg.value = imgList.value[newIndex]
 }
 
+const numberFormatter = (num) => new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+}).format(num);
+
+const location = props.propertyDetail.details['location']
+const brand = props.propertyDetail.details['brand']
+const category = props.propertyDetail.details['category']
+
+onMounted(() => {
+    
+})
+
 watch(() => voucher_code.value, (newVal) => {
     emit('update:voucherCode', newVal)
 })  
+
+watch(() => props.discoverPage, (newVal) => {
+    localDiscoverPage.value = newVal
+})
 
 </script>
 <template>
@@ -79,13 +113,16 @@ watch(() => voucher_code.value, (newVal) => {
             <ImageSliderDiscoverPage
                 :imgList="imgList"
                 @updateCurrentImg="updateCurrentImg"
+                :brand="brand"
+                :category="category"
+                :location="location"
                 :currentImgIndex="currentImgIndex"
             />
             <div class="p-6">
                 <div class="flex gap-4">
                     <div>
                         <p class="text-gray-500 text-xs">Starts at</p>
-                        <p class="font-extrabold text-xl">₱2,850,000</p>
+                        <p class="font-extrabold text-xl">₱{{ (propertyDetail) ? numberFormatter(propertyDetail.details['price']) : '' }}</p>
                     </div>
                     <div>
                         <p class="text-gray-500 text-xs">Total Sold</p>
@@ -104,25 +141,25 @@ watch(() => voucher_code.value, (newVal) => {
                             <svg class="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
                             </svg>
-                            Gross Monthly Income: P100,000
+                            Gross Monthly Income: ₱ {{ numberFormatter(contactData.monthly_gross_income) }}
                         </li>
                         <li class="flex items-center gap-2 my-2 text-gray-600">
                             <svg class="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
                             </svg>
-                            Age: 30 years old
+                            Age: {{ age }} years old
                         </li>
                         <li class="flex items-center gap-2 my-2 text-gray-600">
                             <svg class="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
                             </svg>
-                            Monthly Amortization: ₱17,144 
+                            Monthly Amortization: ₱ {{ numberFormatter(JSON.parse(props.propertyDetail.description).loan_amortization) }}
                         </li>
                         <li class="flex items-center gap-2 my-2 text-gray-600">
                             <svg class="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
                             </svg>
-                            Years to Pay: 30 years 
+                            Years to Pay: {{ JSON.parse(props.propertyDetail.description).bp_term }} years 
                         </li>
                     </ul>
                 </div>
@@ -154,7 +191,7 @@ watch(() => voucher_code.value, (newVal) => {
                                 <span>House/Floor Area:</span>
                             </div>
                             <div class="text-sm font-bold">
-                                50 sqm
+                                {{propertyDetail.details.floor_area}} sqm
                             </div>
                             <div class="flex gap-2 text-sm items-center">
                                 <svg class="size-4" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -163,7 +200,7 @@ watch(() => voucher_code.value, (newVal) => {
                                 <span>Lot Area:</span>
                             </div>
                             <div class="text-sm font-bold">
-                                70 sqm
+                                {{propertyDetail.details.lot}} sqm
                             </div>
                             <div class="flex gap-2 text-sm items-center">
                                 <svg class="size-4" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">

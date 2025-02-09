@@ -26,8 +26,11 @@ class AvailController extends Controller
 
     public function create(Request $request): Response
     {
+        $reference_code = $request->get('reference');
+        $reference = Reference::where('code', $reference_code)->first();
         return Inertia::render('Contract/Avail', [
-            'buttonOptions' => $this->getOptions($request)
+            'buttonOptions' => $this->getOptions($request),
+            'contactData' => $reference->getContract()->getData()->contact,
         ]);
     }
 

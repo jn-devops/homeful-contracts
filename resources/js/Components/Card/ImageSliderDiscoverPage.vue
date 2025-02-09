@@ -12,7 +12,19 @@ const props = defineProps({
     currentImgIndex: {
         type: Number,
         default: null
-    }
+    },
+    category: {
+        type: String,
+        default: ""
+    },
+    brand: {
+        type: String,
+        default: ""
+    },
+    location: {
+        type: String,
+        default: ""
+    },
 })
 const currentIndex = ref(props.currentImgIndex);
 const divRefs = ref([]);
@@ -115,9 +127,9 @@ onUnmounted(() => {
         <div ref="targetDiv"></div>
         <div class="flex justify-center items-center px-4">
             <div class="basis-4/6 leading-none">
-                <p class="text-xs font-semibold">House & Lot</p>
-                <p class="text-3xl font-bold">Agapeya Town</p>
-                <p class="text-base font-semibold">Calamba, Laguna</p>
+                <p class="text-xs font-semibold">{{ category }}</p>
+                <p class="text-xl font-bold">{{ brand }}</p>
+                <p class="text-base font-semibold">{{ location }}</p>
             </div>
             <div class="basis-2/6">
                 <div class="flex gap-4 justify-center">
