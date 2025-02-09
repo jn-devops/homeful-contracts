@@ -1265,7 +1265,164 @@ class ContractResource extends Resource
                                     Forms\Components\Tabs\Tab::make('Attorney-In-Fact')
                                         ->icon('heroicon-m-book-open')
                                         ->schema([
+                                            Section::make()
+                                            ->schema([
+                                                Forms\Components\Fieldset::make('Attorney Details')->schema([
+                                                    TextInput::make('contact_data.aif.attorney.last_name')
+                                                        ->label('Last Name')
+                                                        ->required()
+                                                        ->maxLength(255)
+                                                        ->columnSpan(3),
+                                                    TextInput::make('contact_data.aif.attorney.first_name')
+                                                        ->label('First Name')
+                                                        ->required()
+                                                        ->maxLength(255)
+                                                        ->columnSpan(3),
 
+                                                    TextInput::make('contact_data.aif.attorney.middle_name')
+                                                        ->label('Middle Name')
+                                                        ->maxLength(255)
+                                                        ->required(fn (Get $get): bool => ! $get('contact_data.aif.attorney.no_middle_name'))
+                                                        ->readOnly(fn (Get $get): bool =>  $get('contact_data.aif.attorney.no_middle_name'))
+//                                            ->hidden(fn (Get $get): bool =>  $get('no_middle_name'))
+                                                        ->columnSpan(3),
+                                                    TextInput::make('contact_data.aif.attorney.name_suffix')
+                                                        ->label('Suffix')
+                                                        ->required()
+                                                        ->columnSpan(2),
+
+                                                    Forms\Components\Checkbox::make('contact_data.aif.attorney.no_middle_name')
+                                                        ->live()
+                                                        ->inline(false)
+                                                        ->afterStateUpdated(function(Get $get,Set $set){
+                                                            $set('aif.attorney.middle_name',null);
+//                                                if ($get('no_middle_name')) {
+//                                                }
+                                                        })
+                                                        ->columnSpan(1),
+                                                ])->columns(12)->columnSpanFull(),
+                                                //Personal Information
+                                                Section::make('Contact Person Information')
+                                                    ->headerActions([
+                                                        Forms\Components\Actions\Action::make('copy_from_buyer')
+                                                            ->icon('heroicon-m-clipboard')
+                                                            ->button()
+                                                            ->label('Copy From Spouse')
+                                                            ->action(function (Get $get,Set $set){
+                                                                $set('contact_data.aif.last_name', $get('contact_data.spouse.last_name'));
+                                                                $set('contact_data.aif.first_name', $get('contact_data.spouse.first_name'));
+                                                                $set('contact_data.aif.middle_name', $get('contact_data.spouse.middle_name'));
+                                                                $set('contact_data.aif.name_suffix', $get('contact_data.spouse.name_suffix'));
+                                                                $set('contact_data.aif.no_middle_name', $get('contact_data.spouse.no_middle_name'));
+                                                                $set('contact_data.aif.civil_status', $get('contact_data.spouse.civil_status'));
+                                                                $set('contact_data.aif.sex', $get('contact_data.spouse.sex'));
+                                                                $set('contact_data.aif.date_of_birth', $get('contact_data.spouse.date_of_birth'));
+                                                                $set('contact_data.aif.nationality', $get('contact_data.spouse.nationality'));
+                                                                $set('contact_data.aif.tin', $get('contact_data.spouse.tin'));
+                                                                $set('contact_data.aif.email', $get('contact_data.spouse.email'));
+                                                                $set('contact_data.aif.mobile', $get('contact_data.spouse.mobile'));
+                                                                $set('contact_data.aif.other_mobile', $get('contact_data.spouse.other_mobile'));
+                                                                $set('contact_data.aif.landline', $get('contact_data.spouse.land_line'));
+                                                            })
+                                                    ])
+                                                    ->schema([
+                                                        TextInput::make('contact_data.aif.last_name')
+                                                            ->label('Last Name')
+                                                            // ->required()
+                                                            ->maxLength(255)
+                                                            ->columnSpan(3),
+                                                        TextInput::make('contact_data.aif.first_name')
+                                                            ->label('First Name')
+                                                            // ->required()
+                                                            ->maxLength(255)
+                                                            ->columnSpan(3),
+
+                                                        TextInput::make('contact_data.aif.middle_name')
+                                                            ->label('Middle Name')
+                                                            ->maxLength(255)
+                                                            // ->required(fn (Get $get): bool => ! $get('aif.no_middle_name'))
+                                                            ->readOnly(fn (Get $get): bool =>  $get('contact_data.aif.no_middle_name'))
+                                                            //                                            ->hidden(fn (Get $get): bool =>  $get('no_middle_name'))
+                                                            ->columnSpan(3),
+                                                        Select::make('contact_data.aif.name_suffix')
+                                                            ->label('Suffix')
+                                                            ->columnSpan(2),
+
+                                                        Forms\Components\Checkbox::make('contact_data.aif.no_middle_name')
+
+                                                            ->columnSpan(1),
+                                                        TextInput::make('contact_data.aif.civil_status')
+                                                            ->label('Civil Status')
+
+                                                            ->columnSpan(3),
+                                                        Select::make('contact_data.aif.sex')
+                                                            ->label('Gender')
+                                                            // ->required()
+                                                            ->native(false)
+                                                            ->options([
+                                                                'Male'=>'Male',
+                                                                'Female'=>'Female'
+                                                            ])
+                                                            ->columnSpan(3),
+                                                        DatePicker::make('contact_data.aif.date_of_birth')
+                                                            ->label('Date of Birth')
+                                                            // ->required()
+                                                            ->native(false)
+                                                            ->columnSpan(3),
+                                                        TextInput::make('contact_data.aif.nationality')
+                                                            ->label('Nationality')
+                                                            ->columnSpan(3),
+                                                        TextInput::make('contact_data.aif.relationship_to_buyer')
+                                                            ->label('Relationship to Buyer')
+                                                            ->columnSpan(3),
+                                                        TextInput::make('contact_data.aif.tin')
+                                                            ->label('Tax Identification Number')
+                                                            ->maxLength(255)
+                                                            ->columnSpan(3),
+                                                    ])->columns(12)->columnSpanFull(),
+                                                \Filament\Forms\Components\Fieldset::make('Contact Information')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('contact_data.aif.email')
+                                                            ->label('Email')
+                                                            // ->email()
+                                                            // ->required()
+                                                            ->maxLength(255)
+                                                            ->live()
+                                                            ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                                                $livewire->validateOnly($component->getStatePath());
+                                                            })
+                                                            ->columnSpan(3),
+
+                                                        Forms\Components\TextInput::make('contact_data.aif.mobile')
+                                                            ->label('Mobile')
+                                                            // ->required()
+                                                            ->prefix('+63')
+                                                            ->regex("/^[0-9]+$/")
+                                                            ->minLength(10)
+                                                            ->maxLength(10)
+                                                            ->live()
+                                                            ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                                                $livewire->validateOnly($component->getStatePath());
+                                                            })
+                                                            ->columnSpan(3),
+
+                                                        Forms\Components\TextInput::make('contact_data.aif.other_mobile')
+                                                            ->label('Other Mobile')
+                                                            ->prefix('+63')
+                                                            ->regex("/^[0-9]+$/")
+                                                            ->minLength(10)
+                                                            ->maxLength(10)
+                                                            ->live()
+                                                            ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+                                                                $livewire->validateOnly($component->getStatePath());
+                                                            })
+                                                            ->columnSpan(3),
+
+                                                        Forms\Components\TextInput::make('contact_data.aif.landline')
+                                                            ->label('Landline')
+                                                            ->columnSpan(3),
+                                                    ])->columns(12)->columnSpanFull(),
+                                            ])
                                     ]),
 
 
