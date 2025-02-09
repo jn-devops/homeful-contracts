@@ -65,9 +65,10 @@ class EditContract extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $contact = Contact::where('id', $data['contact_id'])->first();
-
-        $contact_data =$contact->getData()->toArray();
+//        dd($this->record->getData()->customer->toArray());
+//        $contact = Contact::where('id', $data['contact_id'])->first();
+//        dd($contact->toArray());
+        $contact_data =$this->record->getData()->customer->toArray();
 //        dd($contact_data);
 //        $response = Http::post('http://homeful-merge.test/api/folder-documents/test', [
 //            'code' => 'test',
@@ -101,14 +102,15 @@ class EditContract extends EditRecord
 //        $data = app(GetContactMetadataFromContactModel::class)->run($contact);
 //        dd($data);
 //        dd(Contact::latest()->first());
-            $contact->middle_name = $contact->middle_name??'';
-        $order=$contact->order;
+//            $contact->middle_name = $contact->middle_name??'';
+//        $order=$contact->order;
+        $order = $contact_data['order'];
         $order['sku'] = $order['sku']??'';
         $order['seller_commission_code'] = $order['seller_commission_code']??'';
         $order['property_code'] = $order['property_code']??'';
 //        $contact->order = $order;
 //        $contact_data = ContactData::fromModel($contact);
-          $contact_data =$contact->getData()->toArray();
+//          $contact_data =$contact->getData()->toArray();
 //        $new_data = [];
 //
 //
@@ -152,7 +154,7 @@ class EditContract extends EditRecord
 ////        $new_data['seller'] = $contact_data->order->toArray()['seller'] ?? [];
 //        $new_data['reference_code'] = $contact_data->reference_code;
 //        $new_data['uploads']=$contact_data->uploads->toArray();
-        $new_data['buyer']['mobile'] = $this->record->mobile;
+        $new_data['buyer']['mobile'] = $contact_data['mobile'];
 //        $new_data['buyer'] = $contact_data->profile->toArray();
         $new_data['buyer'] = [
             'first_name' => $contact_data['first_name'],
