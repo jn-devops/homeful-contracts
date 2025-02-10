@@ -22,4 +22,8 @@ class BookingController extends Controller
     public function complete_form(){
         return Inertia::render('Booking/CompleteProfile');
     }
+
+    public function redirect_contacts(){
+        return Inertia::location('https://contacts.homeful.ph/dashboard');
+    }
 }

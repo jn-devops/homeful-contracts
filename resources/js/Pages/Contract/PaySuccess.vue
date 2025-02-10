@@ -8,7 +8,8 @@ import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import axios from "axios";
 const props = defineProps({
-    reference_code: String
+    reference_code: String,
+    href: String,
 });
 
 const reference = ref({});
@@ -98,7 +99,7 @@ const dashboardButtonAction = () => {
                 </div>
             </div>
             <div class="mt-10 px-5">
-                <Link href="https://contacts.homeful.ph/dashboard">
+                <Link href="/redirect-contact" method="get">
                     <PrimaryButton >
                         <div class="py-2 font-semibold">
                             Complete Additional Data Form
