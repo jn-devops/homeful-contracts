@@ -35,11 +35,51 @@ class GeneratedDocumentsTable extends Component
         }
     }
 
+    public function fetchDocuments(): void
+    {
+        $this->generatedDocuments = [];
+        // Force Livewire to update UI after each document is added
+        $this->dispatch('$refresh');
+        try {
+            // Fetch templates
+            $response = Http::post("https://merge.homeful.ph/api/templates/{$this->selectedSet}");
+
+            if ($response->successful()) {
+                $templates = $response->json()['templates'] ?? [];
+
+                foreach ($templates as $template) {
+                    $response = Http::timeout(120)
+                        ->retry(3, 5000)
+                        ->post("https://merge.homeful.ph/api/generate-document/{$template}", [
+                            'code' => $this->selectedSet,
+                            'data' => [
+                                'buyer_name' => 'Renzo',
+                            ],
+                        ]);
+
+                    if ($response->successful()) {
+                        // Append each document dynamically
+                        array_push($this->generatedDocuments, [
+                            "name" => $response->json()['name'],
+                            "url" => $response->json()['url'],
+                        ]);
+
+                        // Force Livewire to update UI after each document is added
+                        $this->dispatch('$refresh');
+                    }
+                }
+            }
+        } catch (\Exception $exception) {
+            \Log::error('Error fetching generated documents', ['error' => $exception->getMessage()]);
+        }
+    }
+
     public function fetchGeneratedDocuments()
     {
         $this->generatedDocuments = [];
 
         try {
+
             $response = Http::timeout(120) // Set timeout to 120 seconds
             ->retry(3, 5000) // Retry up to 3 times with a 5-second delay
             ->post("https://merge.homeful.ph/api/folder-documents/{$this->selectedSet}", [
