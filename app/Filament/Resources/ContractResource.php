@@ -56,6 +56,7 @@ use stdClass;
 use Carbon\Carbon;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\ViewField;
+use Homeful\Contacts\Models\Contact as ModelsContact;
 
 class ContractResource extends Resource
 {
@@ -559,7 +560,7 @@ class ContractResource extends Resource
                                                         ->label('Gross Monthly Income')
                                                         ->numeric()
                                                         // ->afterStateUpdated(function(Set $set, $state){
-                                                        //     $set('order.hdmf.input.GROSS_INCOME_PRINCIPAL', $state);
+                                                        //     $set('contact_data.order.hdmf.input.GROSS_INCOME_PRINCIPAL', $state);
                                                         // })
                                                         ->prefix('PHP')
                                                         ->required()
@@ -1485,7 +1486,7 @@ class ContractResource extends Resource
                                                         ->button()
                                                         ->keyBindings(['command+1', 'ctrl+1'])
                                                         ->action(function (Get $get, Set $set, $state,Model $record) {
-                                                            if(Contact::where('order->property_code', $get('contact_data.order.property_code'))->count() > 0 && Contact::where('order->property_code', $get('contact_data.order.property_code'))->first()->id != $record->contact_id){
+                                                            if(ModelsContact::where('order->property_code', $get('contact_data.order.property_code'))->count() > 0 && Contact::where('order->property_code', $get('contact_data.order.property_code'))->first()->id != $record->contact_id){
                                                                 Notification::make()
                                                                     ->title('Order has already been reserved')
                                                                     ->body('Sorry, this order has already been reserved for somebody, please choose another property.')
@@ -1595,7 +1596,7 @@ class ContractResource extends Resource
                                                                     $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
                                                                     //                                                                dd($response->json());
                                                                     if ($response->successful()) {
-                                                                        //                                                            $set('order.technical_description', $response->json()['Technical Description']??'');
+                                                                        //                                                            $set('contact_data.order.technical_description', $response->json()['Technical Description']??'');
                                                                         $set('contact_data.order.tct_no', $response->json()['TCT No.']??'');
                                                                         Notification::make()
                                                                             ->title('MFILES Tech Decription Success')
@@ -1610,7 +1611,7 @@ class ContractResource extends Resource
                                                                         $set('contact_data.order.technical_description', $response->json()??'');
                                                                     }else{
                                                                         Notification::make()
-                                                                            ->title('No technical description has been found for this property code :'.($get("order.property_code")??""))
+                                                                            ->title('No technical description has been found for this property code :'.($get("contact_data.order.property_code")??""))
                                                                             ->danger()
                                                                             ->persistent()
                                                                             ->sendToDatabase(auth()->user())
@@ -1740,7 +1741,7 @@ class ContractResource extends Resource
                                                         if($get('contact_data.order.equity_1_terms')){
                                                             $set('contact_data.order.equity_1_monthly_payment', number_format((($get('contact_data.order.equity_1_amount') ?? 0) / ($get('contact_data.order.equity_1_terms') ?? 0)), 2, '.', ''));
                                                         }else{
-                                                            $set('contact_data.order.equity_1_monthly_payment', $get('order.equity_1_amount'));
+                                                            $set('contact_data.order.equity_1_monthly_payment', $get('contact_data.order.equity_1_amount'));
                                                         }
                                                     })
                                                     ->live(onBlur: true)
@@ -1783,15 +1784,15 @@ class ContractResource extends Resource
                                                 ->label('Team Head')
                                                 ->columnSpan(3),
                                             Forms\Components\TextInput::make('contact_data.order.seller.chief_seller_officer')
-                                                ->label('Chief Sales Officer')
+                                                ->label('Chief Sales Officer/Deputy Chief Sales Officer')
                                                 ->columnSpan(3),
                                             Forms\Components\TextInput::make('contact_data.order.exec_tin_no')
-                                                ->label('CSO TIN')
+                                                ->label('CSO/DCSO TIN')
                                                 ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('contact_data.order.seller.deputy_chief_seller_officer')
-                                                ->label('Deputy Chief Sales Officer')
-                                                ->columnSpan(3),
+                                            // Forms\Components\TextInput::make('contact_data.order.seller.deputy_chief_seller_officer')
+                                            //     ->label('Deputy Chief Sales Officer')
+                                            //     ->columnSpan(3),
 
                                             Forms\Components\TextInput::make('contact_data.order.seller.unit')
                                                 ->label('Seller Unit')
@@ -1809,16 +1810,16 @@ class ContractResource extends Resource
                                                         ->hint('In Pesos')
                                                         ->numeric()
                                                         ->afterStateUpdated(function(Set $set, Get $get, String $state = null, Contact $record){
-                                                            $ntcp = ($get('order.payment_scheme.total_contract_price') ?? 0) - $state;
-                                                            $set('order.payment_scheme.net_total_contract_price', $ntcp);
-                                                            $set('order.hdmf.input.SELLING_PRICE', $ntcp);
-                                                            $set('order.hdmf.input.DESIRED_LOAN', $ntcp);
-                                                            $set('order.loan_value_after_downpayment', ($ntcp - ($get('order.equity_1_amount') ?? 0)));
-                                                            $set('order.equity_1_percentage_rate',  number_format(($get('order.equity_1_amount') ?? 0) / $ntcp * 100, 2, '.', ''));
-                                                            if($get('order.equity_1_terms')){
-                                                                $set('order.equity_1_monthly_payment', number_format((($get('order.equity_1_amount') ?? 0) / ($get('order.equity_1_terms') ?? 0)), 2, '.', ''));
+                                                            $ntcp = ($get('contact_data.order.payment_scheme.total_contract_price') ?? 0) - $state;
+                                                            $set('contact_data.order.payment_scheme.net_total_contract_price', $ntcp);
+                                                            $set('contact_data.order.hdmf.input.SELLING_PRICE', $ntcp);
+                                                            $set('contact_data.order.hdmf.input.DESIRED_LOAN', $ntcp);
+                                                            $set('contact_data.order.loan_value_after_downpayment', ($ntcp - ($get('contact_data.order.equity_1_amount') ?? 0)));
+                                                            $set('contact_data.order.equity_1_percentage_rate',  number_format(($get('contact_data.order.equity_1_amount') ?? 0) / $ntcp * 100, 2, '.', ''));
+                                                            if($get('contact_data.order.equity_1_terms')){
+                                                                $set('contact_data.order.equity_1_monthly_payment', number_format((($get('contact_data.order.equity_1_amount') ?? 0) / ($get('contact_data.order.equity_1_terms') ?? 0)), 2, '.', ''));
                                                             }else{
-                                                                $set('order.equity_1_monthly_payment', $get('order.equity_1_amount'));
+                                                                $set('contact_data.order.equity_1_monthly_payment', $get('contact_data.order.equity_1_amount'));
                                                             }
                                                         })
                                                         ->live(onBlur: true)
@@ -1893,14 +1894,14 @@ class ContractResource extends Resource
                                                     //                                                Downpayment Equity Start
                                                     Forms\Components\TextInput::make('contact_data.order.equity_1_amount')
                                                         ->label('Amount')
-                                                        ->afterStateUpdated(function(Set $set, Get $get, String $state = null, Contact $record){
+                                                        ->afterStateUpdated(function(Set $set, Get $get, String $state = null){
                                                             $ntcp = $get('contact_data.order.payment_scheme.net_total_contract_price');
                                                             $set('contact_data.order.loan_value_after_downpayment', ($ntcp - $state));
                                                             $set('contact_data.order.equity_1_percentage_rate',  number_format($state / $ntcp * 100, 2, '.', ''));
                                                             if($get('contact_data.order.equity_1_terms')){
                                                                 $set('contact_data.order.equity_1_monthly_payment', number_format(($state / ($get('contact_data.order.equity_1_terms') ?? 0)), 2, '.', ''));
                                                             }else{
-                                                                $set('contact_data.order.equity_1_monthly_payment', $get('order.equity_1_amount'));
+                                                                $set('contact_data.order.equity_1_monthly_payment', $get('contact_data.order.equity_1_amount'));
                                                             }
                                                         })
                                                         ->numeric()
@@ -1924,9 +1925,9 @@ class ContractResource extends Resource
                                                     Forms\Components\TextInput::make('contact_data.order.equity_1_terms')
                                                         ->label('Terms')
                                                         ->numeric()
-                                                        ->afterStateUpdated(function(Set $set, Get $get, String $state = null, Contact $record){
+                                                        ->afterStateUpdated(function(Set $set, Get $get, String $state = null){
                                                             if($state){
-                                                                $set('contact_data.order.equity_1_monthly_payment', number_format((($get('order.equity_1_amount') ?? 0) / ($state ?? 0)), 2, '.', ''));
+                                                                $set('contact_data.order.equity_1_monthly_payment', number_format((($get('contact_data.order.equity_1_amount') ?? 0) / ($state ?? 0)), 2, '.', ''));
                                                             }else{
                                                                 $set('contact_data.order.equity_1_monthly_payment', ($get('contact_data.order.equity_1_amount')));
                                                             }
@@ -2019,8 +2020,8 @@ class ContractResource extends Resource
                                                     $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
 
                                                     if ($response->successful()) {
-//                                                            $set('order.technical_description', $response->json()['Technical Description']??'');
-                                                        $set('order.tct_no', $response->json()['TCT No.']??'');
+//                                                            $set('contact_data.order.technical_description', $response->json()['Technical Description']??'');
+                                                        $set('contact_data.order.tct_no', $response->json()['TCT No.']??'');
                                                         Notification::make()
                                                             ->title('MFILES Tech Decription Success')
                                                             ->body($response->json()['Technical Description'])
@@ -2029,12 +2030,12 @@ class ContractResource extends Resource
                                                             ->sendToDatabase(auth()->user())
                                                             ->send();
                                                     }
-                                                    $response = Http::get($mfilesLink . '/api/mfiles/technical-description/'.($get("order.property_code")??"") );
+                                                    $response = Http::get($mfilesLink . '/api/mfiles/technical-description/'.($get("contact_data.order.property_code")??"") );
                                                     if ($response->successful()){
-                                                        $set('order.technical_description', $response->json()??'');
+                                                        $set('contact_data.order.technical_description', $response->json()??'');
                                                     }else{
                                                         Notification::make()
-                                                            ->title('No technical description has been found for this property code :'.($get("order.property_code")??""))
+                                                            ->title('No technical description has been found for this property code :'.($get("contact_data.order.property_code")??""))
                                                             ->danger()
                                                             ->persistent()
                                                             ->sendToDatabase(auth()->user())
@@ -2152,40 +2153,40 @@ class ContractResource extends Resource
                                                             $order['hdmf']['file'] = $response->json()['file'] ?? '';
                                                             $record->order=$order;
                                                             $record->save();
-                                                            $set('order.hdmf.file', $order['hdmf']['file']);
-                                                            $set('order.amort_princ_int1', $response->json()['computed']['COMPUTATION_1_PRINCIPAL'] ?? '');
-                                                            $set('order.payment_scheme.net_total_contract_price', $response->json()['computed']['DESIRED_LOAN'] ?? '');
-                                                            $set('order.amort_mrisri1', $response->json()['computed']['COMPUTATION_2_PRINCIPAL'] ?? '');
-                                                            $set('order.amort_nonlife1', $response->json()['computed']['COMPUTATION_3_PRINCIPAL'] ?? '');
-                                                            $set('order.monthly_amort1', $response->json()['computed']['COMPUTATION_4_PRINCIPAL'] ?? '');
-                                                            $set('order.amort_princ_int2', ($response->json()['computed']['COMPUTATION_1_COBORROWER_1']) ? $response->json()['computed']['COMPUTATION_1_COBORROWER_1'] : '***');
-                                                            $set('order.amort_mrisri2', $response->json()['computed']['COMPUTATION_2_PRINCIPAL'] ?? '');
-                                                            $set('order.amort_nonlife2', $response->json()['computed']['COMPUTATION_3_PRINCIPAL'] ?? '');
-                                                            $set('order.monthly_amort2', '');
-                                                            $set('order.amort_princ_int3', ($response->json()['computed']['COMPUTATION_1_COBORROWER_2']) ? $response->json()['computed']['COMPUTATION_1_COBORROWER_2'] : '***');
-                                                            $set('order.amort_mrisri3', ($response->json()['computed']['COMPUTATION_2_COBORROWER_2']) ? $response->json()['computed']['COMPUTATION_2_COBORROWER_2'] : '***');
-                                                            $set('order.amort_nonlife3', ($response->json()['computed']['COMPUTATION_3_COBORROWER_2']) ? $response->json()['computed']['COMPUTATION_3_COBORROWER_2'] : '***');
-                                                            $set('order.monthly_amort3', '');
-                                                            $set('order.mrisri_docstamp_total', $response->json()['computed']['MRI_SRI_TOTAL_1'] ?? '');
-                                                            $set('order.non_life_insurance', $response->json()['computed']['NON_LIFE_INSURANCE'] ?? '');
-                                                            $set('order.loan_base', $response->json()['computed']['RECOMMENDED_LOAN_BASE'] ?? '');
+                                                            $set('contact_data.order.hdmf.file', $order['hdmf']['file']);
+                                                            $set('contact_data.order.amort_princ_int1', $response->json()['computed']['COMPUTATION_1_PRINCIPAL'] ?? '');
+                                                            $set('contact_data.order.payment_scheme.net_total_contract_price', $response->json()['computed']['DESIRED_LOAN'] ?? '');
+                                                            $set('contact_data.order.amort_mrisri1', $response->json()['computed']['COMPUTATION_2_PRINCIPAL'] ?? '');
+                                                            $set('contact_data.order.amort_nonlife1', $response->json()['computed']['COMPUTATION_3_PRINCIPAL'] ?? '');
+                                                            $set('contact_data.order.monthly_amort1', $response->json()['computed']['COMPUTATION_4_PRINCIPAL'] ?? '');
+                                                            $set('contact_data.order.amort_princ_int2', ($response->json()['computed']['COMPUTATION_1_COBORROWER_1']) ? $response->json()['computed']['COMPUTATION_1_COBORROWER_1'] : '***');
+                                                            $set('contact_data.order.amort_mrisri2', $response->json()['computed']['COMPUTATION_2_PRINCIPAL'] ?? '');
+                                                            $set('contact_data.order.amort_nonlife2', $response->json()['computed']['COMPUTATION_3_PRINCIPAL'] ?? '');
+                                                            $set('contact_data.order.monthly_amort2', '');
+                                                            $set('contact_data.order.amort_princ_int3', ($response->json()['computed']['COMPUTATION_1_COBORROWER_2']) ? $response->json()['computed']['COMPUTATION_1_COBORROWER_2'] : '***');
+                                                            $set('contact_data.order.amort_mrisri3', ($response->json()['computed']['COMPUTATION_2_COBORROWER_2']) ? $response->json()['computed']['COMPUTATION_2_COBORROWER_2'] : '***');
+                                                            $set('contact_data.order.amort_nonlife3', ($response->json()['computed']['COMPUTATION_3_COBORROWER_2']) ? $response->json()['computed']['COMPUTATION_3_COBORROWER_2'] : '***');
+                                                            $set('contact_data.order.monthly_amort3', '');
+                                                            $set('contact_data.order.mrisri_docstamp_total', $response->json()['computed']['MRI_SRI_TOTAL_1'] ?? '');
+                                                            $set('contact_data.order.non_life_insurance', $response->json()['computed']['NON_LIFE_INSURANCE'] ?? '');
+                                                            $set('contact_data.order.loan_base', $response->json()['computed']['RECOMMENDED_LOAN_BASE'] ?? '');
                                                             $amount =  ($response->json()['inputs']['SELLING_PRICE'] ?? 0) - ($response->json()['computed']['RECOMMENDED_LOAN_BASE'] ?? 0);
-                                                            $set('order.equity_1_amount', $amount);
-                                                            $set('order.equity_1_percentage_rate', number_format(($amount ?? 0) / ($get('order.payment_scheme.net_total_contract_price') ?? 0) * 100, 2, '.', ''));
+                                                            $set('contact_data.order.equity_1_amount', $amount);
+                                                            $set('contact_data.order.equity_1_percentage_rate', number_format(($amount ?? 0) / ($get('order.payment_scheme.net_total_contract_price') ?? 0) * 100, 2, '.', ''));
                                                             if($get('order.equity_1_terms')){
-                                                                $set('order.equity_1_monthly_payment', number_format((($amount ?? 0) / ($get('order.equity_1_terms') ?? 0)), 2, '.', ''));
+                                                                $set('contact_data.order.equity_1_monthly_payment', number_format((($amount ?? 0) / ($get('order.equity_1_terms') ?? 0)), 2, '.', ''));
                                                             }else{
-                                                                $set('order.equity_1_monthly_payment', $amount);
+                                                                $set('contact_data.order.equity_1_monthly_payment', $amount);
                                                             }
-                                                            $set('order.equity_1_interest_rate', ($response->json()['computed']['ANNUAL_INTEREST_RATE'] ?? 0) * 100);
-                                                            $set('order.loan_interest_rate', ($response->json()['computed']['ANNUAL_INTEREST_RATE'] ?? 0) * 100);
-                                                            $set('order.interest', ($response->json()['computed']['ANNUAL_INTEREST_RATE'] ?? 0) * 100);
+                                                            $set('contact_data.order.equity_1_interest_rate', ($response->json()['computed']['ANNUAL_INTEREST_RATE'] ?? 0) * 100);
+                                                            $set('contact_data.order.loan_interest_rate', ($response->json()['computed']['ANNUAL_INTEREST_RATE'] ?? 0) * 100);
+                                                            $set('contact_data.order.interest', ($response->json()['computed']['ANNUAL_INTEREST_RATE'] ?? 0) * 100);
                                                             $loan_value_after_dp = ($get('order.payment_scheme.net_total_contract_price') ?? 0) - $amount;
-                                                            $set('order.loan_value_after_downpayment', $loan_value_after_dp);
-                                                            $set('order.bp_1_amount', $loan_value_after_dp);
-                                                            $set('order.bp_1_percentage_rate', ($loan_value_after_dp ==  ($response->json()['computed']['RECOMMENDED_LOAN_BASE'] ?? 0)) ? 100 : 0);
-                                                            $set('order.bp_1_interest_rate', ($response->json()['computed']['ANNUAL_INTEREST_RATE'] ?? 0) * 100);
-                                                            $set('order.bp_1_monthly_payment', $response->json()['computed']['COMPUTATION_4_TOTAL'] ?? 0);
+                                                            $set('contact_data.order.loan_value_after_downpayment', $loan_value_after_dp);
+                                                            $set('contact_data.order.bp_1_amount', $loan_value_after_dp);
+                                                            $set('contact_data.order.bp_1_percentage_rate', ($loan_value_after_dp ==  ($response->json()['computed']['RECOMMENDED_LOAN_BASE'] ?? 0)) ? 100 : 0);
+                                                            $set('contact_data.order.bp_1_interest_rate', ($response->json()['computed']['ANNUAL_INTEREST_RATE'] ?? 0) * 100);
+                                                            $set('contact_data.order.bp_1_monthly_payment', $response->json()['computed']['COMPUTATION_4_TOTAL'] ?? 0);
                                                             Notification::make()
                                                                 ->title('Successful Evaluation')
                                                                 ->success()
@@ -2378,7 +2379,7 @@ class ContractResource extends Resource
                                                         ->label('Selling Price')
                                                         ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Equal to TCP')
                                                         ->afterStateUpdated(function(Set $set, $state){
-                                                            // $set('order.hdmf.input.DESIRED_LOAN', $state);
+                                                            // $set('contact_data.order.hdmf.input.DESIRED_LOAN', $state);
                                                         })
                                                         ->live(onBlur: true)
                                                         ->live()
@@ -2399,7 +2400,7 @@ class ContractResource extends Resource
                                                         ->label('Desired Loan')
                                                         ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: TCP - Discount Rate and Equity')
                                                         ->afterStateUpdated(function(Set $set, $state){
-                                                            $set('order.loan_value_after_downpayment', $state);
+                                                            $set('contact_data.order.loan_value_after_downpayment', $state);
                                                         })
                                                         ->live(onBlur: true)
                                                         ->inlineLabel(true)
