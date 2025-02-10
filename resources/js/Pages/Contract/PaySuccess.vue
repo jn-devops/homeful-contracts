@@ -4,11 +4,12 @@ import BookingNavigation from '@/Components/Booking/BookingNavigation.vue';
 import PrimaryButton from '@/Components/Button/PrimaryButton.vue';
 import SecondaryButton from '@/Components/Button/SecondaryButton.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import axios from "axios";
 const props = defineProps({
-    reference_code: String
+    reference_code: String,
+    href: String,
 });
 
 const reference = ref({});
@@ -98,11 +99,13 @@ const dashboardButtonAction = () => {
                 </div>
             </div>
             <div class="mt-10 px-5">
-                <PrimaryButton @click="completeDataFormAction">
-                    <div class="py-2 font-semibold">
-                        Complete Additional Data Form
-                    </div>
-                </PrimaryButton>
+                <Link href="/redirect-contact" method="get">
+                    <PrimaryButton >
+                        <div class="py-2 font-semibold">
+                            Complete Additional Data Form
+                        </div>
+                    </PrimaryButton>
+                </Link>
                 <p class="text-xs text-gray-500">
                     We may require additional information for a thorough assessment.
                 </p>

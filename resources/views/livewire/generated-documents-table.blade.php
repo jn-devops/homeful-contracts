@@ -16,7 +16,7 @@
                             </span>
                         <div class="flex items-center gap-2">
                             <x-filament::input.wrapper>
-                                <x-filament::input.select wire:model.defer="selectedSet" wire:change="fetchGeneratedDocuments">
+                                <x-filament::input.select wire:model.defer="selectedSet" wire:change="fetchDocuments">
                                     <option value="">Select a Document Set</option>
                                     @foreach($documentSets as $set)
                                         <option value="{{ $set['code'] }}">{{ $set['name'] }}</option>
@@ -30,25 +30,16 @@
             </tr>
             </thead>
 
-            <tbody class="fi-ta-body divide-y divide-gray-200 dark:divide-gray-700" wire:loading.class="opacity-50">
+            <tbody class="fi-ta-body divide-y divide-gray-200 dark:divide-gray-700 wire:loading.class="opacity-50"" >
             {{-- Loading State --}}
-            <tr wire:loading>
+            <tr wire:loading wire:target="fetchDocuments">
                 <td colspan="2" class="text-center py-4 text-sm text-gray-500">
-                    Loading documents...
+                    Generating documents...
                 </td>
             </tr>
 
-            {{-- Empty State --}}
-            @if (empty($generatedDocuments))
-                <tr wire:loading.remove>
-                    <td colspan="2" class="text-center py-4 text-sm text-gray-500">
-                        No documents found.
-                    </td>
-                </tr>
-            @endif
-
-            {{-- Documents List --}}
-            @foreach ($generatedDocuments as $index => $document)
+            {{-- Show Documents As They Are Fetched --}}
+            @forelse ($generatedDocuments as $index => $document)
                 <tr class="fi-ta-row hover:bg-gray-50 dark:hover:bg-gray-700" wire:key="document-{{ $index }}">
                     <td class="fi-ta-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-300 text-center">
                         {{ $loop->iteration }}
@@ -71,7 +62,13 @@
                         </div>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr wire:loading.remove wire:target="fetchDocuments">
+                    <td colspan="2" class="text-center py-4 text-sm text-gray-500">
+                        No documents found.
+                    </td>
+                </tr>
+            @endforelse
             </tbody>
 
             <tfoot class="fi-ta-footer bg-gray-50 dark:bg-gray-700">

@@ -61,5 +61,6 @@ Route::resource('contracts', ContractController::class);
 Route::get('booking/authentication',[ BookingController::class, 'authentication']);
 Route::get('booking/payment',[ BookingController::class, 'payment']);
 Route::get('booking/complete-form',[ BookingController::class, 'complete_form'])->name("booking.payment.success");
+Route::get('redirect-contact',[ BookingController::class, 'redirect_contacts'])->name("redirect.contacts");
 
 require __DIR__.'/auth.php';
