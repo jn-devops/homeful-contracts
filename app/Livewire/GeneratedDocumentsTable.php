@@ -54,7 +54,7 @@ class GeneratedDocumentsTable extends Component
                             'code' => $this->selectedSet,
                             'data' => [
                                 'buyer_name' => 'Renzo',
-                            ],
+                            ] ,
                         ]);
 
                     if ($response->successful()) {

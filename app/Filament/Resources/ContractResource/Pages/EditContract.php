@@ -96,8 +96,6 @@ class EditContract extends EditRecord
 
 //        dd($contact->getData()->toArray());
 
-        $requirements = RequirementMatrix::first();
-        $data['requirements']=json_decode($requirements->requirements, true);
 //        dd($contact);
 //        $data = app(GetContactMetadataFromContactModel::class)->run($contact);
 //        dd($data);
