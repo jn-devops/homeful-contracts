@@ -32,7 +32,7 @@ class RequirementsTable extends Component
         $this->chosenFile = "";
         $requirements = RequirementMatrix::first();
     $requirements = RequirementMatrix::where('civil_status',$contact['civil_status'])->where('employment_status',$employment_status)->first();
-        $reqs = collect(json_decode($requirements->requirements, true))
+        $reqs = collect(json_decode($requirements->requirements??[], true))
         ->sort()
         ->values();
         $this->requirements = $reqs->map(function($requirement) {
