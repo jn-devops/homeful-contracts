@@ -36,7 +36,7 @@ class GenerateContractPayloads
     {
         $payload = app(Payload::class)->make([
             'mapping_code' => $mapping->code,
-            'value' => $value
+            'value' => $value??''
         ]);
 
         $payload->contract()->associate($contract);

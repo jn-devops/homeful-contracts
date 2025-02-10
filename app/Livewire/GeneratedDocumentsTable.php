@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Actions\GenerateContractPayloads;
+use App\Models\Payload;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
@@ -16,6 +18,16 @@ class GeneratedDocumentsTable extends Component
     public function mount(Model $record)
     {
         $this->record = $record;
+        app(GenerateContractPayloads::class)->run($record);
+
+        $payloads = Payload::with(['mapping' => function ($query) {
+            $query->select('code', 'title', 'category');  // Select only title and category, and 'code' for join
+        }])
+            ->get(['mapping_code', 'value'])  // Select only necessary columns from the payloads table
+            ->map(function ($payload) {
+                dd($payload,[$payload->mapping_code=>$payload->value]);
+                return [$payload->mapping_code=>$payload->value];
+            })->toArray();
 
         // Fetch document sets from the API
         try {
