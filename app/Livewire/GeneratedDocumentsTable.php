@@ -14,20 +14,19 @@ class GeneratedDocumentsTable extends Component
     public array $generatedDocuments = [];
     public array $documentSets = [];
     public string $selectedSet = '';
+    public array $payloads=[];
 
     public function mount(Model $record)
     {
         $this->record = $record;
         app(GenerateContractPayloads::class)->run($record);
 
-        $payloads = Payload::with(['mapping' => function ($query) {
-            $query->select('code', 'title', 'category');  // Select only title and category, and 'code' for join
+        $this->payloads = Payload::with(['mapping' => function ($query) {
+            $query->select('code', 'title', 'category');
         }])
-            ->get(['mapping_code', 'value'])  // Select only necessary columns from the payloads table
-            ->map(function ($payload) {
-                dd($payload,[$payload->mapping_code=>$payload->value]);
-                return [$payload->mapping_code=>$payload->value];
-            })->toArray();
+            ->get(['mapping_code', 'value'])
+            ->pluck('value', 'mapping_code');
+
 
         // Fetch document sets from the API
         try {
@@ -64,9 +63,7 @@ class GeneratedDocumentsTable extends Component
                         ->retry(3, 5000)
                         ->post("https://merge.homeful.ph/api/generate-document/{$template}", [
                             'code' => $this->selectedSet,
-                            'data' => [
-                                'buyer_name' => 'Renzo',
-                            ] ,
+                            'data' => $this->payloads,
                         ]);
 
                     if ($response->successful()) {
@@ -96,9 +93,7 @@ class GeneratedDocumentsTable extends Component
             ->retry(3, 5000) // Retry up to 3 times with a 5-second delay
             ->post("https://merge.homeful.ph/api/folder-documents/{$this->selectedSet}", [
                 'code' => $this->selectedSet,
-                'data' => [
-                    'buyer_name' => 'Renzo',
-                ],
+                'data' => $this->payloads,
             ]);
 
             if ($response->successful() && isset($response->json()['documents'])) {
