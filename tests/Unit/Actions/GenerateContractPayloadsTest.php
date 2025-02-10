@@ -1,13 +1,11 @@
 <?php
 
-use App\Actions\Contract\{Avail, Consult};
-use App\Actions\GenerateContractPayloads;
-use App\Models\Mapping;
-use App\Models\Payload;
-use Homeful\References\Models\Reference;
 use Illuminate\Foundation\Testing\{RefreshDatabase, WithFaker};
 use Illuminate\Support\Facades\{Notification};
-use Illuminate\Http\Request;
+use App\Actions\Contract\{Avail, Consult};
+use App\Actions\GenerateContractPayloads;
+use Homeful\References\Models\Reference;
+use App\Models\{Mapping, Payload};
 
 uses(RefreshDatabase::class, WithFaker::class);
 
@@ -25,12 +23,6 @@ dataset('reference', function() {
     ];
 });
 
-dataset('mapping_attributes', function () {
-   return [
-       [ fn() => ['code' => 'first_name', 'path' => 'contact.first_name', 'source' => 'array', 'title' => 'First Name', 'type' => 'string', 'default' => 'Christian', 'category' => 'buyer', 'transformer' => 'UpperCaseTransformer, ReverseStringTransformer']]
-   ];
-});
-
 dataset('mappings', function () {
     return [
         [
@@ -43,7 +35,7 @@ dataset('mappings', function () {
                     'type' => 'string',
                     'default' => 'Christian',
                     'category' => 'buyer',
-                    'transformer' => 'UpperCaseTransformer, ReverseStringTransformer'
+                    'transformer' => 'UpperCase, ReverseString'
                 ],
                 [
                     'code' => 'last_name',
@@ -53,17 +45,27 @@ dataset('mappings', function () {
                     'type' => 'string',
                     'default' => 'Ramos',
                     'category' => 'buyer',
-                    'transformer' => 'UpperCaseTransformer, ReverseStringTransformer'
+                    'transformer' => 'UpperCase, ReverseString'
+                ],
+                [
+                    'code' => 'gmi',
+                    'path' => 'contact.monthly_gross_income',
+                    'source' => 'array',
+                    'title' => 'GMI',
+                    'type' => 'integer',
+                    'default' => '537',
+                    'category' => 'buyer',
+                    'transformer' => 'ToMajorUnit'
                 ],
                 [
                     'code' => 'gmi_words',
                     'path' => 'contact.monthly_gross_income',
                     'source' => 'array',
                     'title' => 'GMI Words',
-                    'type' => 'float',
+                    'type' => 'string',
                     'default' => '537',
                     'category' => 'buyer',
-                    'transformer' => 'NumberSpellTransformer'
+                    'transformer' => 'ToMajorUnit, NumberSpell'
                 ],
             ])
         ]
@@ -74,7 +76,7 @@ test('generate contract property action works', function (Reference $reference, 
     $mappings();
     $contract = $reference->getContract();
     $count = app(GenerateContractPayloads::class)->run($contract);
-    expect($count)->toBe(3);
+    expect($count)->toBe(4);
     $contract->refresh();
     $payloads = Payload::with(['mapping' => function ($query) {
         $query->select('code', 'title', 'category');  // Select only title and category, and 'code' for join
@@ -90,7 +92,8 @@ test('generate contract property action works', function (Reference $reference, 
     $expected = [
         ['title' => 'First Name', 'value' => 'LEMMOR'],
         ['title' => 'Last Name', 'value' => 'UIT'],
-        ['title' => 'GMI Words', 'value' => 'one million four hundred thirty-nine thousand nine hundred thirty-seven'],
+        ['title' => 'GMI', 'value' => 14400],
+        ['title' => 'GMI Words', 'value' => 'fourteen thousand three hundred ninety-nine point three seven'],
     ];
 
     expect($payloads)->toMatchArray($expected);

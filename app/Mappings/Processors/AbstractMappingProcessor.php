@@ -52,15 +52,12 @@ abstract class AbstractMappingProcessor
         // Step 1: Get the initial value (delegated to subclass)
         $value = $this->getInitialValue();
 
-        // Step 2 and Step 3: Apply transformations and cast the value
+        // Step 2 and Step 3: Apply transformations and cast the value using a proper pipeline
         return app(Pipeline::class)
             ->send($value)
             ->through([
-                // Apply transformations
-                fn($value) => $this->resolveAndApplyTransformer($value, $this->mapping->transformer),
-
-                // Cast to the correct type
-                fn($value) => $this->mapping->type->castValue($value),
+                fn($value, $next) => $next($this->resolveAndApplyTransformer($value, $this->mapping->transformer)),
+                fn($value, $next) => $next($this->mapping->type->castValue($value)),
             ])
             ->thenReturn();
     }
@@ -124,6 +121,11 @@ abstract class AbstractMappingProcessor
     {
         $baseNamespace = "App\\Transformers";
         $baseDirectory = app_path('Transformers');
+
+        // Ensure the transformer name ends with "Transformer"
+        if (!str_ends_with($transformerName, 'Transformer')) {
+            $transformerName .= 'Transformer';
+        }
 
         // Use Recursive Directory Iterator to scan subdirectories
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($baseDirectory));
