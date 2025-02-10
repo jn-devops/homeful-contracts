@@ -14,6 +14,7 @@ enum MappingCategory: string
     case ADDRESS = 'address';
     case PROPERTY = 'property';
     case EVALUATION_SHEET = 'evaluation_sheet';
+    case SYSTEM = 'system';
 
     static function default(): self {
         return self::BUYER;

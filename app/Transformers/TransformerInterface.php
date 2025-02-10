@@ -2,6 +2,7 @@
 
 namespace App\Transformers;
 
+/** @deprecated */
 interface TransformerInterface
 {
     /**
