@@ -25,7 +25,7 @@ class MappingFactory extends Factory
             'type' => MappingType::random()->value,
             'default' => $this->faker->sentence(),
             'category' => MappingCategory::random()->value,
-            'transformer' => $this->faker->workd(),
+            'transformer' => $this->faker->word(),
             'options' => $this->faker->rgbColorAsArray(),
             'remarks' => $this->faker->sentence(),
         ];

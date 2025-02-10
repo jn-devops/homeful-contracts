@@ -17,4 +17,16 @@ enum MappingType: string
     static function default(): self {
         return self::STRING;
     }
+
+    public function castValue(mixed $value): mixed
+    {
+        return match ($this) {
+            self::STRING => (string) $value,
+            self::INTEGER => (int) $value,
+            self::FLOAT => (float) $value,
+            self::ARRAY => is_array($value) ? $value : json_decode($value, true) ?? [],
+            self::JSON => json_encode($value),
+            default => $value,
+        };
+    }
 }

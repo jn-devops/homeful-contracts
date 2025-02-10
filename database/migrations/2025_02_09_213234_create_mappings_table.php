@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('transformer')->nullable();
             $table->json('options')->nullable();
             $table->string('remarks')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->timestamp('deprecated_at')->nullable();
+            //TODO: add disabled_at
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Homeful\Contracts\Models\Contract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,11 @@ class Payload extends Model
         'mapping_code',
         'value'
     ];
+
+    public function contract(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Contract::class);
+    }
 
     public function mapping(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
