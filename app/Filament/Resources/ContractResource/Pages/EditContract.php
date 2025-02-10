@@ -42,13 +42,13 @@ class EditContract extends EditRecord
                 ->keyBindings(['command+s', 'ctrl+s']),
             Action::make('Update Status')
                 ->color('primary')
-            ->requiresConfirmation(true)
-            ->modalCancelActionLabel('No')
-            ->form([
-                Select::make('status')
-                ->options([]
-                )->native(false)
-            ])->action(function(){
+                ->requiresConfirmation(true)
+                ->modalCancelActionLabel('No')
+                ->form([
+                    Select::make('status')
+                        ->options([]
+                        )->native(false)
+                ])->action(function(){
 
                 }),
         ];
@@ -155,39 +155,49 @@ class EditContract extends EditRecord
         $new_data['buyer']['mobile'] = $contact_data['mobile'];
 //        $new_data['buyer'] = $contact_data->profile->toArray();
         $new_data['buyer'] = [
-            'first_name' => $contact_data['first_name'],
-            'last_name' => $contact_data['last_name'],
-            'middle_name' => $contact_data['middle_name'],
-            'name_suffix' => $contact_data['name_suffix'],
-            'mothers_maiden_name' => $contact_data['mothers_maiden_name'],
-            'email' => $contact_data['email'],
-            'mobile' => $contact_data['mobile'],
-            'other_mobile' => $contact_data['other_mobile'],
-            'help_number' => $contact_data['help_number'],
-            'landline' => $contact_data['landline'],
-            'civil_status' => $contact_data['civil_status'],
-            'sex' => $contact_data['sex'],
-            'nationality' => $contact_data['nationality'],
+            'first_name' => $contact_data['first_name']??'',
+            'last_name' => $contact_data['last_name']??'',
+            'middle_name' => $contact_data['middle_name']??'',
+            'name_suffix' => $contact_data['name_suffix']??'',
+            'mothers_maiden_name' => $contact_data['mothers_maiden_name']??'',
+            'email' => $contact_data['email']??'',
+            'mobile' => $contact_data['mobile']??'',
+            'other_mobile' => $contact_data['other_mobile']??'',
+            'help_number' => $contact_data['help_number']??'',
+            'landline' => $contact_data['landline']??'',
+            'civil_status' => $contact_data['civil_status']??'',
+            'sex' => $contact_data['sex']??'',
+            'nationality' => $contact_data['nationality']??'',
             'date_of_birth' => $contact_data['date_of_birth'],
         ];
 //
         $new_data['buyer']['no_middle_name']=$new_data['buyer']['middle_name']==''||$new_data['buyer']['middle_name']==null;
         $new_data['buyer']['address']['present'] = $buyer_address_present;
         $new_data['buyer']['address']['permanent'] = $buyer_address_permanent;
+        $buyer_address_permanent['address1']=$buyer_address_permanent['address1']??'';
+        $buyer_address_present['address1']=$buyer_address_present['address1']??'';
+        $buyer_address_present['locality']=$buyer_address_present['locality']??'';
+        $buyer_address_permanent['locality']=$buyer_address_permanent['locality']??'';
+        $buyer_address_present['administrative_area']=$buyer_address_present['administrative_area']??'';
+        $buyer_address_permanent['administrative_area']=$buyer_address_permanent['administrative_area']??'';
+        $buyer_address_present['region']=$buyer_address_present['region']??'';
+        $buyer_address_permanent['region']=$buyer_address_permanent['region']??'';
+        $buyer_address_present['country']= $buyer_address_present['country']??'';
+        $buyer_address_permanent['country']= $buyer_address_permanent['country']??'';
 //
-        $new_data['buyer']['address']['present']['address1'] = $buyer_address_present['address1'];
-        $new_data['buyer']['address']['present']['locality'] = $buyer_address_present['locality'];
+        $new_data['buyer']['address']['present']['address1'] = $buyer_address_present['address1']??'';
+        $new_data['buyer']['address']['present']['locality'] = $buyer_address_present['locality']??'';
 //        $new_data['buyer']['address']['present']['sublocality'] = $buyer_address_present['sublocality'];
-        $new_data['buyer']['address']['present']['administrative_area'] = $buyer_address_present['administrative_area'];
-        $new_data['buyer']['address']['present']['region'] = $buyer_address_present['region'];
-        $new_data['buyer']['address']['present']['country'] = $buyer_address_present['country'];
+        $new_data['buyer']['address']['present']['administrative_area'] = $buyer_address_present['administrative_area']??'';
+        $new_data['buyer']['address']['present']['region'] = $buyer_address_present['region']??'';
+        $new_data['buyer']['address']['present']['country'] = $buyer_address_present['country']??'';
 //
-        $new_data['buyer']['address']['permanent']['address1'] = $buyer_address_permanent['address1'];
-        $new_data['buyer']['address']['permanent']['city'] = $buyer_address_permanent['locality'];
+        $new_data['buyer']['address']['permanent']['address1'] = $buyer_address_permanent['address1']??'';
+        $new_data['buyer']['address']['permanent']['city'] = $buyer_address_permanent['locality']??'';
 //        $new_data['buyer']['address']['permanent']['barangay'] = $buyer_address_permanent['sublocality'];
-        $new_data['buyer']['address']['permanent']['province'] = $buyer_address_permanent['administrative_area'];
-        $new_data['buyer']['address']['permanent']['region'] = $buyer_address_permanent['region'];
-        $new_data['buyer']['address']['permanent']['country'] = $buyer_address_permanent['country'];
+        $new_data['buyer']['address']['permanent']['province'] = $buyer_address_permanent['administrative_area']??'';
+        $new_data['buyer']['address']['permanent']['region'] = $buyer_address_permanent['region']??'';
+        $new_data['buyer']['address']['permanent']['country'] = $buyer_address_permanent['country']??'';
 
         $is_same_address = (
             $buyer_address_present['address1'] === $buyer_address_permanent['address1'] &&
