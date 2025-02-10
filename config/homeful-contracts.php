@@ -13,5 +13,6 @@ return [
         'redeem-voucher' => env('REDEEM_VOUCHER_ENDPOINT', 'http://homeful-sellers.test/api/redeem/:voucher'),
     ],
     'records-limit' => env('MATCHED_RECORDS_LIMIT', 3),
-    'test_homeful-id' => env('TEST_HOMEFUL_ID', 'H-KEF4SE')
+    'test_homeful-id' => env('TEST_HOMEFUL_ID', 'H-KEF4SE'),
+    'test_product-sku' => env('TEST_PRODUCT_SKU', 'JN-PPMP-HLTH-EUWF'),
 ];

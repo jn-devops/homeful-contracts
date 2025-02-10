@@ -9,16 +9,25 @@ class GetInventory
 {
     use AsAction;
 
-    /**
-     * @param array $attribs
-     * @return array|false|mixed
-     * @throws \Illuminate\Http\Client\ConnectionException
-     */
-    public function handle(array $attribs): mixed
+    protected function getNextAvailableProperty(array $validated)
     {
-        $route = __(config('homeful-contracts.end-points.inventory'), $attribs);
+        $route = __(config('homeful-contracts.end-points.inventory'), $validated);
         $response = Http::acceptJson()->get($route);
 
         return $response->ok() ? $response->json('data') : false;
+    }
+
+    public function handle(array $attribs): mixed
+    {
+        $validated = validator($attribs, $this->rules())->validate();
+
+        return $this->getNextAvailableProperty($validated);
+    }
+
+    public function rules(): array
+    {
+        return [
+            'sku' => ['required', 'string', 'min:4']
+        ];
     }
 }

@@ -14,8 +14,8 @@ return new class extends Migration
             $table->json('property')->nullable();
             $table->json('checkin')->nullable();
             $table->json('payment')->nullable();
-            $table->string('contact_id')->nullable()->index(); //deprecated
-            $table->string('property_code')->nullable()->index(); //deprecated
+            $table->string('contact_id')->nullable()->index();
+            $table->string('property_code')->nullable()->index();
             $table->string('seller_commission_code')->nullable()->index();
             $table->schemalessAttributes('meta');
             $table->string('state')->nullable();
