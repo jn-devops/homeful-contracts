@@ -72,6 +72,8 @@ class MappingResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('code', 'asc')
+            ->defaultPaginationPageOption(50)
             ->columns([
                 Tables\Columns\TextColumn::make('code')
                     ->searchable(),
