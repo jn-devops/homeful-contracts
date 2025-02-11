@@ -43,25 +43,42 @@ class TransformPipe
             return $next($value);
         }
 
-        // Support both string (comma-separated) and array transformer formats
-        $transformerClasses = is_string($this->mapping->transformer)
+        $transformers = is_string($this->mapping->transformer)
             ? array_map('trim', explode(',', $this->mapping->transformer))
             : (array) $this->mapping->transformer;
 
-        // Apply each transformer in sequence
-        foreach ($transformerClasses as $transformerName) {
+        foreach ($transformers as $transformerWithOption) {
+            [$transformerName, $option] = $this->parseTransformerWithOption($transformerWithOption);
+
             $transformerClass = $this->findTransformerClass($transformerName);
 
             if ($transformerClass) {
+                $transformerInstance = $option
+                    ? new $transformerClass($option)  // Pass option (e.g., symbol) to constructor
+                    : new $transformerClass();
+
                 $value = fractal()
                     ->item(['value' => $value])
-                    ->transformWith(new $transformerClass())
+                    ->transformWith($transformerInstance)
                     ->toArray()['data']['value'];
             }
         }
 
         // Pass the transformed value to the next step in the pipeline
         return $next($value);
+    }
+
+    /**
+     * Parse transformer and its option (if provided) in the format `TransformerName:option`.
+     */
+    protected function parseTransformerWithOption(string $transformerWithOption): array
+    {
+        if (str_contains($transformerWithOption, '?')) {
+            [$transformer, $option] = explode('?', $transformerWithOption, 2);
+            return [$transformer, $option];  // Return both transformer and its options
+        }
+
+        return [$transformerWithOption, null];  // No options specified
     }
 
     /**
@@ -75,8 +92,11 @@ class TransformPipe
      */
     protected function findTransformerClass(string $transformerName): ?string
     {
-        $baseNamespace = "App\\Mappings\\Transformers";
-        $baseDirectory = app_path('Mappings/Transformers');
+        // Retrieve base namespace from config
+        $baseNamespace = config('homeful-contracts.transformers.base_namespace');
+
+        // Derive base directory from base namespace
+        $baseDirectory = base_path(str_replace('\\', DIRECTORY_SEPARATOR, $baseNamespace));
 
         // Ensure the transformer name ends with "Transformer" (if not specified)
         if (!str_ends_with($transformerName, 'Transformer')) {
