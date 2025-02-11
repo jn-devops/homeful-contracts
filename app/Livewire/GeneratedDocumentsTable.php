@@ -25,7 +25,7 @@ class GeneratedDocumentsTable extends Component
             $query->select('code', 'title', 'category');
         }])
             ->get(['mapping_code', 'value'])
-            ->pluck('value', 'mapping_code');
+            ->pluck('value', 'mapping_code')->toArray();
 
 
         // Fetch document sets from the API

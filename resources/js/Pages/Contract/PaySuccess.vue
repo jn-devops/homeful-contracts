@@ -5,11 +5,11 @@ import PrimaryButton from '@/Components/Button/PrimaryButton.vue';
 import SecondaryButton from '@/Components/Button/SecondaryButton.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import axios from "axios";
 const props = defineProps({
     reference_code: String,
-    href: String,
+    payment_details: Object,
 });
 
 const reference = ref({});
@@ -50,6 +50,14 @@ const dashboardButtonAction = () => {
     // TODO: Action if the "Go to Dashboard" button is clicked
 }
 
+onMounted(() => {
+    console.log(props.payment_details.data.orderInformation.referencedId);
+    
+    transactionType.value = "Card Payment"
+    transactionNumber.value = props.payment_details.data.orderInformation.referencedId
+    transactionDate.value = props.payment_details.data.orderInformation.responseDate
+});
+
 </script>
 
 <template>
@@ -81,19 +89,19 @@ const dashboardButtonAction = () => {
                     <div class="">
                         Transation Type
                     </div>
-                    <div class="font-bold text-right">
+                    <div class="font-bold text-right text-sm">
                         {{transactionType}}
                     </div>
                     <div class="">
                         Transation No.
                     </div>
-                    <div class="font-bold text-right">
+                    <div class="font-bold text-right text-xs break-all">
                         {{ transactionNumber }}
                     </div>
                     <div class="">
                         Transation Date
                     </div>
-                    <div class="font-bold text-right">
+                    <div class="font-bold text-right text-xs">
                         {{ transactionDate }}
                     </div>
                 </div>

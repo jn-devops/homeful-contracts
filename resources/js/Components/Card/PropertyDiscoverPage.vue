@@ -50,15 +50,7 @@ const toggleDiscoverPage = () => {
     emit('update:discoverPage', localDiscoverPage.value)
 }
 
-const imgList = ref([
-    {imgLink: usePage().props.data.appLink + '/images/PropertyDiscoverImg.png', description: 'Sample'},
-    {imgLink: 'https://jn-img.enclaves.ph/Everyhome/Pagsibol%20Village%20Magalang%20Pampanga/pagsibol-village-magalang-pampanga-facade.png?updatedAt=1726545316360', description: 'Sample2'},
-    {imgLink: usePage().props.data.appLink + '/images/PropertyDiscoverImg.png', description: 'Sample1'},
-    {imgLink: 'https://picsum.photos/id/237/200/300', description: 'Sample3'},
-    {imgLink: 'https://images.unsplash.com/2/08.jpg?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', description: 'Sample4'},
-    {imgLink: usePage().props.data.appLink + '/images/PropertyDiscoverImg.png', description: 'Sample5'},
-    {imgLink: usePage().props.data.appLink + '/images/PropertyDiscoverImg.png', description: 'Sample6'},
-])
+const imgList = ref([])
 
 const currentImg = ref(
     imgList.value.length === 0
@@ -84,8 +76,23 @@ const location = props.propertyDetail.details['location']
 const brand = props.propertyDetail.details['brand']
 const category = props.propertyDetail.details['category']
 
+const transformImgList = (list) => {
+    let imgListTemp = JSON.parse(list);
+
+    return Object.keys(imgListTemp).map(key => ({
+        imgLink: imgListTemp[key],
+        description: formatKey(key),
+    }));
+}
+
+function formatKey(key) {
+  return key
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase());
+}
+
 onMounted(() => {
-    
+    imgList.value = transformImgList(props.propertyDetail.details.digital_assets)
 })
 
 watch(() => voucher_code.value, (newVal) => {

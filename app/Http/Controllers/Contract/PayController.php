@@ -35,10 +35,16 @@ class PayController extends Controller
 
         return redirect()->route('collect-contact', compact('reference_code'));
     }
-    public function confirmation(Request $request)
+    public function confirmation($reference_code)
     {   
         // TODO: Create Validation for Request -> reference_code
-        // TODO: Update State to Availed 
-        return Inertia::render('Contract/PaySuccess', ['reference_code' => $request->reference_code]);
+        $reference = Reference::where('code', $reference_code)->first();
+        $contract = $reference->getContract();
+        $payment_details = $contract->payment;
+        // dd($payment_details);
+        return Inertia::render('Contract/PaySuccess', [
+            'reference_code' => $reference_code,
+            'payment_details' => $payment_details,
+        ]);
     }
 }
