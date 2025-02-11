@@ -2,15 +2,16 @@
 
 namespace App\Mappings\Pipelines;
 
+use App\Enums\MappingTransformers;
 use App\Models\Mapping;
 use Closure;
+use Illuminate\Support\Facades\App;
 
 /**
  * Class TransformPipe
  *
  * This pipeline step applies a series of transformations to the input value using Fractal transformers.
- * The transformers can be dynamically resolved from fully qualified class names or subdirectories under
- * the default namespace `App\Transformers`.
+ * It dynamically resolves transformers using the `MappingTransformers` enum.
  */
 class TransformPipe
 {
@@ -50,17 +51,21 @@ class TransformPipe
         foreach ($transformers as $transformerWithOption) {
             [$transformerName, $option] = $this->parseTransformerWithOption($transformerWithOption);
 
-            $transformerClass = $this->findTransformerClass($transformerName);
+            // Use MappingTransformers to resolve the transformer class
+            $enumTransformer = MappingTransformers::find($transformerName);
 
-            if ($transformerClass) {
+            if ($enumTransformer) {
+                $transformerClass = $enumTransformer->transformer();
+
                 $transformerInstance = $option
-                    ? new $transformerClass($option)  // Pass option (e.g., symbol) to constructor
-                    : new $transformerClass();
+                    ? App::make($transformerClass, ['option' => $option])
+                    : App::make($transformerClass);
 
                 $value = fractal()
                     ->item(['value' => $value])
                     ->transformWith($transformerInstance)
                     ->toArray()['data']['value'];
+
             }
         }
 
@@ -69,7 +74,10 @@ class TransformPipe
     }
 
     /**
-     * Parse transformer and its option (if provided) in the format `TransformerName:option`.
+     * Parse transformer and its option (if provided) in the format `TransformerName?option=value`.
+     *
+     * @param string $transformerWithOption
+     * @return array
      */
     protected function parseTransformerWithOption(string $transformerWithOption): array
     {
@@ -79,68 +87,5 @@ class TransformPipe
         }
 
         return [$transformerWithOption, null];  // No options specified
-    }
-
-    /**
-     * Dynamically find and return the fully qualified class name of a transformer.
-     *
-     * This method searches through the `App\Mappings\Transformers` namespace and its subdirectories
-     * to find a class that matches the given transformer name.
-     *
-     * @param string $transformerName The short or full name of the transformer (with or without "Transformer").
-     * @return string|null The fully qualified class name if found, otherwise null.
-     */
-    protected function findTransformerClass(string $transformerName): ?string
-    {
-        // Retrieve base namespace from config
-        $baseNamespace = config('homeful-contracts.transformers.base_namespace');
-
-        // Derive base directory from base namespace
-        $baseDirectory = base_path(str_replace('\\', DIRECTORY_SEPARATOR, $baseNamespace));
-
-        // Ensure the transformer name ends with "Transformer" (if not specified)
-        if (!str_ends_with($transformerName, 'Transformer')) {
-            $transformerName .= 'Transformer';
-        }
-
-        // Use Recursive Directory Iterator to scan subdirectories
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($baseDirectory));
-        foreach ($iterator as $file) {
-            if ($file->isFile() && $file->getExtension() === 'php') {
-                $className = $this->buildClassName($file, $baseNamespace, $baseDirectory);
-                if (class_exists($className) && str_ends_with($className, $transformerName)) {
-                    return $className;
-                }
-            }
-        }
-
-        return null;  // Return null if no matching class is found
-    }
-
-    /**
-     * Build the fully qualified class name of a transformer.
-     *
-     * Converts the file path to a namespace and appends the class name.
-     * This allows support for nested directories under `App\Transformers`.
-     *
-     * @param \SplFileInfo $file The file representing the transformer class.
-     * @param string $baseNamespace The base namespace for transformers.
-     * @param string $baseDirectory The base directory for transformers.
-     * @return string The fully qualified class name of the transformer.
-     */
-    protected function buildClassName(\SplFileInfo $file, string $baseNamespace, string $baseDirectory): string
-    {
-        // Get the relative path of the file and convert it to a namespace
-        $relativePath = str_replace($baseDirectory, '', $file->getPath());
-        $relativeNamespace = trim(str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath), '\\');
-
-        // Build the fully qualified class name
-        $className = $baseNamespace;
-        if (!empty($relativeNamespace)) {
-            $className .= "\\{$relativeNamespace}";
-        }
-
-        // Append the class name (file name without the ".php" extension)
-        return "{$className}\\{$file->getBasename('.php')}";
     }
 }
