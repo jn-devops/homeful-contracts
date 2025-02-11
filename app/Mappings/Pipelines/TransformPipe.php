@@ -43,25 +43,42 @@ class TransformPipe
             return $next($value);
         }
 
-        // Support both string (comma-separated) and array transformer formats
-        $transformerClasses = is_string($this->mapping->transformer)
+        $transformers = is_string($this->mapping->transformer)
             ? array_map('trim', explode(',', $this->mapping->transformer))
             : (array) $this->mapping->transformer;
 
-        // Apply each transformer in sequence
-        foreach ($transformerClasses as $transformerName) {
+        foreach ($transformers as $transformerWithOption) {
+            [$transformerName, $option] = $this->parseTransformerWithOption($transformerWithOption);
+
             $transformerClass = $this->findTransformerClass($transformerName);
 
             if ($transformerClass) {
+                $transformerInstance = $option
+                    ? new $transformerClass($option)  // Pass option (e.g., symbol) to constructor
+                    : new $transformerClass();
+
                 $value = fractal()
                     ->item(['value' => $value])
-                    ->transformWith(new $transformerClass())
+                    ->transformWith($transformerInstance)
                     ->toArray()['data']['value'];
             }
         }
 
         // Pass the transformed value to the next step in the pipeline
         return $next($value);
+    }
+
+    /**
+     * Parse transformer and its option (if provided) in the format `TransformerName:option`.
+     */
+    protected function parseTransformerWithOption(string $transformerWithOption): array
+    {
+        if (str_contains($transformerWithOption, '?')) {
+            [$transformer, $option] = explode('?', $transformerWithOption, 2);
+            return [$transformer, $option];  // Return both transformer and its options
+        }
+
+        return [$transformerWithOption, null];  // No options specified
     }
 
     /**

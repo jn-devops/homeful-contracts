@@ -2,11 +2,10 @@
 
 namespace App\Mappings\Transformers;
 
-use Brick\Money\Money;
 use Illuminate\Support\Number;
-use League\Fractal\TransformerAbstract;
+use Brick\Money\Money;
 
-class NumberSpellTransformer extends TransformerAbstract
+class NumberSpellTransformer extends BaseTransformer
 {
     public function transform(array $data): array
     {
