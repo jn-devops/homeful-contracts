@@ -45,7 +45,7 @@ dataset('mappings', function () {
                     'type' => 'string',
                     'default' => 'Ramos',
                     'category' => 'buyer',
-                    'transformer' => 'UpperCase, ReverseString'
+                    'transformer' => 'TitleCase'
                 ],
                 [
                     'code' => 'gmi',
@@ -65,7 +65,7 @@ dataset('mappings', function () {
                     'type' => 'string',
                     'default' => '537',
                     'category' => 'buyer',
-                    'transformer' => 'ToMajorUnit, NumberSpell'
+                    'transformer' => 'ToMajorUnit, NumberSpell, TitleCase'
                 ],
             ])
         ]
@@ -91,9 +91,9 @@ test('generate contract property action works', function (Reference $reference, 
 
     $expected = [
         ['title' => 'First Name', 'value' => 'LEMMOR'],
-        ['title' => 'Last Name', 'value' => 'UIT'],
+        ['title' => 'Last Name', 'value' => 'Tiu'],
         ['title' => 'GMI', 'value' => 14400],
-        ['title' => 'GMI Words', 'value' => 'fourteen thousand three hundred ninety-nine point three seven'],
+        ['title' => 'GMI Words', 'value' => 'Fourteen Thousand Three Hundred Ninety-Nine Point Three Seven'],
     ];
 
     expect($payloads)->toMatchArray($expected);
