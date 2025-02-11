@@ -34,7 +34,7 @@ class MappingExporter extends Exporter
                 }),
             ExportColumn::make('transformer')
                 ->state(function (Mapping $mapping) {
-                    return $mapping->transformer->value??'';
+                    return $mapping->transformer??'';
                 }),
             ExportColumn::make('options'),
             ExportColumn::make('remarks'),
