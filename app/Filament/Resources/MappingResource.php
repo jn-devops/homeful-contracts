@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\MappingCategory;
+use App\Enums\MappingSource;
+use App\Enums\MappingTransformers;
+use App\Enums\MappingType;
 use App\Filament\Resources\MappingResource\Pages;
 use App\Filament\Resources\MappingResource\RelationManagers;
 use App\Models\Mapping;
@@ -33,24 +37,30 @@ class MappingResource extends Resource
                 Forms\Components\TextInput::make('path')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('source')
+                Forms\Components\Select::make('source')
                     ->required()
-                    ->maxLength(255)
-                    ->default('array'),
+                    ->options(collect(MappingSource::cases())->mapWithKeys(fn($case) => [$case->value => ucfirst(strtolower(str_replace('_', ' ', $case->name)))])->toArray())
+                    ->default(MappingSource::default()->value)
+                    ->native(false),
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('type')
+                Forms\Components\Select::make('type')
                     ->required()
-                    ->maxLength(255)
-                    ->default('string'),
+                    ->native(false)
+                    ->options(collect(MappingType::cases())->mapWithKeys(fn($case) => [$case->value => ucfirst(strtolower(str_replace('_', ' ', $case->name)))])->toArray())
+                    ->default(MappingType::default()->value),
                 Forms\Components\TextInput::make('default')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('category')
+                Forms\Components\Select::make('category')
                     ->required()
-                    ->maxLength(255)
-                    ->default('buyer'),
-                Forms\Components\TextInput::make('transformer')
-                    ->maxLength(255),
+                    ->native(false)
+                    ->options(collect(MappingCategory::cases())->mapWithKeys(fn($case) => [$case->value => ucfirst(strtolower(str_replace('_', ' ', $case->name)))])->toArray())
+                    ->default(MappingCategory::default()->value),
+                Forms\Components\Select::make('transformer')
+                    ->options(collect(MappingTransformers::cases())
+                        ->mapWithKeys(fn($case) => [$case->name => ucfirst(strtolower(str_replace('_', ' ', $case->name)))])
+                        ->toArray()
+                    )->native(false),
                 Forms\Components\TextInput::make('options'),
                 Forms\Components\TextInput::make('remarks')
                     ->maxLength(255),
