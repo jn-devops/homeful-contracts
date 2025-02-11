@@ -75,11 +75,11 @@ class TransformPipe
      */
     protected function findTransformerClass(string $transformerName): ?string
     {
-        $config = config('homeful-contracts.transformers');
+        // Retrieve base namespace from config
+        $baseNamespace = config('homeful-contracts.transformers.base_namespace');
 
-        // Ensure both base namespace and base directory exist
-        $baseDirectory = $config['base_directory'];
-        $baseNamespace = $config['base_namespace'];
+        // Derive base directory from base namespace
+        $baseDirectory = base_path(str_replace('\\', DIRECTORY_SEPARATOR, $baseNamespace));
 
         // Ensure the transformer name ends with "Transformer" (if not specified)
         if (!str_ends_with($transformerName, 'Transformer')) {
