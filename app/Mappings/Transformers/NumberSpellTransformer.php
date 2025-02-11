@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Transformers;
+namespace App\Mappings\Transformers;
 
-use League\Fractal\TransformerAbstract;
-use Illuminate\Support\Number;
 use Brick\Money\Money;
+use Illuminate\Support\Number;
+use League\Fractal\TransformerAbstract;
 
 class NumberSpellTransformer extends TransformerAbstract
 {

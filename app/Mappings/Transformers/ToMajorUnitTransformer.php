@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Transformers;
+namespace App\Mappings\Transformers;
 
-use League\Fractal\TransformerAbstract;
 use Brick\Math\RoundingMode;
 use Brick\Money\Money;
+use League\Fractal\TransformerAbstract;
 
 class ToMajorUnitTransformer extends TransformerAbstract
 {
