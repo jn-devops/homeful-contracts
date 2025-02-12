@@ -1,11 +1,12 @@
 <?php
 
-use App\Enums\MappingTransformers;
+use App\Mappings\Transformers\ToMajorUnitTransformer;
+use App\Mappings\Transformers\NumberSpellTransformer;
 use App\Mappings\Transformers\UpperCaseTransformer;
 use App\Mappings\Transformers\TitleCaseTransformer;
 use App\Mappings\Transformers\CurrencyTransformer;
-use App\Mappings\Transformers\ToMajorUnitTransformer;
-use App\Mappings\Transformers\NumberSpellTransformer;
+use App\Mappings\Transformers\ConcatTransformer;
+use App\Enums\MappingTransformers;
 
 test('MappingTransformers enum resolves transformer classes correctly', function () {
     $transformers = [
@@ -20,6 +21,8 @@ test('MappingTransformers enum resolves transformer classes correctly', function
         'ToMajorUnit' => ToMajorUnitTransformer::class,
         'number_spell' => NumberSpellTransformer::class,
         'NumberSpell' => NumberSpellTransformer::class,
+        'concat' => ConcatTransformer::class,
+        'Concat' => ConcatTransformer::class
     ];
 
     foreach ($transformers as $input => $expectedClass) {
@@ -39,4 +42,5 @@ test('MappingTransformers::isValid() validates transformer names correctly', fun
     expect(MappingTransformers::isValid('Currency'))->toBeTrue();
     expect(MappingTransformers::isValid('InvalidTransformer'))->toBeFalse();
     expect(MappingTransformers::isValid('NumberSpell'))->toBeTrue();
+    expect(MappingTransformers::isValid('Concat'))->toBeTrue();
 });

@@ -2,12 +2,13 @@
 
 namespace App\Enums;
 
-use App\Mappings\Transformers\NumberSpellTransformer;
 use App\Mappings\Transformers\Test\ReverseStringTransformer;
+use App\Mappings\Transformers\NumberSpellTransformer;
 use App\Mappings\Transformers\ToMajorUnitTransformer;
 use App\Mappings\Transformers\TitleCaseTransformer;
 use App\Mappings\Transformers\UpperCaseTransformer;
 use App\Mappings\Transformers\CurrencyTransformer;
+use App\Mappings\Transformers\ConcatTransformer;
 use Homeful\Common\Traits\EnumUtils;
 use Illuminate\Support\Str;
 
@@ -46,6 +47,7 @@ enum MappingTransformers
     case TO_MAJOR_UNIT;
     case CURRENCY;
     case NUMBER_SPELL;
+    case CONCAT;
     case REVERSE_STRING;
 
     /**
@@ -71,6 +73,7 @@ enum MappingTransformers
             self::TO_MAJOR_UNIT => ToMajorUnitTransformer::class,
             self::CURRENCY => CurrencyTransformer::class,
             self::NUMBER_SPELL => NumberSpellTransformer::class,
+            self::CONCAT => ConcatTransformer::class,
             self::REVERSE_STRING => ReverseStringTransformer::class
         };
     }

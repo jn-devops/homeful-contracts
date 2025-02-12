@@ -2,8 +2,8 @@
 
 namespace App\Mappings\Transformers;
 
-use Illuminate\Support\Str;
 use Homeful\Contacts\Enums\Suffix;
+use Illuminate\Support\Str;
 
 /**
  * Class TitleCaseTransformer

@@ -28,14 +28,14 @@ dataset('mappings', function () {
         [
             fn() => Mapping::factory()->createMany([
                 [
-                    'code' => 'first_name',
-                    'path' => 'contact.first_name',
-                    'source' => 'array',
-                    'title' => 'First Name',
-                    'type' => 'string',
-                    'default' => 'Christian',
-                    'category' => 'buyer',
-                    'transformer' => 'UpperCase, ReverseString'
+                    'code' => 'first_name', //this is the variable name used in the template for document generation
+                    'path' => 'contact.first_name', //this is the index of the source, see source below
+                    'source' => 'array', //usually array, but check out see /App/Enums/MappingSource
+                    'title' => 'First Name', // the title of the variable, purely for display
+                    'type' => 'string', // the final type of the result, see /App/Enums/MappingType::class
+                    'default' => 'Christian', //default if path in source is non-existent, this is usually an empty string
+                    'category' => 'buyer', //see /App/Enums/MappingCategory
+                    'transformer' => 'UpperCase, ReverseString' //operation applied to the result in succession, see /App/Enums/MappingTransformers
                 ],
                 [
                     'code' => 'last_name',
@@ -45,7 +45,7 @@ dataset('mappings', function () {
                     'type' => 'string',
                     'default' => 'Ramos',
                     'category' => 'buyer',
-                    'transformer' => 'TitleCase'
+                    'transformer' => 'TitleCase, Concat?before=Mr.'
                 ],
                 [
                     'code' => 'gmi',
@@ -91,7 +91,7 @@ test('generate contract property action works', function (Reference $reference, 
 
     $expected = [
         ['title' => 'First Name', 'value' => 'LEMMOR'],
-        ['title' => 'Last Name', 'value' => 'Tiu'],
+        ['title' => 'Last Name', 'value' => 'Mr. Tiu'],
         ['title' => 'GMI', 'value' => 14400],
         ['title' => 'GMI Words', 'value' => 'Fourteen Thousand Three Hundred Ninety-Nine Point Three Seven'],
     ];

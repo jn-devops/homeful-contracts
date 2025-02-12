@@ -1,6 +1,7 @@
 <?php
 
 use App\Mappings\Transformers\TitleCaseTransformer;
+use App\Mappings\Transformers\ConcatTransformer;
 use App\Mappings\Pipelines\TransformPipe;
 use App\Models\Mapping;
 
@@ -80,4 +81,44 @@ test('it works with empty or already formatted input', function () {
 
     expect($transformer->transform(['value' => '']))->toBe(['value' => '']);
     expect($transformer->transform(['value' => 'John Doe Jr.']))->toBe(['value' => 'John Doe Jr.']);
+});
+
+test('ConcatTransformer appends before and after words correctly', function () {
+    $transformer = new ConcatTransformer('before=Hello&after=World');
+
+    $result = $transformer->transform(['value' => 'PHP']);
+
+    expect($result['value'])->toBe('Hello PHP World');
+});
+
+test('ConcatTransformer only appends before word', function () {
+    $transformer = new ConcatTransformer('before=Mr.');
+
+    $result = $transformer->transform(['value' => 'John Doe']);
+
+    expect($result['value'])->toBe('Mr. John Doe');
+});
+
+test('ConcatTransformer only appends after word', function () {
+    $transformer = new ConcatTransformer('after=Inc.');
+
+    $result = $transformer->transform(['value' => 'TechCorp']);
+
+    expect($result['value'])->toBe('TechCorp Inc.');
+});
+
+test('ConcatTransformer does not add extra spaces when before and after are empty', function () {
+    $transformer = new ConcatTransformer();
+
+    $result = $transformer->transform(['value' => 'CleanText']);
+
+    expect($result['value'])->toBe('CleanText');
+});
+
+test('ConcatTransformer trims extra spaces properly', function () {
+    $transformer = new ConcatTransformer('before=  Welcome  &after=  ! ');
+
+    $result = $transformer->transform(['value' => '   Home   ']);
+
+    expect($result['value'])->toBe('Welcome Home !');
 });
