@@ -44,3 +44,4 @@ test('MappingTransformers::isValid() validates transformer names correctly', fun
     expect(MappingTransformers::isValid('NumberSpell'))->toBeTrue();
     expect(MappingTransformers::isValid('Concat'))->toBeTrue();
 });
+
