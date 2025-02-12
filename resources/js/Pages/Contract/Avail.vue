@@ -18,7 +18,7 @@ const props = defineProps({
         type: Object,
         default: [],
     },
-    contact_reference_code: {
+    reference_code: {
         type: String,
         default: '',
     }
@@ -33,7 +33,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.reference_code = reference.value;
+    form.reference_code = props.reference_code;
     form.post(route('avail.store'), {
         onFinish: () => form.reset(),
     });
@@ -156,7 +156,7 @@ watch (
                     <div class="inset-0 bg-gradient-to-t from-white to-transparent opacity-100 h-40 w-full bottom-0 flex items-end pb-4 ps-4">
                         <div class="flex flex-col">
                             <h3 class="text-2xl font-crimson font-bold">Home Fit For You</h3>
-                            <span class="text-sm">Homeful ID: <b>{{ contact_reference_code }}</b></span>
+                            <span class="text-sm">Homeful ID: <b>{{ reference_code }}</b></span>
                             <span class="text-sm">Range: ₱ {{ formatNumber(startRange.details['price']) }} - ₱ {{ formatNumber(lastRange.details['price']) }}</span>
                         </div>
                     </div>
@@ -189,6 +189,7 @@ watch (
                 </div>
                 <div class="text-gray-500 text-xs mt-3">
                     <h6 class="font-bold text-sm">Showing:</h6>
+                    {{ form.errors }}
                     <span>All Property Types, All Locations, {{ age }} years of age with an income of P{{ numberFormatter(contactData.monthly_gross_income) }}.</span>
                 </div>
                 <div class="mt-3">

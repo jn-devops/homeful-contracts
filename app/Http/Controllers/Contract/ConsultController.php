@@ -33,7 +33,7 @@ class ConsultController extends Controller
         return Inertia::render('Contract/Avail', [
             'buttonOptions' => $this->getOptions($reference->code),
             'contactData' => $reference->getContract()->getData()->contact,
-            'contact_reference_code' => $contact_reference_code,
+            'reference_code' => $reference->code,
         ]);
 
         // return Inertia::render('Contract/Consult', $this->getProps($request)); // Previous implementation
