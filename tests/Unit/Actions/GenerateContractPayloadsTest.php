@@ -39,13 +39,13 @@ dataset('mappings', function () {
                 ],
                 [
                     'code' => 'last_name',
-                    'path' => 'contact.last_name',
+                    'path' => 'contact.first_name, contact.middle_name, contact.last_name',
                     'source' => 'array',
-                    'title' => 'Last Name',
+                    'title' => 'Full Name',
                     'type' => 'string',
                     'default' => 'Ramos',
                     'category' => 'buyer',
-                    'transformer' => 'TitleCase, Concat?before=Mr.'
+                    'transformer' => 'Join, Concat?before=Mr.&after=Jr.'
                 ],
                 [
                     'code' => 'gmi',
@@ -91,7 +91,7 @@ test('generate contract property action works', function (Reference $reference, 
 
     $expected = [
         ['title' => 'First Name', 'value' => 'LEMMOR'],
-        ['title' => 'Last Name', 'value' => 'Mr. Tiu'],
+        ['title' => 'Full Name', 'value' => 'Mr. Rommel Posadas Tiu Jr.'],
         ['title' => 'GMI', 'value' => 14400],
         ['title' => 'GMI Words', 'value' => 'Fourteen Thousand Three Hundred Ninety-Nine Point Three Seven'],
     ];

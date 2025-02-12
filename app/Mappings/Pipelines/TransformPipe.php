@@ -2,10 +2,11 @@
 
 namespace App\Mappings\Pipelines;
 
+use App\Exceptions\MissingJoinTransformerException;
+use Illuminate\Support\Facades\App;
 use App\Enums\MappingTransformers;
 use App\Models\Mapping;
 use Closure;
-use Illuminate\Support\Facades\App;
 
 /**
  * Class TransformPipe
@@ -36,6 +37,7 @@ class TransformPipe
      * @param mixed $value The value to be transformed.
      * @param Closure $next The next step in the pipeline.
      * @return mixed The transformed value.
+     * @throws MissingJoinTransformerException
      */
     public function handle(mixed $value, Closure $next): mixed
     {
@@ -47,6 +49,12 @@ class TransformPipe
         $transformers = is_string($this->mapping->transformer)
             ? array_map('trim', explode(',', $this->mapping->transformer))
             : (array) $this->mapping->transformer;
+
+        // 🚨 Validate: If multiple paths are used, ensure JoinTransformer is included
+
+        if ($this->hasMultiplePaths() && !$this->containsJoinTransformer($transformers)) {
+            throw new MissingJoinTransformerException($this->mapping->code);
+        }
 
         foreach ($transformers as $transformerWithOption) {
             [$transformerName, $option] = $this->parseTransformerWithOption($transformerWithOption);
@@ -74,6 +82,16 @@ class TransformPipe
     }
 
     /**
+     * Check if the mapping's path contains multiple values (comma-separated paths).
+     *
+     * @return bool
+     */
+    protected function hasMultiplePaths(): bool
+    {
+        return str_contains($this->mapping->path, ',');
+    }
+
+    /**
      * Parse transformer and its option (if provided) in the format `TransformerName?option=value`.
      *
      * @param string $transformerWithOption
@@ -87,5 +105,21 @@ class TransformPipe
         }
 
         return [$transformerWithOption, null];  // No options specified
+    }
+
+    /**
+     * Check if the transformer list includes `JoinTransformer` (case-insensitive).
+     *
+     * @param array $transformers List of transformer names.
+     * @return bool True if `JoinTransformer` is found, false otherwise.
+     */
+    protected function containsJoinTransformer(array $transformers): bool
+    {
+        foreach ($transformers as $transformerName) {
+            if (MappingTransformers::find($transformerName) === MappingTransformers::JOIN) {
+                return true;
+            }
+        }
+        return false;
     }
 }
