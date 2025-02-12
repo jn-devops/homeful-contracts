@@ -189,7 +189,6 @@ watch (
                 </div>
                 <div class="text-gray-500 text-xs mt-3">
                     <h6 class="font-bold text-sm">Showing:</h6>
-                    {{ form.errors }}
                     <span>All Property Types, All Locations, {{ age }} years of age with an income of P{{ numberFormatter(contactData.monthly_gross_income) }}.</span>
                 </div>
                 <div class="mt-3">
