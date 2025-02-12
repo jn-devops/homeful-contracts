@@ -52,16 +52,8 @@ const toggleDiscoverPage = () => {
 
 const imgList = ref([])
 
-const currentImg = ref(
-    imgList.value.length === 0
-        ? {imgLink: usePage().props.data.appLink + '/images/sample1.png'}
-        : imgList.value[0]
-);
-const currentImgIndex = ref(
-    imgList.value.length === 0
-        ? null
-        : 0
-)
+const currentImg = ref([]);
+const currentImgIndex = ref(0)
 
 const updateCurrentImg = (newIndex) => {
     currentImg.value = imgList.value[newIndex]
@@ -93,6 +85,10 @@ function formatKey(key) {
 
 onMounted(() => {
     imgList.value = transformImgList(props.propertyDetail.details.digital_assets)
+    
+    currentImg.value = imgList.value.length === 0
+                                        ? {imgLink: usePage().props.data.appLink + '/images/sample1.png'}
+                                        : imgList.value[0];
 })
 
 watch(() => voucher_code.value, (newVal) => {

@@ -53,7 +53,7 @@ const dashboardButtonAction = () => {
 onMounted(() => {
     console.log(props.payment_details.data.orderInformation.referencedId);
     
-    transactionType.value = "Card Payment"
+    transactionType.value = "Credit/Card Payment"
     transactionNumber.value = props.payment_details.data.orderInformation.referencedId
     transactionDate.value = props.payment_details.data.orderInformation.responseDate
 });
@@ -85,23 +85,23 @@ onMounted(() => {
             </div>
             <div class="mt-10">
                 <h5 class="text-gray-500 ">Transaction Details</h5>
-                <div class="rounded-xl px-4 py-5 grid grid-cols-2 bg-[#F8F9FE] gap-2">
-                    <div class="">
+                <div class="rounded-xl px-4 py-5 grid grid-cols-12 bg-[#F8F9FE] gap-2">
+                    <div class="col-span-5 text-sm">
                         Transation Type
                     </div>
-                    <div class="font-bold text-right text-sm">
+                    <div class="font-bold col-span-7 text-right text-sm">
                         {{transactionType}}
                     </div>
-                    <div class="">
+                    <div class="col-span-5 text-sm">
                         Transation No.
                     </div>
-                    <div class="font-bold text-right text-xs break-all">
+                    <div class="font-bold col-span-7 text-right text-sm break-all">
                         {{ transactionNumber }}
                     </div>
-                    <div class="">
+                    <div class="col-span-5 text-sm">
                         Transation Date
                     </div>
-                    <div class="font-bold text-right text-xs">
+                    <div class="font-bold col-span-7 text-right text-sm">
                         {{ transactionDate }}
                     </div>
                 </div>

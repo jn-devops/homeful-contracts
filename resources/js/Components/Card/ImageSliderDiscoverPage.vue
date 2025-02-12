@@ -1,6 +1,7 @@
 <script setup>
 import { usePage } from '@inertiajs/vue3'
 import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { nextTick } from "vue";
 
 const emit = defineEmits(['updateCurrentImg'])
 
@@ -87,13 +88,17 @@ function scrollToCurrent() {
 
 const targetDiv = ref(null);
 let observer = null; 
+let initialRun = true
 
 const handleIntersect = (entries) => {
   if (entries[0].isIntersecting) {
     // Target div is in view or has passed!
   } else {
     // Target div is out of view.
-    resetInterval()
+    if(!initialRun){
+        resetInterval()
+    }
+    initialRun = false
   }
 };
 
@@ -107,7 +112,7 @@ onMounted(() => {
         root: null, // Observe within the viewport
         threshold: 0, // Trigger as soon as any part is visible
     });
-
+    initialRun = true
     if (targetDiv.value) {
         observer.observe(targetDiv.value);
     }

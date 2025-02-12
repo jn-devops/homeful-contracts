@@ -7,7 +7,7 @@ import HomeMatch from '@/Components/Match/HomeMatch.vue';
 import SuccessToast from '@/Components/Toast/SuccessToast.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { onMounted, provide, ref, watch } from "vue";
+import { computed, onMounted, provide, ref, watch } from "vue";
 
 const props = defineProps({
     buttonOptions: {
@@ -17,6 +17,10 @@ const props = defineProps({
     contactData: {
         type: Object,
         default: [],
+    },
+    contact_reference_code: {
+        type: String,
+        default: '',
     }
 });
 
@@ -92,8 +96,11 @@ const locations = [
 
 const notif = ref(false)
 const keys = Object.keys(props.buttonOptions)
-const startRange = props.buttonOptions[keys[keys.length - 1]]
-const lastRange = props.buttonOptions[Object.keys(props.buttonOptions)[0]]
+
+const valHolder1 = props.buttonOptions[keys[keys.length - 1]]
+const valHolder2 = props.buttonOptions[Object.keys(props.buttonOptions)[0]]
+const startRange = (valHolder1.details['price'] > valHolder2.details['price']) ? valHolder2 : valHolder1
+const lastRange = (valHolder1.details['price'] < valHolder2.details['price']) ? valHolder2 : valHolder1
 
 const formatNumber = (num) => {
     if (num >= 1000000) {
@@ -104,8 +111,26 @@ const formatNumber = (num) => {
     return num;
 }
 
+const age = computed(() => {
+  const birthDate = new Date(props.contactData.date_of_birth);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  
+  // Adjust age if the birthday hasn't occurred yet this year
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+});
+
 provide('houseTypes', houseTypes)
 provide('locations', locations)
+
+onMounted(() => {
+    
+}),
 
 watch (
     () => usePage().props.flash.event,
@@ -131,6 +156,7 @@ watch (
                     <div class="inset-0 bg-gradient-to-t from-white to-transparent opacity-100 h-40 w-full bottom-0 flex items-end pb-4 ps-4">
                         <div class="flex flex-col">
                             <h3 class="text-2xl font-crimson font-bold">Home Fit For You</h3>
+                            <span class="text-sm">Homeful ID: <b>{{ contact_reference_code }}</b></span>
                             <span class="text-sm">Range: ₱ {{ formatNumber(startRange.details['price']) }} - ₱ {{ formatNumber(lastRange.details['price']) }}</span>
                         </div>
                     </div>
@@ -163,7 +189,7 @@ watch (
                 </div>
                 <div class="text-gray-500 text-xs mt-3">
                     <h6 class="font-bold text-sm">Showing:</h6>
-                    <span>All Property Types, All Locations, 30 years of age with an income of P100,000.</span>
+                    <span>All Property Types, All Locations, {{ age }} years of age with an income of P{{ numberFormatter(contactData.monthly_gross_income) }}.</span>
                 </div>
                 <div class="mt-3">
                     <div v-for="(opt, i) in buttonOptions">
