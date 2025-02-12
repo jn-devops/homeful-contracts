@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\ContractResource\Pages;
 
+use App\Actions\GenerateContractPayloads;
 use App\Filament\Resources\ContractResource;
 use App\Helpers\LoanTermOptions;
+use App\Models\Payload;
 use App\Models\RequirementMatrix;
 use Filament\Actions;
 use Filament\Actions\Action;
@@ -17,6 +19,9 @@ use Homeful\Properties\Models\Project;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Http;
 use Homeful\Contracts\States\ContractState;
+use Spatie\ModelStates\State;
+use Spatie\ModelStates\StateConfig;
+
 class EditContract extends EditRecord
 {
     protected static string $resource = ContractResource::class;
@@ -46,10 +51,17 @@ class EditContract extends EditRecord
                 ->modalCancelActionLabel('No')
                 ->form([
                     Select::make('status')
-                        ->options([]
-                        )->native(false)
-                ])->action(function(){
+                        ->options(function(Contract $record){
+                           return collect($this->record->state->transitionableStates())
+                                ->mapWithKeys(function ($state) {
 
+                                    $stateInstance = new $state($this->record); // Pass the model instance
+                                    return [$state => $stateInstance->name()]; // Key: name(), Value: class
+                                })->toArray();
+                        })->native(false)
+                ])->action(function(array $data, Contract $record) {
+                    $record->state->transitionTo($data['status']);
+                    $record->save();
                 }),
         ];
     }
@@ -65,58 +77,9 @@ class EditContract extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-//        dd($this->record->getData()->customer->toArray());
-//        $contact = Contact::where('id', $data['contact_id'])->first();
-//        dd($contact->toArray());
+
         $contact_data =$this->record->getData()->customer->toArray();
-//        dd($contact_data);
-//        $response = Http::post('http://homeful-merge.test/api/folder-documents/test', [
-//            'code' => 'test',
-//            'data' => [
-//                'first_name' => $contact_data['first_name'],
-//                'last_name' => $contact_data['last_name'],
-//                'middle_name' => $contact_data['middle_name'],
-//                'name_suffix' => $contact_data['name_suffix'],
-//                'mothers_maiden_name' => $contact_data['mothers_maiden_name'],
-//                'email' => $contact_data['email'],
-//                'mobile' => $contact_data['mobile'],
-//                'other_mobile' => $contact_data['other_mobile'],
-//                'help_number' => $contact_data['help_number'],
-//                'landline' => $contact_data['landline'],
-//                'civil_status' => $contact_data['civil_status'],
-//                'sex' => $contact_data['sex'],
-//                'nationality' => $contact_data['nationality'],
-//                'date_of_birth' => $contact_data['date_of_birth'],
-//            ],
-//        ]);
-//
 
-//        dd($data['documents']);
-
-
-//        dd($contact->getData()->toArray());
-
-//        dd($contact);
-//        $data = app(GetContactMetadataFromContactModel::class)->run($contact);
-//        dd($data);
-//        dd(Contact::latest()->first());
-//            $contact->middle_name = $contact->middle_name??'';
-//        $order=$contact->order;
-//        $order = $contact_data['order'];
-//        $order['sku'] = $order['sku']??'';
-//        $order['seller_commission_code'] = $order['seller_commission_code']??'';
-//        $order['property_code'] = $order['property_code']??'';
-//        $contact->order = $order;
-//        $contact_data = ContactData::fromModel($contact);
-//          $contact_data =$contact->getData()->toArray();
-//        $new_data = [];
-//
-//
-//
-//        $new_data['docs_for_upload'] = $this->record->documents;
-//
-//
-//        // Extracting data from contact_data for form
         $buyer_address_present = collect($contact_data['addresses'])
             ->filter(fn($address) => in_array($address['type'], ['Primary','Present']))
             ->first() ?? [];
@@ -124,30 +87,22 @@ class EditContract extends EditRecord
             ->filter(fn($address) => in_array($address['type'], ['Sencondary','Permanent']))
             ->first() ?? [];
         $buyer_employment = collect($contact_data['employment'])->firstWhere('type', 'Primary') ?? [];
-//        dd($contact_data,$buyer_address_present,$buyer_address_permanent,$buyer_employment);
         $new_data['buyer_employment']=$buyer_employment;
-//
         // Spouse details if available
         if( !empty($contact_data['spouse'])){
             $new_data['spouse'] = $contact_data['spouse'] ?? [];
             $new_data['spouse']['no_middle_name']=$new_data['spouse']['middle_name']==''||$new_data['spouse']['middle_name']==null;
-//            $new_data['spouse']['tin'] = $contact_data->employment?->toCollection()->firstWhere('type', 'spouse')->id->tin ?? '';
         }
-//
-//
-//
-//        // Profile data
-//        $new_data['profile'] = $contact_data->profile->toArray();
-//
-//        // Order and seller details
-//        $new_data['order'] = $contact_data['order'];
-//
-//        $new_data['aif']=$contact_data->order->toArray()['aif'];
-//        $new_data['aif']['attorney']['first_name'] = $contact_data->order->toArray()['aif_attorney_first_name'];
-//        $new_data['aif']['attorney']['last_name'] = $contact_data->order->toArray()['aif_attorney_last_name'];
-//        $new_data['aif']['attorney']['middle_name'] = $contact_data->order->toArray()['aif_attorney_middle_name'];
-//        $new_data['aif']['attorney']['name_suffix'] = $contact_data->order->toArray()['aif_attorney_name_suffix'];
-//        $new_data['aif']['attorney']['no_middle_name'] = ($contact_data->order->toArray()['aif_attorney_middle_name'] == '');
+
+        if (!empty($contact_data['aif'])){
+            $new_data['aif']=$contact_data['aif']??[];
+            $new_data['aif']['first_name'] = $contact_data['aif']['aif_attorney_first_name']??'';
+            $new_data['aif']['last_name'] = $contact_data['aif']['aif_attorney_last_name']??'';
+            $new_data['aif']['middle_name'] = $contact_data['aif']['aif_attorney_middle_name']??'';
+            $new_data['aif']['name_suffix'] = $contact_data['aif']['aif_attorney_name_suffix']??'';
+            $new_data['aif']['no_middle_name'] = ($contact_data['aif']['aif_attorney_middle_name'] == '');
+        }
+
 //
 ////        $new_data['seller'] = $contact_data->order->toArray()['seller'] ?? [];
 //        $new_data['reference_code'] = $contact_data->reference_code;
@@ -210,8 +165,7 @@ class EditContract extends EditRecord
 //
         $new_data['address']['present']['same_as_permanent'] = $is_same_address;
 //
-        $new_data['gender'] =$contact_data['sex'];
-//
+//gi
 //        $cobo_address=  collect($contact_data->addresses)
 //            ->filter(fn($address) => in_array($address['type'], ['co_borrower']))
 //            ->first() ?? [];
@@ -311,9 +265,11 @@ class EditContract extends EditRecord
 //            }
 //        }
 //
+//        dd($new_data);
+
+
         $new_data['contact'] = $new_data;
         $data['contact_data']=$new_data;
-//        dd($data);
         return $data;
     }
 }
