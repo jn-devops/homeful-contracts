@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
 Route::get('register-contact', RegisterContactController::class)->name('register-contact');
 Route::resource('consult', ConsultController::class)->only(['create', 'store']);
 Route::resource('avail', AvailController::class)
-    ->middleware(EnsureContactCanMatch::class)
+    // ->middleware(EnsureContactCanMatch::class)
     ->only(['create', 'store']);
 Route::get('verify-contact', VerifyContactController::class)->name('verify-contact');
 Route::resource('verify', VerifyController::class)->only(['create', 'store']);
