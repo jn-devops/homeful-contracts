@@ -97,27 +97,23 @@ class EditContract extends EditRecord
                 : '';
         }
 
-        //propert_code
-        //sku
-        //TCT NO
-        //property_name
-        //property_type
-        //developer_name
-        //registry_of_deeds_address
-        //project_name
-        //project_code
-        //block
-        //lot
-        //lot_area
-        //floor_area
-        //tct_number
-        //project_location
-        //project_address
-        //unit_type
-        //unit_type_interior
-        //tcp
         if (!empty($this->record->getData()->inventory->toArray())&& $this->record->getData()->inventory!=null) {
-            $new_data['order'] = $this->record->getData()->inventory->toArray();
+            $new_data['order']['sku']=$this->record->getData()->inventory->toArray()['sku'];
+            $new_data['order']['phase']=$this->record->getData()->inventory->toArray()['phase'];
+            $new_data['order']['block']=$this->record->getData()->inventory->toArray()['block'];
+            $new_data['order']['lot']=$this->record->getData()->inventory->toArray()['lot'];
+            $new_data['order']['lot_area']=$this->record->getData()->inventory->toArray()['lot_area'];
+            $new_data['order']['floor_area']=$this->record->getData()->inventory->toArray()['floor_area'];
+            $new_data['order']['property_code']=$this->record->property_code;
+            $new_data['order']['property_name'] = $this->record->getData()->inventory->toArray()['name'];
+            $new_data['order']['property_type'] = $this->record->getData()->inventory->toArray()['type'];
+            $new_data['order']['project_name'] = $this->record->getData()->inventory->toArray()['project']['name'];
+            $new_data['order']['project_location'] = $this->record->getData()->inventory->toArray()['project']['location'];
+            $new_data['order']['project_address'] = $this->record->getData()->inventory->toArray()['project']['address'];
+            $new_data['order']['project_code'] = $this->record->getData()->inventory->toArray()['project']['code'];
+            $new_data['order']['unit_type_interior'] = $this->record->getData()->inventory->toArray()['unit_type_interior'];
+            $new_data['order']['unit_type'] = $this->record->getData()->inventory->toArray()['unit_type'];
+            $new_data['order']['payment_scheme']['total_contract_price'] = $this->record->getData()->inventory->toArray()['tcp'];
         }
 //        dd($this->record->getData()->inventory->toArray(),$data);
 
