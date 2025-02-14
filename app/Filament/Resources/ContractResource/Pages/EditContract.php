@@ -97,6 +97,29 @@ class EditContract extends EditRecord
                 : '';
         }
 
+        //propert_code
+        //sku
+        //TCT NO
+        //property_name
+        //property_type
+        //developer_name
+        //registry_of_deeds_address
+        //project_name
+        //project_code
+        //block
+        //lot
+        //lot_area
+        //floor_area
+        //tct_number
+        //project_location
+        //project_address
+        //unit_type
+        //unit_type_interior
+        //tcp
+        if (!empty($this->record->getData()->inventory->toArray())&& $this->record->getData()->inventory!=null) {
+            $new_data['order'] = $this->record->getData()->inventory->toArray();
+        }
+//        dd($this->record->getData()->inventory->toArray(),$data);
 
         $contact_data =$this->record->getData()->customer->toArray();
 
