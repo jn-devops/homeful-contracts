@@ -333,3 +333,45 @@ test('NumberTrimTransformer keeps decimal point only when needed', function () {
 
     expect($result['value'])->toBe(0.5);
 });
+
+use App\Mappings\Transformers\LowerCaseTransformer;
+
+test('LowerCaseTransformer converts text to lowercase', function () {
+    $transformer = new LowerCaseTransformer();
+
+    $result = $transformer->transform(['value' => 'HeLLo WoRLd']);
+
+    expect($result['value'])->toBe('hello world');
+});
+
+test('LowerCaseTransformer trims whitespace before converting', function () {
+    $transformer = new LowerCaseTransformer();
+
+    $result = $transformer->transform(['value' => '   HeLLo WoRLd   ']);
+
+    expect($result['value'])->toBe('hello world');
+});
+
+test('LowerCaseTransformer handles empty strings correctly', function () {
+    $transformer = new LowerCaseTransformer();
+
+    $result = $transformer->transform(['value' => '   ']);
+
+    expect($result['value'])->toBe('');
+});
+
+test('LowerCaseTransformer handles strings with special characters correctly', function () {
+    $transformer = new LowerCaseTransformer();
+
+    $result = $transformer->transform(['value' => '  PHP is AWESOME!  ']);
+
+    expect($result['value'])->toBe('php is awesome!');
+});
+
+test('LowerCaseTransformer preserves non-alphabetic characters', function () {
+    $transformer = new LowerCaseTransformer();
+
+    $result = $transformer->transform(['value' => '1234 AB!@#']);
+
+    expect($result['value'])->toBe('1234 ab!@#');
+});
