@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a68d44427c63f1881c22c2f568e8739b",
+    "content-hash": "37247a2af0245b74fadc6eb5c67462ef",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2917,16 +2917,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php-lite",
-            "version": "8.13.54",
+            "version": "8.13.55",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php-lite.git",
-                "reference": "23f904bf60b40fe0fb9f4ade0e8321654610fcc8"
+                "reference": "e077137a4aa0333bee139b3a1d2f2919492f3827"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php-lite/zipball/23f904bf60b40fe0fb9f4ade0e8321654610fcc8",
-                "reference": "23f904bf60b40fe0fb9f4ade0e8321654610fcc8",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php-lite/zipball/e077137a4aa0333bee139b3a1d2f2919492f3827",
+                "reference": "e077137a4aa0333bee139b3a1d2f2919492f3827",
                 "shasum": ""
             },
             "require": {
@@ -2996,7 +2996,7 @@
                 "issues": "https://github.com/giggsey/libphonenumber-for-php-lite/issues",
                 "source": "https://github.com/giggsey/libphonenumber-for-php-lite"
             },
-            "time": "2025-01-31T14:48:31+00:00"
+            "time": "2025-02-14T08:11:44+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -4102,16 +4102,16 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contacts.git",
-                "reference": "2ef2b4b6efd80a50a27387ab8ebfe06ab258cab5"
+                "reference": "8614477ee48909e6730de9255b50c773f0477f98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/2ef2b4b6efd80a50a27387ab8ebfe06ab258cab5",
-                "reference": "2ef2b4b6efd80a50a27387ab8ebfe06ab258cab5",
+                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/8614477ee48909e6730de9255b50c773f0477f98",
+                "reference": "8614477ee48909e6730de9255b50c773f0477f98",
                 "shasum": ""
             },
             "require": {
@@ -4175,7 +4175,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v2.0.1"
+                "source": "https://github.com/jn-devops/contacts/tree/v2.0.2"
             },
             "funding": [
                 {
@@ -4183,20 +4183,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-13T05:25:53+00:00"
+            "time": "2025-02-14T07:55:24+00:00"
         },
         {
             "name": "jn-devops/contracts",
-            "version": "v1.6.3",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contracts.git",
-                "reference": "b9f96a7ea829783bc649f2cda615a2b39aedec4b"
+                "reference": "330c92292ff46e9ec6e306ace1d031ecfb6cb2c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contracts/zipball/b9f96a7ea829783bc649f2cda615a2b39aedec4b",
-                "reference": "b9f96a7ea829783bc649f2cda615a2b39aedec4b",
+                "url": "https://api.github.com/repos/jn-devops/contracts/zipball/330c92292ff46e9ec6e306ace1d031ecfb6cb2c1",
+                "reference": "330c92292ff46e9ec6e306ace1d031ecfb6cb2c1",
                 "shasum": ""
             },
             "require": {
@@ -4261,7 +4261,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contracts/issues",
-                "source": "https://github.com/jn-devops/contracts/tree/v1.6.3"
+                "source": "https://github.com/jn-devops/contracts/tree/v1.7.2"
             },
             "funding": [
                 {
@@ -4269,7 +4269,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-13T07:00:43+00:00"
+            "time": "2025-02-14T08:35:15+00:00"
         },
         {
             "name": "jn-devops/mortgage",
@@ -4519,16 +4519,16 @@
         },
         {
             "name": "jn-devops/products",
-            "version": "v1.3.2",
+            "version": "v1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/products.git",
-                "reference": "b0b6b7ee039075cff303fa5c44c8190dc1d3d3f4"
+                "reference": "b1971ae042034e613e103cc3e8c2a7e03b61693e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/products/zipball/b0b6b7ee039075cff303fa5c44c8190dc1d3d3f4",
-                "reference": "b0b6b7ee039075cff303fa5c44c8190dc1d3d3f4",
+                "url": "https://api.github.com/repos/jn-devops/products/zipball/b1971ae042034e613e103cc3e8c2a7e03b61693e",
+                "reference": "b1971ae042034e613e103cc3e8c2a7e03b61693e",
                 "shasum": ""
             },
             "require": {
@@ -4588,7 +4588,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/products/issues",
-                "source": "https://github.com/jn-devops/products/tree/v1.3.2"
+                "source": "https://github.com/jn-devops/products/tree/v1.3.3"
             },
             "funding": [
                 {
@@ -4596,7 +4596,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-11T09:51:51+00:00"
+            "time": "2025-02-13T09:25:49+00:00"
         },
         {
             "name": "jn-devops/properties",
@@ -7956,16 +7956,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "c00d78fb6b29658347f9d37ebe104bffadf36299"
+                "reference": "72e51f7c32c5aef7c8b462195b8c599b11199893"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/c00d78fb6b29658347f9d37ebe104bffadf36299",
-                "reference": "c00d78fb6b29658347f9d37ebe104bffadf36299",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/72e51f7c32c5aef7c8b462195b8c599b11199893",
+                "reference": "72e51f7c32c5aef7c8b462195b8c599b11199893",
                 "shasum": ""
             },
             "require": {
@@ -7997,9 +7997,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.0.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.0.1"
             },
-            "time": "2024-10-13T11:29:49+00:00"
+            "time": "2025-02-13T12:25:43+00:00"
         },
         {
             "name": "propaganistas/laravel-phone",
@@ -16066,12 +16066,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

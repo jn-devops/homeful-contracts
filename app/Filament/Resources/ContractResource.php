@@ -3094,7 +3094,14 @@ class ContractResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->defaultPaginationPageOption(50)
             ->columns([
-                TextColumn::make('state'),
+                TextColumn::make('state')
+                    ->badge()
+                    ->label('Status')
+                    ->icon(fn ($record) => $record->state->icon()==''?'heroicon-m-question-mark-circle':$record->state->icon())
+                    ->color(fn ($record) =>  $record->state->color()==''?'grey':$record->state->color())
+                    ->formatStateUsing(function ($record) {
+                        return strtoupper($record->state->name());
+                    }),
                 TextColumn::make('created_at')
                     ->label('Date Created')
                     ->date(),
