@@ -36,4 +36,13 @@ enum MappingType: string
             self::JSON => json_encode($value),
         };
     }
+
+    public function toType(): string
+    {
+        return match($this) {
+            self::INTEGER => 'toInt',
+            self::FLOAT => 'toFloat',
+            default => 'toBigInt'
+        };
+    }
 }

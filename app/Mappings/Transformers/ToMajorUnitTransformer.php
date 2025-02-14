@@ -4,126 +4,113 @@ namespace App\Mappings\Transformers;
 
 use Illuminate\Support\Number;
 use Brick\Math\RoundingMode;
+use App\Enums\MappingType;
 use Brick\Money\Money;
 
 /**
  * Class ToMajorUnitTransformer
  *
- * This transformer is responsible for converting monetary values expressed in **minor units**
- * (e.g., centavos) into **major units** (e.g., pesos) using the precision and rounding capabilities
- * of the **Brick\Money** library. It is primarily used for ensuring financial data consistency and
- * avoiding floating-point errors when working with monetary amounts.
+ * Converts **monetary values in minor units** (e.g., centavos) into **major units** (e.g., pesos).
+ * This ensures precision, proper rounding, and allows optional casting to a specific type.
  *
  * ---
  *
- * ## Purpose of Minor Unit Conversion
+ * ## **How It Works**
  *
- * **Why Use Minor Units Instead of Major Units?**
- * 1. **Precision Control:**
- *    Storing monetary values as integers in minor units (e.g., 10000 for ₱100.00) prevents rounding
- *    errors and ensures precise arithmetic operations without floating-point inaccuracies.
- *
- * 2. **Best Practices in Financial Systems:**
- *    Financial systems typically store values in minor units to maintain consistency, support
- *    calculations without precision loss, and avoid discrepancies when integrating with external
- *    systems or performing bulk arithmetic operations.
- *
- * 3. **Compatibility with APIs and External Systems:**
- *    Many payment gateways, banks, and accounting systems expect monetary values in minor units,
- *    making this conversion necessary when handling such data.
+ * - If **no `type` option is provided**, it **returns a `Money` object**.
+ * - If **a `type` option is provided**, it **casts the value** to the specified type (`float`, `integer`).
+ * - Uses **RoundingMode::UP** to ensure that monetary values are rounded up correctly.
  *
  * ---
  *
- * ## How the Transformer Works
+ * ## **Example Usage**
  *
- * 1. **Input:**
- *    The input to this transformer is a monetary value provided in **minor units**.
- *    Example input:
- *    ```php
- *    ['value' => 100000]  // Represents ₱1,000.00 (100,000 centavos)
- *    ```
- *
- * 2. **Conversion to Major Units:**
- *    The transformer divides the minor unit value by the correct factor based on the currency (e.g.,
- *    100 for PHP). The resulting value is converted into major units using **Brick\Money::ofMinor()**.
- *
- * 3. **Rounding Mode:**
- *    - The transformer uses **RoundingMode::UP**, ensuring that fractional values are always rounded up.
- *      Example:
- *      - 999.999 pesos will be rounded to 1,000.00 pesos.
- *
- * 4. **Output:**
- *    The output is a **Money** object representing the value in major units, which can be easily formatted.
- *
- * ---
- *
- * ## Example Usage
- *
- * ### Input (Minor Units)
+ * ### **Input (Minor Units)**
  * ```php
- * ['value' => 100000]  // 100,000 centavos representing ₱1,000.00
+ * ['value' => 100000]  // 100,000 centavos (₱1,000.00)
  * ```
  *
- * ### Output (Major Units)
+ * ### **Output (Major Units)**
+ * - Default (returns a `Money` object)
  * ```php
  * ['value' => Money::of(1000.00, 'PHP')]
  * ```
+ * - With `type=float`
+ * ```php
+ * ['value' => 1000.00]
+ * ```
+ * - With `type=integer`
+ * ```php
+ * ['value' => 1000]
+ * ```
  *
  * ---
  *
- * ## Best Practices
- * - **Store monetary values in minor units:**
- *   This avoids floating-point errors and is a standard in financial applications.
- *
- * - **Apply consistent rounding strategies:**
- *   Using **RoundingMode::UP** ensures safe rounding when dealing with fractions, which is particularly
- *   useful for invoicing, tax calculations, or rounding up values.
- *
- * - **Centralize currency conversions:**
- *   This transformer can be reused throughout the application to consistently process and display
- *   monetary values, reducing redundancy and error-prone custom implementations.
- *
- * ---
- *
- * ## Integration in Pipelines
- * This transformer integrates seamlessly into **Laravel pipelines**, enabling automated transformation
- * during mapping processes. For example:
- *
+ * ## **Integration in Pipelines**
  * ```php
  * $mapping = Mapping::factory()->make([
- *     'transformer' => 'ToMajorUnit',
+ *     'transformer' => 'ToMajorUnit?type=float',
  * ]);
  *
  * $pipe = new TransformPipe($mapping);
- * $result = $pipe->handle('100000', fn($value) => $value);
+ * $result = $pipe->handle(['value' => 100000], fn($value) => $value);
  *
- * echo $result['value'];  // Output: ₱1,000.00
+ * echo $result['value']; // Output: 1000.00
  * ```
  */
 class ToMajorUnitTransformer extends BaseTransformer
 {
+    private const TYPE_PARAM = 'type';
+
+    protected array $options = [];
+
     /**
-     * Transform the given value from minor units to major units.
+     * Constructor to parse options.
      *
-     * This method converts an integer representing minor units (e.g., centavos) into major units
-     * (e.g., pesos) using the default currency and rounding mode.
+     * @param string|null $option A query-string formatted string (e.g., "type=float").
+     */
+    public function __construct(?string $option = '')
+    {
+        parse_str($option, $this->options);
+    }
+
+    /**
+     * Converts the given value from minor to major units.
      *
      * @param array $data The input data containing the monetary value in minor units.
-     *                    - Example: ['value' => 100000] means 1000.00 pesos.
+     *                    - Example: ['value' => 100000] (₱1,000.00)
      *
      * @return array The transformed value in major units.
-     *               - Example output: ['value' => Money::of(1000.00, 'PHP')]
-     *
-     * @throws \Brick\Math\Exception\MathException If the conversion encounters precision issues.
+     *               - Default: Money object.
+     *               - With type option: float or integer.
      */
     public function transform(array $data): array
     {
-        return [
-            'value' => Money::ofMinor(
-                $data['value'],  // The input value in minor units (e.g., centavos)
-                Number::defaultCurrency(),  // Retrieve the default application currency
-                roundingMode: RoundingMode::UP  // Always round up when necessary
-            ),
-        ];
+        $money = Money::ofMinor(
+            $data['value'],  // The input value in minor units (e.g., centavos)
+            Number::defaultCurrency(),  // Retrieve the default application currency
+            roundingMode: RoundingMode::UP  // Always round up when necessary
+        );
+
+        // If no `type` option is provided, return Money object
+        if (!$this->hasOption(self::TYPE_PARAM)) {
+            return ['value' => $money];
+        }
+
+        // Otherwise, cast to the specified type (float, integer)
+        $castFunction = (MappingType::tryFrom($this->getOption(self::TYPE_PARAM)) ?? MappingType::FLOAT)->toType();
+
+        return ['value' => $money->getAmount()->$castFunction()];
+    }
+
+    /**
+     * Check if a given option exists in the query parameters.
+     *
+     * @param string $key The option key to check.
+     * @return bool True if the option exists, otherwise false.
+     */
+    protected function hasOption(string $key): bool
+    {
+        return array_key_exists($key, $this->options);
     }
 }

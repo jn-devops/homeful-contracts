@@ -3,6 +3,9 @@
 namespace App\Enums;
 
 use App\Mappings\Transformers\Test\ReverseStringTransformer;
+use App\Mappings\Transformers\NumberAbbreviateTransformer;
+use App\Mappings\Transformers\NumberPercentTransformer;
+use App\Mappings\Transformers\NumberFormatTransformer;
 use App\Mappings\Transformers\NumberSpellTransformer;
 use App\Mappings\Transformers\ToMajorUnitTransformer;
 use App\Mappings\Transformers\TitleCaseTransformer;
@@ -50,6 +53,10 @@ enum MappingTransformers
     case NUMBER_SPELL;
     case CONCAT;
     case JOIN;
+    case NUMBER_FORMAT;
+    case NUMBER_PERCENT;
+    case NUMBER_ABBREVIATE;
+    case NUMBER_TRIM;
     case REVERSE_STRING;
 
     /**
@@ -77,6 +84,9 @@ enum MappingTransformers
             self::NUMBER_SPELL => NumberSpellTransformer::class,
             self::CONCAT => ConcatTransformer::class,
             self::JOIN => JoinTransformer::class,
+            self::NUMBER_FORMAT => NumberFormatTransformer::class,
+            self::NUMBER_PERCENT => NumberPercentTransformer::class,
+            self::NUMBER_ABBREVIATE => NumberAbbreviateTransformer::class,
             self::REVERSE_STRING => ReverseStringTransformer::class
         };
     }

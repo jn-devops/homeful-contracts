@@ -1,9 +1,8 @@
 <?php
 
-use App\Mappings\Transformers\TitleCaseTransformer;
-use App\Mappings\Transformers\ConcatTransformer;
 use App\Mappings\Pipelines\TransformPipe;
 use App\Models\Mapping;
+use Brick\Money\Money;
 
 test('it resolves and applies transformers correctly', function () {
     $mapping = Mapping::factory()->make([
@@ -40,6 +39,8 @@ test('international currency transformer works', function () {
 
     expect($result)->toBe('PHP 1,000.00');  // Assuming transformers work as expected
 });
+
+use App\Mappings\Transformers\TitleCaseTransformer;
 
 test('it applies title case and preserves suffixes', function () {
     $transformer = new TitleCaseTransformer();
@@ -83,6 +84,8 @@ test('it works with empty or already formatted input', function () {
     expect($transformer->transform(['value' => 'John Doe Jr.']))->toBe(['value' => 'John Doe Jr.']);
 });
 
+use App\Mappings\Transformers\ConcatTransformer;
+
 test('ConcatTransformer appends before and after words correctly', function () {
     $transformer = new ConcatTransformer('before=Hello&after=World');
 
@@ -121,4 +124,212 @@ test('ConcatTransformer trims extra spaces properly', function () {
     $result = $transformer->transform(['value' => '   Home   ']);
 
     expect($result['value'])->toBe('Welcome Home !');
+});
+
+use App\Mappings\Transformers\ToMajorUnitTransformer;
+
+test('ToMajorUnitTransformer converts minor to major units (default Money object)', function () {
+    $transformer = new ToMajorUnitTransformer();
+
+    $result = $transformer->transform(['value' => 100000]);
+
+    expect($result['value'])->toBeInstanceOf(Money::class);
+    expect($result['value']->getAmount()->toFloat())->toBe(1000.00);
+});
+
+test('ToMajorUnitTransformer converts minor to major units as float', function () {
+    $transformer = new ToMajorUnitTransformer('type=float');
+
+    $result = $transformer->transform(['value' => 100000]);
+
+    expect($result['value'])->toBe(1000.00);
+});
+
+test('ToMajorUnitTransformer converts minor to major units as integer', function () {
+    $transformer = new ToMajorUnitTransformer('type=integer');
+
+    $result = $transformer->transform(['value' => 100000]);
+
+    expect($result['value'])->toBe(1000);
+});
+
+test('ToMajorUnitTransformer handles zero values', function () {
+    $transformer = new ToMajorUnitTransformer();
+
+    $result = $transformer->transform(['value' => 0]);
+
+    expect($result['value'])->toBeInstanceOf(Money::class);
+    expect($result['value']->getAmount()->toFloat())->toBe(0.00);
+});
+
+test('ToMajorUnitTransformer rounds up correctly', function () {
+    $transformer = new ToMajorUnitTransformer();
+
+    $result = $transformer->transform(['value' => 999]);
+
+    expect($result['value'])->toBeInstanceOf(Money::class);
+    expect($result['value']->getAmount()->toFloat())->toBe(9.99); // Rounded up due to RoundingMode::UP
+});
+
+test('ToMajorUnitTransformer falls back to float if type is invalid', function () {
+    $transformer = new ToMajorUnitTransformer('type=invalid');
+
+    $result = $transformer->transform(['value' => 100000]);
+
+    expect($result['value'])->toBe(1000.0);
+});
+
+use App\Mappings\Transformers\NumberPercentTransformer;
+
+test('NumberPercentTransformer correctly converts numbers to percentages', function () {
+    $transformer = new NumberPercentTransformer();
+
+    $result = $transformer->transform(['value' => 25]);
+
+    expect($result['value'])->toBe('25%');
+});
+
+test('NumberPercentTransformer applies precision correctly', function () {
+    $transformer = new NumberPercentTransformer('precision=1');
+
+    $result = $transformer->transform(['value' => 12.34]);
+
+    expect($result['value'])->toBe('12.3%');
+});
+
+use App\Mappings\Transformers\NumberFormatTransformer;
+
+test('NumberFormatTransformer correctly formats numbers', function () {
+    $transformer = new NumberFormatTransformer();
+
+    $result = $transformer->transform(['value' => 1000000]);
+
+    expect($result['value'])->toBe('1,000,000');
+});
+
+test('NumberFormatTransformer applies precision correctly', function () {
+    $transformer = new NumberFormatTransformer('precision=2');
+
+    $result = $transformer->transform(['value' => 1000]);
+
+    expect($result['value'])->toBe('1,000.00');
+});
+
+test('NumberFormatTransformer supports locale-based formatting', function () {
+    $transformer = new NumberFormatTransformer('locale=de');
+
+    $result = $transformer->transform(['value' => 1000]);
+
+    // In German locale, comma is used as decimal separator
+    expect($result['value'])->toBe('1.000');
+});
+
+use App\Mappings\Transformers\NumberSpellTransformer;
+
+test('NumberSpellTransformer correctly spells out numbers', function () {
+    $transformer = new NumberSpellTransformer();
+
+    $result = $transformer->transform(['value' => 100]);
+
+    expect($result['value'])->toBe('one hundred');
+});
+
+test('NumberSpellTransformer applies "after" threshold correctly', function () {
+    $transformer = new NumberSpellTransformer('after=10');
+
+    $result = $transformer->transform(['value' => 11]);
+
+    expect($result['value'])->toBe('eleven');
+});
+
+test('NumberSpellTransformer applies "until" threshold correctly', function () {
+    $transformer = new NumberSpellTransformer('until=10');
+
+    $result = $transformer->transform(['value' => 11]);
+
+    expect($result['value'])->toBe('11'); // Not spelled out since it's beyond "until"
+});
+
+test('NumberSpellTransformer applies both "after" and "until" options', function () {
+    $transformer = new NumberSpellTransformer('after=5&until=15');
+
+    expect($transformer->transform(['value' => 3])['value'])->toBe('3'); // Below "after", so not spelled
+    expect($transformer->transform(['value' => 12])['value'])->toBe('twelve'); // Between "after" and "until", so spelled
+    expect($transformer->transform(['value' => 16])['value'])->toBe('16'); // Beyond "until", not spelled
+});
+
+use App\Mappings\Transformers\NumberAbbreviateTransformer;
+
+test('NumberAbbreviateTransformer correctly abbreviates large numbers', function () {
+    $transformer = new NumberAbbreviateTransformer();
+
+    $result = $transformer->transform(['value' => 1000000]);
+
+    expect($result['value'])->toBe('1M');
+});
+
+test('NumberAbbreviateTransformer applies precision correctly', function () {
+    $transformer = new NumberAbbreviateTransformer('precision=2');
+
+    $result = $transformer->transform(['value' => 1500000]);
+
+    expect($result['value'])->toBe('1.50M');
+});
+
+test('NumberAbbreviateTransformer abbreviates thousands correctly', function () {
+    $transformer = new NumberAbbreviateTransformer('precision=1');
+
+    $result = $transformer->transform(['value' => 2500]);
+
+    expect($result['value'])->toBe('2.5K');
+});
+
+test('NumberAbbreviateTransformer abbreviates billions correctly', function () {
+    $transformer = new NumberAbbreviateTransformer();
+
+    $result = $transformer->transform(['value' => 2000000000]);
+
+    expect($result['value'])->toBe('2B');
+});
+
+use App\Mappings\Transformers\NumberTrimTransformer;
+
+test('NumberTrimTransformer removes trailing zeros from whole numbers', function () {
+    $transformer = new NumberTrimTransformer();
+
+    $result = $transformer->transform(['value' => 100.000]);
+
+    expect($result['value'])->toBe(100);
+});
+
+test('NumberTrimTransformer preserves decimals when necessary', function () {
+    $transformer = new NumberTrimTransformer();
+
+    $result = $transformer->transform(['value' => 123.45]);
+
+    expect($result['value'])->toBe(123.45);
+});
+
+test('NumberTrimTransformer removes decimals when necessary', function () {
+    $transformer = new NumberTrimTransformer();
+
+    $result = $transformer->transform(['value' => 123.0]);
+
+    expect($result['value'])->toBe(123);
+});
+
+test('NumberTrimTransformer applies precision correctly', function () {
+    $transformer = new NumberTrimTransformer();
+
+    $result = $transformer->transform(['value' => 123.45000]);
+
+    expect($result['value'])->toBe(123.45);
+});
+
+test('NumberTrimTransformer keeps decimal point only when needed', function () {
+    $transformer = new NumberTrimTransformer();
+
+    $result = $transformer->transform(['value' => 0.5000]);
+
+    expect($result['value'])->toBe(0.5);
 });

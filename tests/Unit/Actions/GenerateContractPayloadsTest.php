@@ -52,10 +52,20 @@ dataset('mappings', function () {
                     'path' => 'contact.monthly_gross_income',
                     'source' => 'array',
                     'title' => 'GMI',
-                    'type' => 'integer',
+                    'type' => 'string',
                     'default' => '537',
                     'category' => 'buyer',
-                    'transformer' => 'ToMajorUnit'
+                    'transformer' => 'ToMajorUnit?type=float, NumberFormat?precision=2',
+                ],
+                [
+                    'code' => 'gmi_peso',
+                    'path' => 'contact.monthly_gross_income',
+                    'source' => 'array',
+                    'title' => 'GMI Peso',
+                    'type' => 'string',
+                    'default' => '537',
+                    'category' => 'buyer',
+                    'transformer' => 'ToMajorUnit?type=float, Currency',
                 ],
                 [
                     'code' => 'gmi_words',
@@ -67,6 +77,16 @@ dataset('mappings', function () {
                     'category' => 'buyer',
                     'transformer' => 'ToMajorUnit, NumberSpell, TitleCase'
                 ],
+                [
+                    'code' => 'order_interest',
+                    'path' => 'order.interest',
+                    'source' => 'array',
+                    'title' => 'Order Interest',
+                    'type' => 'string',
+                    'default' => '7',
+                    'category' => 'buyer',
+                    'transformer' => 'NumberPercent?precision=2',
+                ],
             ])
         ]
     ];
@@ -76,7 +96,7 @@ test('generate contract property action works', function (Reference $reference, 
     $mappings();
     $contract = $reference->getContract();
     $count = app(GenerateContractPayloads::class)->run($contract);
-    expect($count)->toBe(4);
+    expect($count)->toBe(6);
     $contract->refresh();
     $payloads = Payload::with(['mapping' => function ($query) {
         $query->select('code', 'title', 'category');  // Select only title and category, and 'code' for join
@@ -92,8 +112,10 @@ test('generate contract property action works', function (Reference $reference, 
     $expected = [
         ['title' => 'First Name', 'value' => 'LEMMOR'],
         ['title' => 'Full Name', 'value' => 'Mr. Rommel Posadas Tiu Jr.'],
-        ['title' => 'GMI', 'value' => 14400],
+        ['title' => 'GMI', 'value' => '14,399.37'],
+        ['title' => 'GMI Peso', 'value' => '₱14,399.37'],
         ['title' => 'GMI Words', 'value' => 'Fourteen Thousand Three Hundred Ninety-Nine Point Three Seven'],
+        ['title' => 'Order Interest', 'value' => '7.00%'],
     ];
 
     expect($payloads)->toMatchArray($expected);

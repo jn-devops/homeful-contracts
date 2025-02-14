@@ -6,12 +6,23 @@ use League\Fractal\TransformerAbstract;
 
 abstract class BaseTransformer extends TransformerAbstract
 {
-    protected array $options;
+    protected array $options = [];
 
-    public function __construct(array $options = [])
+    /**
+     * Constructor to parse query string options.
+     *
+     * @param string|null $option A query-string formatted string (e.g., "after=10&until=5").
+     */
+    public function __construct(?string $option = '')
     {
-        $this->options = $options;
+        // Parse the query string into an associative array
+        parse_str($option, $this->options);
     }
+
+//    public function __construct(array $options = [])
+//    {
+//        $this->options = $options;
+//    }
 
     /**
      * Retrieve an option by key, or return the default if it does not exist.
