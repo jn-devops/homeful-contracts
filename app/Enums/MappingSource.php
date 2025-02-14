@@ -15,6 +15,7 @@ enum MappingSource: string
     case SEARCH_PARAMS = 'search_params';
     case EVALUATION_SHEET = 'evaluation_sheet';
     case API = 'api';
+    case MFILES = 'mfiles';
 
     static function default(): self {
         return self::ARRAY;

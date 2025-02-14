@@ -9,7 +9,7 @@ class ArrayMappingProcessor extends AbstractMappingProcessor
 {
     private array $data;
 
-    public function __construct(array $data, Mapping $mapping)
+    public function __construct(Mapping $mapping, array $data)
     {
         parent::__construct($mapping);
         $this->data = $data;

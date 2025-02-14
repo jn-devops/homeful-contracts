@@ -18,4 +18,17 @@ return [
     'transformers' => [
         'base_namespace' => 'App\\Mappings\\Transformers',
     ],
+    'mfiles_link' => env('MFILES_LINK'),
+    'mfiles_credentials' =>[
+        'username' => env('MFILES_USERNAME'),
+        'password'=> env('MFILES_PASSWORD')
+    ],
+    'data' => [
+        'project1' => [
+            'signatory' => env('PROJECT1_SIGNATORY', 'Mr. John Doe')
+        ],
+        'project2' => [
+            'signatory' => env('PROJECT2_SIGNATORY', 'Mr. Jane Doe')
+        ]
+    ]
 ];

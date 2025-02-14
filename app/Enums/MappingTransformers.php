@@ -9,6 +9,7 @@ use App\Mappings\Transformers\NumberFormatTransformer;
 use App\Mappings\Transformers\NumberSpellTransformer;
 use App\Mappings\Transformers\ToMajorUnitTransformer;
 use App\Mappings\Transformers\TitleCaseTransformer;
+use App\Mappings\Transformers\LowerCaseTransformer;
 use App\Mappings\Transformers\UpperCaseTransformer;
 use App\Mappings\Transformers\CurrencyTransformer;
 use App\Mappings\Transformers\ConcatTransformer;
@@ -47,6 +48,7 @@ enum MappingTransformers
     use EnumUtils;
 
     case UPPER_CASE;
+    case LOWER_CASE;
     case TITLE_CASE;
     case TO_MAJOR_UNIT;
     case CURRENCY;
@@ -78,6 +80,7 @@ enum MappingTransformers
     {
         return match ($this) {
             self::UPPER_CASE => UpperCaseTransformer::class,
+            self::LOWER_CASE => LowerCaseTransformer::class,
             self::TITLE_CASE => TitleCaseTransformer::class,
             self::TO_MAJOR_UNIT => ToMajorUnitTransformer::class,
             self::CURRENCY => CurrencyTransformer::class,
