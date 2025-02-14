@@ -77,6 +77,13 @@ class EditContract extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
+        if (!empty($data['property'])&& $data['property']!=null) {
+            $data['desired_property']['project']=$data['property']['project']['name']??'';
+            $data['desired_property']['unit_type']=$data['property']['unit_type']??'';
+            $data['desired_property']['tcp']=$data['property']['tcp']??'';
+            $data['desired_property']['payment_terms']=($this->record->mortgage->getBalancePaymentTerm() ?? 0) ? $this->record->mortgage->getBalancePaymentTerm() . ' years' : '';
+            $data['desired_property']['monthly_amortization'] = $this->record->getData()->mortgage->loan_amortization??0;
+        }
 
         $contact_data =$this->record->getData()->customer->toArray();
 

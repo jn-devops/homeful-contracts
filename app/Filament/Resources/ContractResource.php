@@ -1460,19 +1460,19 @@ class ContractResource extends Resource
                                     ->columnSpanFull(),
 //                                    Desired Property Details
                                     Forms\Components\Fieldset::make('Desired Property Details')->schema([
-                                        Forms\Components\TextInput::make('consult.project')
+                                        Forms\Components\TextInput::make('desired_property.project')
                                             ->label('Project:')
                                             ->columnSpan(3),
-                                        Forms\Components\TextInput::make('consult.unit_type')
+                                        Forms\Components\TextInput::make('desired_property.unit_type')
                                             ->label('Unit Type:')
                                             ->columnSpan(3),
-                                        Forms\Components\TextInput::make('consult.tcp')
+                                        Forms\Components\TextInput::make('desired_property.tcp')
                                             ->label('TCP:')
                                             ->columnSpan(3),
-                                        Forms\Components\TextInput::make('consult.monthy_amortization')
-                                            ->label('Monthy Amortization:')
+                                        Forms\Components\TextInput::make('desired_property.monthly_amortization')
+                                            ->label('Monthly Amortization:')
                                             ->columnSpan(3),
-                                        Forms\Components\TextInput::make('consult.payment_terms')
+                                        Forms\Components\TextInput::make('desired_property.payment_terms')
                                             ->label('Payment Terms:')
                                             ->columnSpan(3),
                                     ]) ->columns(12)->columnSpanFull(),
