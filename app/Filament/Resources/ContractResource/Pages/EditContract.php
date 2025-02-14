@@ -85,6 +85,19 @@ class EditContract extends EditRecord
             $data['desired_property']['monthly_amortization'] = $this->record->getData()->mortgage->loan_amortization??0;
         }
 
+        if(!empty($data['payment'])&& $data['payment']!=null){
+            $data['consult']['reference_code']=$data['payment']['data']['orderInformation']['orderId']??'';
+            $data['consult']['fee']= isset($data['payment']['data']['orderInformation']['amount'])
+                ? 'P' . number_format($data['payment']['data']['orderInformation']['amount'] / 100, 2)
+                : '';
+            $data['consult']['payment']=$data['payment']['data']['orderInformation']['paymentBrand']??'';
+            $data['consult']['transaction_number']=$data['payment']['data']['orderInformation']['referencedId']??'';
+            $data['consult']['transaction_date']=isset($data['payment']['data']['orderInformation']['responseDate'])
+                ? \Carbon\Carbon::parse($data['payment']['data']['orderInformation']['responseDate'])->format('F j \a\t g:iA')
+                : '';
+        }
+
+
         $contact_data =$this->record->getData()->customer->toArray();
 
         $buyer_address_present = collect($contact_data['addresses'])
