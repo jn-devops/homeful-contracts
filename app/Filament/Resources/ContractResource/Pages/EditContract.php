@@ -11,6 +11,7 @@ use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\ActionSize;
 use Homeful\Contacts\Actions\GetContactMetadataFromContactModel;
 use Homeful\Contacts\Data\ContactData;
 use Homeful\Contacts\Models\Customer as Contact;
@@ -45,6 +46,25 @@ class EditContract extends EditRecord
                     $this->save();
                 })
                 ->keyBindings(['command+s', 'ctrl+s']),
+            Actions\ActionGroup::make(collect($this->record->state->transitionableStates())
+                ->map(function ($state)  {
+                    $stateInstance = new $state($this->record);
+
+                    return Action::make($stateInstance->name()) // Ensure the action has a name
+                    ->label($stateInstance->name())
+                        ->icon($stateInstance->icon())
+                        ->color($stateInstance->color())
+                        ->action(function () use ($stateInstance) {
+                            $this->record->state->transitionTo($stateInstance);
+                            $this->record->save();
+                        });
+                })
+                ->toArray())
+                ->label('Update Status')
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->size(ActionSize::Small)
+                ->color('primary')
+                ->button(),
             Action::make('Update Status')
                 ->color('primary')
                 ->requiresConfirmation(true)
@@ -97,7 +117,7 @@ class EditContract extends EditRecord
                 : '';
         }
 
-        if (!empty($this->record->getData()->inventory->toArray())&& $this->record->getData()->inventory!=null) {
+        if (!empty(optional($this->record->getData()->inventory)->toArray()))  {
             $new_data['order']['sku']=$this->record->getData()->inventory->toArray()['sku'];
             $new_data['order']['phase']=$this->record->getData()->inventory->toArray()['phase'];
             $new_data['order']['block']=$this->record->getData()->inventory->toArray()['block'];
