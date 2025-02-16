@@ -3,6 +3,14 @@
 namespace App\Providers\Filament;
 
 use CodeWithDennis\FilamentThemeInspector\FilamentThemeInspectorPlugin;
+use Dotswan\FilamentLaravelPulse\Widgets\PulseCache;
+use Dotswan\FilamentLaravelPulse\Widgets\PulseExceptions;
+use Dotswan\FilamentLaravelPulse\Widgets\PulseQueues;
+use Dotswan\FilamentLaravelPulse\Widgets\PulseServers;
+use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowOutGoingRequests;
+use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowQueries;
+use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowRequests;
+use Dotswan\FilamentLaravelPulse\Widgets\PulseUsage;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
