@@ -50,6 +50,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 use stdClass;
@@ -852,7 +853,7 @@ class ContractResource extends Resource
                                                                 ->columnSpan(3),
                                                         ])->columns(12)->columnSpanFull(),
                                                 ])
-                                    ])->hidden(fn(Get $get)=>$get('contact_data.buyer.civil_status') != \Homeful\Contacts\Enums\CivilStatus::MARRIED),
+                                        ])->hidden(fn(Get $get)=>Str::title($get('contact_data.buyer.civil_status'))  != 'Married'),
                                     Forms\Components\Tabs\Tab::make('Co-Borrower')
                                         ->icon('heroicon-m-user-plus')
                                         ->schema([
