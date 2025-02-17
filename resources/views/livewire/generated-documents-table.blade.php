@@ -51,12 +51,12 @@
                                 <x-filament::icon-button
                                     icon="heroicon-m-eye"
                                     size="sm"
-                                    onclick="window.open('{{ $document['url'] }}', '_blank')"
+                                    onclick="window.open({{ json_encode($document['url']) }}, '_blank')"
                                 />
                                 <x-filament::icon-button
                                     icon="heroicon-m-arrow-down-tray"
                                     size="sm"
-                                    wire:click="downloadDocument('{{ $document['url'] }}')"
+                                    wire:click="downloadDocument('{{ addslashes($document['url']) }}')"
                                 />
                             </div>
                         </div>

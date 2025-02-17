@@ -46,25 +46,25 @@ class EditContract extends EditRecord
                     $this->save();
                 })
                 ->keyBindings(['command+s', 'ctrl+s']),
-            Actions\ActionGroup::make(collect($this->record->state->transitionableStates())
-                ->map(function ($state)  {
-                    $stateInstance = new $state($this->record);
-
-                    return Action::make($stateInstance->name()) // Ensure the action has a name
-                    ->label($stateInstance->name())
-                        ->icon($stateInstance->icon())
-                        ->color($stateInstance->color())
-                        ->action(function () use ($stateInstance) {
-                            $this->record->state->transitionTo($stateInstance);
-                            $this->record->save();
-                        });
-                })
-                ->toArray())
-                ->label('Update Status')
-                ->icon('heroicon-m-ellipsis-vertical')
-                ->size(ActionSize::Small)
-                ->color('primary')
-                ->button(),
+//            Actions\ActionGroup::make(collect($this->record->state->transitionableStates())
+//                ->map(function ($state)  {
+//                    $stateInstance = new $state($this->record);
+//
+//                    return Action::make($stateInstance->name()) // Ensure the action has a name
+//                    ->label($stateInstance->name())
+//                        ->icon($stateInstance->icon())
+//                        ->color($stateInstance->color())
+//                        ->action(function () use ($stateInstance) {
+//                            $this->record->state->transitionTo($stateInstance);
+//                            $this->record->save();
+//                        });
+//                })
+//                ->toArray())
+//                ->label('Update Status')
+//                ->icon('heroicon-m-ellipsis-vertical')
+//                ->size(ActionSize::Small)
+//                ->color('primary')
+//                ->button(),
             Action::make('Update Status')
                 ->color('primary')
                 ->requiresConfirmation(true)

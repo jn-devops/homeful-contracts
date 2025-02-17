@@ -111,6 +111,7 @@ class GeneratedDocumentsTable extends Component
 
     public function downloadDocument(string $url)
     {
+
         try {
             $response = Http::get($url);
 
