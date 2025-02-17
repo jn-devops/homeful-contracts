@@ -16,6 +16,7 @@ enum MappingType: string
     case FLOAT = 'float';
     case ARRAY = 'array';
     case JSON = 'json';
+    case DATE = 'date';
 
     static function default(): self {
         return self::STRING;
@@ -34,6 +35,7 @@ enum MappingType: string
             self::FLOAT => $value instanceof Money ? $value->getAmount()->toFloat() : (float) $value,
             self::ARRAY => is_array($value) ? $value : json_decode($value, true) ?? [],
             self::JSON => json_encode($value),
+            self::DATE => $value instanceof \DateTime ? $value->format('Y-m-d') : null,
         };
     }
 
