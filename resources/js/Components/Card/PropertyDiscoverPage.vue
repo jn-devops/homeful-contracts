@@ -59,6 +59,16 @@ const updateCurrentImg = (newIndex) => {
     currentImg.value = imgList.value[newIndex]
 }
 
+const showImgModal = ref(false)
+const imgInModal = ref('')
+const openImage = (img) => {
+  imgInModal.value = img
+  showImgModal.value = true;
+};
+const closeImgModal = () => {
+  showImgModal.value = false;
+};
+
 const numberFormatter = (num) => new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
@@ -102,13 +112,15 @@ watch(() => props.discoverPage, (newVal) => {
 </script>
 <template>
     <div class="fixed inset-0 bg-opacity-50 flex items-center justify-center z-10">
-        <div class="bg-white w-full max-w-[450px] h-screen overflow-y-auto rounded shadow-lg">
+        <div :class="{'overflow-hidden h-screen': showImgModal}" class="bg-white w-full max-w-[450px] h-screen overflow-y-auto rounded shadow-lg">
             <!-- Content -->
-            <div :style="{ backgroundImage: `url(${currentImg.imgLink})` }" class="bg-cover bg-center h-80 w-full flex flex-col justify-end">
-                <div class="h-full pt-20 ps-5 cursor-pointer" @click="toggleDiscoverPage">
-                    <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
-                    </svg>
+            <div @click="openImage(currentImg.imgLink)" :style="{ backgroundImage: `url(${currentImg.imgLink})` }" class="bg-cover bg-center h-80 w-full flex flex-col justify-end">
+                <div class="h-full pt-32 ps-5 cursor-pointer">
+                    <div class="bg-white w-fit shadow-xl rounded-full p-1" @click="toggleDiscoverPage">
+                        <svg class="w-4 h-4 text-black drop-shadow-md" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                        </svg>
+                    </div>
                 </div>
                 <div class="inset-0 bg-gradient-to-t text-white from-black to-transparent opacity-100 h-28 w-full bottom-0 flex items-end  px-4">
                 </div>
@@ -230,6 +242,26 @@ watch(() => props.discoverPage, (newVal) => {
                 <PrimaryButton @click="submitEvent">
                     Book Now
                 </PrimaryButton>
+                <div class="mb-10"></div>
+            </div>
+        </div>
+        <div
+            v-if="showImgModal"
+            class="fixed inset-0 bg-black flex justify-center items-center z-50"
+            @click="closeImgModal"
+        >
+            <div class="relative max-w-[550px] w-full" @click.stop>
+                <img
+                    :src="imgInModal"
+                    alt="Full Image"
+                    class="w-full max-h-screen object-contain"
+                />
+                <button
+                class="absolute top-2 right-2 text-white text-base bg-gray-800 px-2 py-1 rounded-full"
+                @click="closeImgModal"
+                >
+                ✕
+                </button>
             </div>
         </div>
     </div>

@@ -40,7 +40,7 @@ const changeImg = (newImgIndex) => {
 const manualChange = (newImgIndex) => {
     resetInterval()
     changeImg(newImgIndex)
-    interval = setInterval(nextSlide, intervalTime)
+    // interval = setInterval(nextSlide, intervalTime)
     scrollToCurrent()
 }
 
@@ -97,6 +97,7 @@ const handleIntersect = (entries) => {
     // Target div is out of view.
     if(!initialRun){
         resetInterval()
+        console.log('Out of view2')
     }
     initialRun = false
   }
