@@ -87,7 +87,7 @@
             </tbody>
             <tfoot class="fi-ta-footer bg-gray-50 dark:bg-gray-700">
             <tr class="fi-ta-row">
-                <td colspan="3" class="fi-ta-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-300">
+                <td colspan="4" class="fi-ta-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-300">
                     Total: {{ count($requirements) }} Documents
                 </td>
             </tr>
