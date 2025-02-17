@@ -26,17 +26,7 @@ class ConsultController extends Controller
 
     public function create(Request $request): Response
     {
-        // The consultation functionality has been promptly integrated
-        $contact_reference_code = Arr::get($request->all(), 'contact_reference_code');
-        $reference = Consult::run($contact_reference_code);
-        $reference = Reference::where('code', $reference->code)->first();
-        return Inertia::render('Contract/Avail', [
-            'buttonOptions' => $this->getOptions($reference->code),
-            'contactData' => $reference->getContract()->getData()->contact,
-            'reference_code' => $reference->code,
-        ]);
-
-        // return Inertia::render('Contract/Consult', $this->getProps($request)); // Previous implementation
+        return Inertia::render('Contract/Consult', $this->getProps($request));
     }
 
     public function store(Request $request): RedirectResponse

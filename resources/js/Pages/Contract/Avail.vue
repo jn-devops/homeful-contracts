@@ -33,7 +33,8 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.reference_code = props.reference_code;
+    form.reference_code = reference.value;
+    console.log(form.reference_code, '::', form.sku, form.seller_voucher_code);
     form.post(route('avail.store'), {
         onFinish: () => form.reset(),
     });
@@ -149,8 +150,8 @@ watch (
 
 <template>
     <DefaultLayout>
-        <div>
-            <div class="h-80 w-full relative ">
+        <div :class="{'overflow-hidden h-screen': discoverPage}">
+            <div class="h-80 w-full relative">
                 <img :src="usePage().props.data.appLink + '/images/ModelUnitWalkthrough.gif'" alt="GIF" class="object-cover w-full h-full absolute top-0 left-0 -z-10">
                 <div class="flex items-end h-full">
                     <div class="inset-0 bg-gradient-to-t from-white to-transparent opacity-100 h-40 w-full bottom-0 flex items-end pb-4 ps-4">

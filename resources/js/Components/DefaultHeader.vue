@@ -54,7 +54,7 @@ const mobileMenuOpen = ref(false)
           </button>
         </div>
         <PopoverGroup class="hidden lg:flex lg:gap-x-12">
-          <Popover class="relative">
+          <!-- <Popover class="relative">
             <PopoverButton class="flex items-center gap-x-1 text-sm/6 font-semibold text-white">
               Product
               <ChevronDownIcon class="size-5 flex-none text-gray-400" aria-hidden="true" />
@@ -84,23 +84,27 @@ const mobileMenuOpen = ref(false)
                 </div>
               </PopoverPanel>
             </transition>
-          </Popover>
+          </Popover> -->
   
-          <a href="#" class="text-sm/6 font-semibold text-white">Features</a>
+          <!-- <a href="#" class="text-sm/6 font-semibold text-white">Features</a>
           <a href="#" class="text-sm/6 font-semibold text-white">Marketplace</a>
-          <a href="#" class="text-sm/6 font-semibold text-white">Company</a>
+          <a href="#" class="text-sm/6 font-semibold text-white">Company</a> -->
         </PopoverGroup>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a>
+          <!-- <a href="#" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a> -->
         </div>
       </nav>
+
       <Dialog class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
         <div class="fixed inset-0 z-20" />
         <DialogPanel class="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div class="flex items-center justify-between">
             <a href="#" class="-m-1.5 p-1.5">
               <span class="sr-only">Your Company</span>
-              <img class="h-8 w-auto" src="/logos/HOMEFULLOGO-ICON-CMG1.png" alt="" />
+              <div class="flex flex-row items-center gap-3">
+                <img class="h-8 w-auto" src="/logos/HOMEFULLOGO-ICON-CMG1.png" alt="" />
+                <div class="font-bold">Homeful Shop</div>
+              </div>
             </a>
             <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="mobileMenuOpen = false">
               <span class="sr-only">Close menu</span>
@@ -108,9 +112,9 @@ const mobileMenuOpen = ref(false)
             </button>
           </div>
           <div class="mt-6 flow-root">
-            <div class="-my-6 divide-y divide-gray-500/10">
+            <div class="-my-6 ">
               <div class="space-y-2 py-6">
-                <Disclosure as="div" class="-mx-3" v-slot="{ open }">
+                <!-- <Disclosure as="div" class="-mx-3" v-slot="{ open }">
                   <DisclosureButton class="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
                     Product
                     <ChevronDownIcon :class="[open ? 'rotate-180' : '', 'size-5 flex-none']" aria-hidden="true" />
@@ -121,10 +125,10 @@ const mobileMenuOpen = ref(false)
                 </Disclosure>
                 <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Features</a>
                 <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Marketplace</a>
-                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Company</a>
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Company</a> -->
               </div>
               <div class="py-6">
-                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log in</a>
+                <!-- <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log in</a> -->
               </div>
             </div>
           </div>
