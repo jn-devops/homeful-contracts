@@ -10,11 +10,11 @@ class RequirementMatrix extends Model
         'civil_status',
         'employment_status',
         'market_segment',
-        'documents',
+        'requirements',
     ];
 
     protected $casts = [
-        'documents' => 'array',
+//        'requirements' => 'array',
     ];
 
 }

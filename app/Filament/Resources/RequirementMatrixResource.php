@@ -87,9 +87,8 @@ class RequirementMatrixResource extends Resource
                         $data['requirements'] = json_decode($record->requirements);
                         return $data;
                     })->using(function (Model $record, array $data): Model {
-
                         $record->update($data);
-                        $record->requirements= json_encode($data['requirements']);
+                        $record->requirements=json_encode($data['requirements']) ;
                         $record->save();
                         return $record;
                     })
