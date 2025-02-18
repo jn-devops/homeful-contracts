@@ -3123,17 +3123,18 @@ class ContractResource extends Resource
                 TextColumn::make('')
                     ->label('Documents')
                     ->state(function (Model $record) {
-                        $contact = \Homeful\Contacts\Models\Customer::where('id', $record->contact_id)->first()->getData()->toArray();
-                        $employment_status = collect($contact['employment']??[])->firstWhere('type','Primary')['employment_type']??'';
-                        $requirements = RequirementMatrix::where('civil_status',$contact['civil_status']??'')->where('employment_status',$employment_status)->first();
-                        $reqs = collect(json_decode($requirements->requirements ?? "[]", true))
-                            ->sort()
-                            ->values();
-                        $uploaded_count = $reqs->filter(function ($requirement) {
-                            $uploader_label = $this->getUploaderName($requirement);
-                            return $this->record->customer?->$uploader_label !== null;
-                        })->count();
-                        return "${reqs->count()/$uploaded_count}";
+//                        $contact = \Homeful\Contacts\Models\Customer::where('id', $record->contact_id)->first()->getData()->toArray();
+//                        $employment_status = collect($contact['employment']??[])->firstWhere('type','Primary')['employment_type']??'';
+//                        $requirements = RequirementMatrix::where('civil_status',$contact['civil_status']??'')->where('employment_status',$employment_status)->first();
+//                        $reqs = collect(json_decode($requirements->requirements ?? "[]", true))
+//                            ->sort()
+//                            ->values();
+//                        $uploaded_count = $reqs->filter(function ($requirement) {
+//                            $uploader_label = $this->getUploaderName($requirement);
+//                            return $this->record->customer?->$uploader_label !== null;
+//                        })->count();
+//                        return "{${$reqs->count()/$uploaded_count}}";
+                        return '';
                     }),
             ])
             ->filters([
