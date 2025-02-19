@@ -23,6 +23,8 @@ use Homeful\Contracts\States\ContractState;
 use Spatie\ModelStates\State;
 use Spatie\ModelStates\StateConfig;
 
+
+
 class EditContract extends EditRecord
 {
     protected static string $resource = ContractResource::class;
@@ -117,7 +119,8 @@ class EditContract extends EditRecord
                 : '';
         }
 
-        if (!empty(optional($this->record->getData()->inventory)->toArray()))  {
+
+        if (!$this->record->inventory && !empty(optional($this->record->getData()->inventory)->toArray()))  {
             $new_data['order']['sku']=$this->record->getData()->inventory->toArray()['sku'];
             $new_data['order']['phase']=$this->record->getData()->inventory->toArray()['phase'];
             $new_data['order']['block']=$this->record->getData()->inventory->toArray()['block'];
@@ -137,7 +140,8 @@ class EditContract extends EditRecord
         }
 //        dd($this->record->getData()->inventory->toArray(),$data);
 
-        $contact_data =$this->record->getData()->customer->toArray();
+
+        $contact_data =$data['contact']??[];
 
         $buyer_address_present = collect($contact_data['addresses'])
             ->filter(fn($address) => in_array($address['type'], ['Primary','Present']))
