@@ -54,8 +54,14 @@ onMounted(() => {
     console.log(props.payment_details.data.orderInformation.referencedId);
     
     transactionType.value = "Credit/Card Payment"
-    transactionNumber.value = props.payment_details.data.orderInformation.referencedId
-    transactionDate.value = props.payment_details.data.orderInformation.responseDate
+    transactionNumber.value = props.payment_details?.data.orderInformation.referencedId ?? ''
+    transactionDate.value = props.payment_details?.data.orderInformation.responseDate ?? ''
+
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+    });
+
 });
 
 </script>
