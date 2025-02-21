@@ -82,7 +82,7 @@ class MFilesMappingProcessor extends AbstractMappingProcessor
 
     /** @var array<int> List of property IDs to fetch */
     private const PROPERTY_IDS = [
-        1105, 1050, 1109, 1203, 1204, 1202, 1285, 1024, 1290,
+        1105, 1050, 1109, 1203, 1204, 1202, 1285, 1024, 1290
     ];
 
     /** @var string The property code used in the M-Files API request */
