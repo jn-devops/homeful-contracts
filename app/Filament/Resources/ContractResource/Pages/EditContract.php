@@ -141,7 +141,6 @@ class EditContract extends EditRecord
 //        dd($this->record->getData()->inventory->toArray(),$data);
 
 
-        $contact_data =$data['contact']??[];
 
         $buyer_address_present = collect($contact_data['addresses'])
             ->filter(fn($address) => in_array($address['type'], ['Primary','Present']))
