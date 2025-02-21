@@ -120,7 +120,7 @@ class EditContract extends EditRecord
         }
 
 
-        if (!$this->record->inventory && !empty(optional($this->record->getData()->inventory)->toArray()))  {
+        if ($this->record->inventory !=null)  {
             $new_data['order']['sku']=$this->record->getData()->inventory->toArray()['sku'];
             $new_data['order']['phase']=$this->record->getData()->inventory->toArray()['phase'];
             $new_data['order']['block']=$this->record->getData()->inventory->toArray()['block'];
