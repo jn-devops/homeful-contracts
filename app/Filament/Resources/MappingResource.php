@@ -16,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class MappingResource extends Resource
 {
@@ -56,16 +57,21 @@ class MappingResource extends Resource
                     ->native(false)
                     ->options(collect(MappingCategory::cases())->mapWithKeys(fn($case) => [$case->value => ucfirst(strtolower(str_replace('_', ' ', $case->name)))])->toArray())
                     ->default(MappingCategory::default()->value),
-                Forms\Components\Select::make('transformer')
-                    ->options(collect(MappingTransformers::cases())
-                        ->mapWithKeys(fn($case) => [$case->name => ucfirst(strtolower(str_replace('_', ' ', $case->name)))])
-                        ->toArray()
-                    )->native(false),
+
                 Forms\Components\TextInput::make('options'),
                 Forms\Components\TextInput::make('remarks')
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('disabled_at'),
                 Forms\Components\DateTimePicker::make('deprecated_at'),
+                Forms\Components\TextInput::make('transformer')
+                    ->helperText(function () {
+                        $listItems = collect(MappingTransformers::cases())
+                            ->map(fn($case) => "<li style='margin-left: 16px;'><strong>{$case->name}</strong>: " . ucfirst(strtolower(str_replace('_', ' ', $case->name))) . "</li>")
+                            ->implode('');
+
+                        return new HtmlString("<ul style='list-style-type: disc; padding-left: 20px; margin-top: 4px;'>{$listItems}</ul>");
+                    })
+                ->columnSpanFull(),
             ]);
     }
 
