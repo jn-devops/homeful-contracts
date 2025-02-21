@@ -11,11 +11,13 @@ use App\Mappings\Transformers\ToMajorUnitTransformer;
 use App\Mappings\Transformers\TitleCaseTransformer;
 use App\Mappings\Transformers\LowerCaseTransformer;
 use App\Mappings\Transformers\UpperCaseTransformer;
+use App\Mappings\Transformers\UnpercentTransformer;
 use App\Mappings\Transformers\CurrencyTransformer;
 use App\Mappings\Transformers\ConcatTransformer;
 use App\Mappings\Transformers\JoinTransformer;
 use Homeful\Common\Traits\EnumUtils;
 use Illuminate\Support\Str;
+
 
 /**
  * Enum MappingTransformers
@@ -60,6 +62,7 @@ enum MappingTransformers
     case NUMBER_ABBREVIATE;
     case NUMBER_TRIM;
     case REVERSE_STRING;
+    case UNPERCENT;
 
     /**
      * Returns the default transformer (`UPPER_CASE`).
@@ -90,7 +93,8 @@ enum MappingTransformers
             self::NUMBER_FORMAT => NumberFormatTransformer::class,
             self::NUMBER_PERCENT => NumberPercentTransformer::class,
             self::NUMBER_ABBREVIATE => NumberAbbreviateTransformer::class,
-            self::REVERSE_STRING => ReverseStringTransformer::class
+            self::REVERSE_STRING => ReverseStringTransformer::class,
+            self::UNPERCENT => UnpercentTransformer::class
         };
     }
 
