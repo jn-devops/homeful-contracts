@@ -375,3 +375,33 @@ test('LowerCaseTransformer preserves non-alphabetic characters', function () {
 
     expect($result['value'])->toBe('1234 ab!@#');
 });
+
+use App\Mappings\Transformers\UnpercentTransformer;
+
+test('UnPercentTransformer converts fractional value to whole percentage', function () {
+    $transformer = new UnpercentTransformer();
+    $input = ['value' => 0.6];
+    $result = $transformer->transform($input);
+    expect($result['value'])->toBe(60.0);
+});
+
+test('UnPercentTransformer converts string fractional value to whole percentage', function () {
+    $transformer = new UnpercentTransformer();
+    $input = ['value' => '0.75'];
+    $result = $transformer->transform($input);
+    expect($result['value'])->toBe(75.0);
+});
+
+test('UnPercentTransformer handles zero value correctly', function () {
+    $transformer = new UnpercentTransformer();
+    $input = ['value' => 0];
+    $result = $transformer->transform($input);
+    expect($result['value'])->toBe(0.0);
+});
+
+test('UnPercentTransformer handles negative values correctly', function () {
+    $transformer = new UnpercentTransformer();
+    $input = ['value' => -0.2];
+    $result = $transformer->transform($input);
+    expect($result['value'])->toBe(-20.0);
+});

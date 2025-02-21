@@ -22,5 +22,5 @@ dataset('contract', function () use ($homeful_id) {
 
 test('contracts has metadata', function (Contract $contract) use ($homeful_id) {
     expect($contract->getData())->toBeInstanceOf(\Homeful\Contracts\Data\ContractData::class);
-    dd($contract->mortgage);
+    dd($contract->getData()->toJson());
 })->with('contract');
