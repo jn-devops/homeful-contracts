@@ -40,6 +40,8 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->topNavigation()
             ->maxContentWidth(MaxWidth::Full)
+            ->databaseNotifications()
+            ->databaseNotificationsPolling(30)
             ->colors([
                 'primary' => Color::Amber,
             ])
