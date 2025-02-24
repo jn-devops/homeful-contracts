@@ -40,7 +40,7 @@ test('external product model works', function (string $sku) {
 dataset('project code', function () {
     return [
         ['PVMP'],
-        ['PVSN'],
+        ['PVSN-01'],
         ['ESE']
     ];
 });

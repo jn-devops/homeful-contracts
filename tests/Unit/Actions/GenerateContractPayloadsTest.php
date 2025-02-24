@@ -89,7 +89,7 @@ dataset('mappings', function () {
                 ],
                 [
                     'code' => 'project_code',
-                    'path' => 'Project Code',
+                    'path' => 'inventory.Project Code',
                     'source' => 'mfiles',
                     'title' => 'Project Code',
                     'type' => 'string',
@@ -99,7 +99,7 @@ dataset('mappings', function () {
                 ],
                 [
                     'code' => 'technical_description',
-                    'path' => 'Technical Description',
+                    'path' => 'inventory.Technical Description',
                     'source' => 'mfiles',
                     'title' => 'Tech Desc',
                     'type' => 'string',
@@ -136,8 +136,8 @@ test('generate contract property action works', function (Reference $reference, 
         ['title' => 'GMI Peso', 'value' => '₱14,399.37'],
         ['title' => 'GMI Words', 'value' => 'Fourteen Thousand Three Hundred Ninety-Nine Point Three Seven'],
         ['title' => 'Order Interest', 'value' => '7.00%'],
-        ['title' => 'Project Code', 'value' => 'PPMP'],
-        ['title' => 'Tech Desc', 'value' => 'A parcel of land ( Lot 1, Blk 1 of the consolidation-subdivision plan Pcs-03-025995,  being a portion of the CONS-SUBD. OF Lot A-1, Psd-03-187972 and Lot 14, Psd-03-012919 (OLT), LRC Record no.      ) situated in the Barangay of DOLORES, Municipality of MAGALANG, Province of PAMPANGA, Island of LUZON.  Bounded on the XXXX to the point of beginning, containing an area of THIRTY SIX (36) SQUARE METERS. All corners are P.S cyl. conc. mons. 15x40 cms.; bearings True; date of original survey January 1916 - June 1916 and that of the consolidation-subdivision survey on March 1-15, 2024 by JOEL J. HUBAC, Geodetic Engineer  & was approved on May 10, 2024.'],
+        ['title' => 'Project Code', 'value' => 'PVT3_DEV'],
+        ['title' => 'Tech Desc', 'value' => "A parcel of land ( Lot 21, Blk 29 of the subdivision plan Psd-04-282073,  being a portion of the SUBD. OF LOT 1725-A, PSD-04-045803, LRC Record no. 8340 ), situated in the Barangay of MUZON, Municipality of NAIC, Province of CAVITE, Island of LUZON.  Bounded on the XXXX to the point of beginning, containing an area of FORTY EIGHT (48) SQUARE METERS. All corners are P.S cyl. conc. mons. 15x40 cms.; bearings True; date of original survey August 1906 - November 1907 and that of the subdivision survey on May 21-31, 2024 by JOEL J. HUBAC, Geodetic Engineer  & was approved on August 16, 2024.\r\n"],
     ];
 
     expect($payloads)->toMatchArray($expected);

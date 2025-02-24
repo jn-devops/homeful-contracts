@@ -115,18 +115,45 @@ class MFilesMappingProcessor extends AbstractMappingProcessor
 
         // Construct the request payload
         $payload = [
-            'Credentials' => [
-                'Username' => $credentials['username'],
-                'Password' => $credentials['password'],
+            "Credentials" => [
+                "Username" => $credentials['username'],
+                "Password" => $credentials['password'],
             ],
-            'objectID' => self::OBJECT_ID,
-            'propertyID' => self::PROPERTY_ID,
-            'name' => $this->propertyCode,
-            'property_ids' => self::PROPERTY_IDS,
+            "Documents" => [
+                [
+                    "objectID" => 119,
+                    "propertyID" => 1105,
+                    "name" => "PVT3_DEV-01-001-001",
+                    "json_name" => config('homeful-contracts.mfiles_mapping.inventory'),
+                    "property_ids" => [
+                        1202,
+                        1105,
+                        1050,
+                        1109,
+                        1203,
+                        1204,
+                        1202,
+                        1285
+                    ]
+                ],
+                [
+                    "objectID" => 101,
+                    "propertyID" => 1050,
+                    "name" => "PPMP",
+                    "json_name" => config('homeful-contracts.mfiles_mapping.project'),
+                    "property_ids" => [
+                        1293,
+                        1294
+                    ]
+                ]
+            ]
         ];
 
         // Send HTTP request to M-Files API
-        $response = Http::post("$mfilesLink/api/mfiles/document/search/properties", $payload);
+
+        $end_point = "$mfilesLink/api/mfiles/document/search/properties-many";
+
+        $response = Http::post($end_point, $payload);
 
         // Return the extracted JSON property or the default fallback
         return $response->successful()
