@@ -4647,16 +4647,16 @@
         },
         {
             "name": "jn-devops/products",
-            "version": "v1.3.3",
+            "version": "v1.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/products.git",
-                "reference": "b1971ae042034e613e103cc3e8c2a7e03b61693e"
+                "reference": "5cec79625eda811233bb8271fbc651e1c95220ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/products/zipball/b1971ae042034e613e103cc3e8c2a7e03b61693e",
-                "reference": "b1971ae042034e613e103cc3e8c2a7e03b61693e",
+                "url": "https://api.github.com/repos/jn-devops/products/zipball/5cec79625eda811233bb8271fbc651e1c95220ff",
+                "reference": "5cec79625eda811233bb8271fbc651e1c95220ff",
                 "shasum": ""
             },
             "require": {
@@ -4716,7 +4716,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/products/issues",
-                "source": "https://github.com/jn-devops/products/tree/v1.3.3"
+                "source": "https://github.com/jn-devops/products/tree/v1.3.9"
             },
             "funding": [
                 {
@@ -4724,7 +4724,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-13T09:25:49+00:00"
+            "time": "2025-02-17T08:21:06+00:00"
         },
         {
             "name": "jn-devops/properties",
@@ -4810,16 +4810,16 @@
         },
         {
             "name": "jn-devops/property",
-            "version": "v1.2.4",
+            "version": "v1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/property.git",
-                "reference": "4c3349a28d08edc8f3896f23ed5f2f8ebffc311c"
+                "reference": "4a386b652c20dda220c53db4bd5cde417accf62f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/property/zipball/4c3349a28d08edc8f3896f23ed5f2f8ebffc311c",
-                "reference": "4c3349a28d08edc8f3896f23ed5f2f8ebffc311c",
+                "url": "https://api.github.com/repos/jn-devops/property/zipball/4a386b652c20dda220c53db4bd5cde417accf62f",
+                "reference": "4a386b652c20dda220c53db4bd5cde417accf62f",
                 "shasum": ""
             },
             "require": {
@@ -4880,7 +4880,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/property/issues",
-                "source": "https://github.com/jn-devops/property/tree/v1.2.4"
+                "source": "https://github.com/jn-devops/property/tree/v1.2.5"
             },
             "funding": [
                 {
@@ -4888,7 +4888,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-17T10:21:02+00:00"
+            "time": "2025-02-17T09:15:43+00:00"
         },
         {
             "name": "joaopaulolndev/filament-pdf-viewer",
