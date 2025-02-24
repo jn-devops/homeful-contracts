@@ -1772,25 +1772,25 @@ class ContractResource extends Resource
                                         ->collapsible()
                                         ->collapsed(false)
                                         ->schema([
-                                            Forms\Components\TextInput::make('contact_data.order.seller_commission_code')
+                                            Forms\Components\TextInput::make('misc.input.seller.commision_code')
                                                 ->label('Seller Commission Code')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.seller.name')
+                                            Forms\Components\TextInput::make('misc.input.seller.name')
                                                 ->label('Seller Name')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.seller.id')
+                                            Forms\Components\TextInput::make('misc.input.seller.id')
                                                 ->label('Seller ID')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.seller.superior')
+                                            Forms\Components\TextInput::make('misc.input.seller.superior')
                                                 ->label('Superior')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.seller.team_head')
+                                            Forms\Components\TextInput::make('misc.input.seller.team_head')
                                                 ->label('Team Head')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.seller.chief_seller_officer')
+                                            Forms\Components\TextInput::make('misc.input.chief_seller_officer')
                                                 ->label('Chief Sales Officer/Deputy Chief Sales Officer')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.exec_tin_no')
+                                            Forms\Components\TextInput::make('misc.input.exec_tin_no')
                                                 ->label('CSO/DCSO TIN')
                                                 ->columnSpan(3),
 
@@ -1798,7 +1798,7 @@ class ContractResource extends Resource
                                             //     ->label('Deputy Chief Sales Officer')
                                             //     ->columnSpan(3),
 
-                                            Forms\Components\TextInput::make('contact_data.order.seller.unit')
+                                            Forms\Components\TextInput::make('misc.input.seller.unit')
                                                 ->label('Seller Unit')
                                                 ->columnSpan(3),
                                         ])
@@ -1809,13 +1809,13 @@ class ContractResource extends Resource
                                         ->schema([
                                             Group::make()
                                                 ->schema([
-                                                    Forms\Components\TextInput::make('contact_data.order.payment_scheme.discount_rate')
+                                                    Forms\Components\TextInput::make('misc.input.payment_scheme.discount_rate')
                                                         ->label('Discount')
                                                         ->hint('In Pesos')
                                                         ->numeric()
                                                         ->afterStateUpdated(function(Set $set, Get $get, String $state = null, Contact $record){
-                                                            $ntcp = ($get('contact_data.order.payment_scheme.total_contract_price') ?? 0) - $state;
-                                                            $set('contact_data.order.payment_scheme.net_total_contract_price', $ntcp);
+                                                            $ntcp = ($get('misc.input.payment_scheme.total_contract_price') ?? 0) - $state;
+                                                            $set('misc.input.payment_scheme.net_total_contract_price', $ntcp);
                                                             $set('contact_data.order.hdmf.input.SELLING_PRICE', $ntcp);
                                                             $set('contact_data.order.hdmf.input.DESIRED_LOAN', $ntcp);
                                                             $set('contact_data.order.loan_value_after_downpayment', ($ntcp - ($get('contact_data.order.equity_1_amount') ?? 0)));
@@ -1828,7 +1828,7 @@ class ContractResource extends Resource
                                                         })
                                                         ->live(onBlur: true)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.payment_scheme.conditional_discount')
+                                                    Forms\Components\TextInput::make('misc.input.payment_scheme.conditional_discount')
                                                         ->label('Conditional Discount')
                                                         ->numeric()
                                                         ->columnSpan(3),
@@ -1844,7 +1844,7 @@ class ContractResource extends Resource
                                                 ])
                                                 ->columns(12)
                                                 ->columnSpanFull(),
-                                            Forms\Components\Select::make('contact_data.contact_data.order.loan_term')
+                                            Forms\Components\Select::make('misc.input.payment_scheme.loan_term')
                                                 ->label('Loan Term')
                                                 ->options(fn()=>LoanTermOptions::getOptions())
                                                 ->default(0)
@@ -1869,13 +1869,13 @@ class ContractResource extends Resource
                                                 ->native(false)
                                                 ->label('Reservation Date')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.payment_scheme.scheme')
+                                            Forms\Components\TextInput::make('misc.input.payment_scheme.name')
                                                 ->label('Payment Scheme')
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.payment_scheme.method')
+                                            Forms\Components\TextInput::make('misc.input.payment_scheme.method')
                                                 ->label('Payment Method')
                                                 ->columnSpan(3),
-                                            Forms\Components\Select::make('contact_data.order.repricing_period')
+                                            Forms\Components\Select::make('misc.input.payment_scheme.repricing_period')
                                                 ->label('Repricing Period')
                                                 ->hint('If End User')
                                                 ->default(3)
@@ -2905,7 +2905,7 @@ class ContractResource extends Resource
                                                 ->live()
                                                 ->native(false)
                                                 ->columnSpan(3),
-                                            Forms\Components\TextInput::make('contact_data.order.comencement_period')
+                                            Forms\Components\TextInput::make('misc.input.payment_scheme.comencement_period')
                                                 ->label('Comencement Period')
                                                 ->hint('If Affordable')
                                                 ->default(0)
@@ -2928,88 +2928,88 @@ class ContractResource extends Resource
                                                 ->default(0)
                                                 ->columnSpan(3),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('contact_data.order.term_1')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.term_1')
                                                     ->label('Term 1')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Loan Term/Period')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.term_2')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.term_2')
                                                     ->label('Term 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Loan Term/Period')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.term_3')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.term_3')
                                                     ->label('Term 3')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Loan Term/Period')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('contact_data.order.amort_princ_int1')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_princ_int1')
                                                     ->label('Amort PRINC INT 1')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->numeric()
                                                     ->default(0)
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.amort_princ_int2')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_princ_int2')
                                                     ->label('Amort PRINC INT 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.amort_princ_int3')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_princ_int3')
                                                     ->label('Amort PRINC INT 3')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('contact_data.order.amort_nonlife1')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_nonlife1')
                                                     ->label('Amort Nonlife 1')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->numeric()
                                                     ->default(0)
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.amort_nonlife2')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_nonlife2')
                                                     ->label('Amort Nonlife 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.amort_nonlife3')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_nonlife3')
                                                     ->label('Amort Nonlife 3')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('contact_data.order.amort_mrisri1')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_mrisri1')
                                                     ->label('Amort MRISRI 1')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->numeric()
                                                     ->default(0)
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.amort_mrisri2')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_mrisri2')
                                                     ->label('Amort MRISRI 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.amort_mrisri3')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.amort_mrisri3')
                                                     ->label('Amort MRISRI 3')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('contact_data.order.monthly_amort1')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.monthly_amort1')
                                                     ->label('Monthly Amort 1')
                                                     ->numeric()
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->default(0)
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.monthly_amort2')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.monthly_amort2')
                                                     ->label('Monthly Amort 2')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('contact_data.order.monthly_amort3')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.monthly_amort3')
                                                     ->label('Monthly Amort 3')
                                                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')
                                                     ->columnSpan(3),
                                             ])->columns(12)
                                                 ->columnSpanFull(),
-                                            Forms\Components\TextInput::make('contact_data.order.loan_base')
+                                            Forms\Components\TextInput::make('misc.input.payment_scheme.loan_base')
                                                 ->label('Loan Base')
                                                 ->numeric()
                                                 ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Auto-Generated: Based on Evaluation')

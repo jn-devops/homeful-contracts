@@ -165,6 +165,11 @@ class EditContract extends EditRecord
             $new_data['aif']['no_middle_name'] = ($contact_data['aif']['aif_attorney_middle_name'] == '');
         }
 
+        if (!empty($contact_data['misc'])){
+            $new_data['misc'] = $contact_data['misc']??[];
+        }
+
+
 //
 ////        $new_data['seller'] = $contact_data->order->toArray()['seller'] ?? [];
 //        $new_data['reference_code'] = $contact_data->reference_code;
