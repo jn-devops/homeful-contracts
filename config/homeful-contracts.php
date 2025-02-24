@@ -23,6 +23,10 @@ return [
         'username' => env('MFILES_USERNAME'),
         'password'=> env('MFILES_PASSWORD')
     ],
+    'mfiles_mapping' => [
+        'inventory' => env('MFILES_MAPPING_INVENTORY', 'inventory'),
+        'project' => env('MFILES_MAPPING_PROJECT', 'project')
+    ],
     'data' => [
         'project1' => [
             'signatory' => env('PROJECT1_SIGNATORY', 'Mr. John Doe')

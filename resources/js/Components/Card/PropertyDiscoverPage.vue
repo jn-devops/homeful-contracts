@@ -180,9 +180,9 @@ watch(() => props.discoverPage, (newVal) => {
                 </div>
                 <div>
                     <h5 class="text-base font-bold underline mt-5 mb-7">Project Introduction</h5>
-                    <p class="leading-none text-sm pb-5">Agapeya Towns features 2-storey duplex units with a practical floor area of 50sqm, ideally constructed on a typical lot area of 70sqm.</p>
-                    <p class="leading-none text-sm pb-5">Each unit consists of 3 bedrooms, 1 toilet and bath, and is thoughtfully designed to include 2 carport provisions, ensuring convenience and functionality for residents.</p>
-                    <p class="leading-none text-sm pb-5">Its efficient use of space and modern design make Agapeya a compelling choice for individuals or families seeking affordable yet stylish housing solutions.</p>
+                    <p class="leading-none text-sm pb-5">{{ propertyDetail.details.description }}</p>
+                    <!-- <p class="leading-none text-sm pb-5">Each unit consists of 3 bedrooms, 1 toilet and bath, and is thoughtfully designed to include 2 carport provisions, ensuring convenience and functionality for residents.</p> -->
+                    <!-- <p class="leading-none text-sm pb-5">Its efficient use of space and modern design make Agapeya a compelling choice for individuals or families seeking affordable yet stylish housing solutions.</p> -->
 
                 </div>
                 <div class="mb-4">
@@ -197,7 +197,7 @@ watch(() => props.discoverPage, (newVal) => {
                                 <span>House Type:</span>
                             </div>
                             <div class="text-sm font-bold">
-                                Residential House & Lot 2-Storey Duplex
+                                <!-- TODO: house type field -->
                             </div>
                             <div class="flex gap-2 text-sm items-center">
                                 <svg class="size-4" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -224,9 +224,7 @@ watch(() => props.discoverPage, (newVal) => {
                                 <span>Features:</span>
                             </div>
                             <div class="text-sm font-bold">
-                                3 Bedrooms <br />
-                                1 Toilet and Bath <br />
-                                1 Carport plus provision <br />
+                                <!-- TODO: feature field -->
                             </div>
                         </div>
                     </div>
