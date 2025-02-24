@@ -171,7 +171,7 @@ class MFilesMappingProcessor extends AbstractMappingProcessor
                     ],
                     "mask_field" => [
                         "",
-                        null,
+                        "project_code",
                         null,
                         null,
                         null,
