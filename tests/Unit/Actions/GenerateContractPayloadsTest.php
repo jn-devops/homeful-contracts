@@ -99,7 +99,7 @@ dataset('mappings', function () {
                 ],
                 [
                     'code' => 'technical_description',
-                    'path' => 'inventory.Technical Description',
+                    'path' => 'inventory.technical_description',
                     'source' => 'mfiles',
                     'title' => 'Tech Desc',
                     'type' => 'string',
