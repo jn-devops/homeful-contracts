@@ -4315,16 +4315,16 @@
         },
         {
             "name": "jn-devops/contracts",
-            "version": "v1.7.2",
+            "version": "v1.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contracts.git",
-                "reference": "330c92292ff46e9ec6e306ace1d031ecfb6cb2c1"
+                "reference": "0c9782abfb4515082114eae27d5a6b6bf078385d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contracts/zipball/330c92292ff46e9ec6e306ace1d031ecfb6cb2c1",
-                "reference": "330c92292ff46e9ec6e306ace1d031ecfb6cb2c1",
+                "url": "https://api.github.com/repos/jn-devops/contracts/zipball/0c9782abfb4515082114eae27d5a6b6bf078385d",
+                "reference": "0c9782abfb4515082114eae27d5a6b6bf078385d",
                 "shasum": ""
             },
             "require": {
@@ -4389,7 +4389,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contracts/issues",
-                "source": "https://github.com/jn-devops/contracts/tree/v1.7.2"
+                "source": "https://github.com/jn-devops/contracts/tree/v1.7.4"
             },
             "funding": [
                 {
@@ -4397,7 +4397,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-14T08:35:15+00:00"
+            "time": "2025-02-24T06:52:28+00:00"
         },
         {
             "name": "jn-devops/mortgage",

@@ -89,7 +89,7 @@ dataset('mappings', function () {
                 ],
                 [
                     'code' => 'project_code',
-                    'path' => 'inventory.Project Code',
+                    'path' => 'inventory.project_code',
                     'source' => 'mfiles',
                     'title' => 'Project Code',
                     'type' => 'string',
@@ -99,7 +99,7 @@ dataset('mappings', function () {
                 ],
                 [
                     'code' => 'technical_description',
-                    'path' => 'inventory.Technical Description',
+                    'path' => 'inventory.technical_description',
                     'source' => 'mfiles',
                     'title' => 'Tech Desc',
                     'type' => 'string',

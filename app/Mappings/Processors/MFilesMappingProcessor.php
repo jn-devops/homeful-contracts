@@ -149,6 +149,52 @@ class MFilesMappingProcessor extends AbstractMappingProcessor
             ]
         ];
 
+        $payload = [
+            "Credentials" => [
+                "Username" => $credentials['username'],
+                "Password" => $credentials['password'],
+            ],
+            "Documents" => [
+                [
+                    "objectID" => 119,
+                    "propertyID" => 1105,
+                    "name" => "PVT3_DEV-01-001-001",
+                    "json_name" => "",
+                    "property_ids" => [
+                        1105,
+                        1050,
+                        1109,
+                        1203,
+                        1204,
+                        1202,
+                        1285
+                    ],
+                    "mask_field" => [
+                        "",
+                        "project_code",
+                        null,
+                        null,
+                        null,
+                        null,
+                        "technical_description"
+                    ]
+                ],
+                [
+                    "objectID" => 101,
+                    "propertyID" => 1050,
+                    "name" => "PPMP",
+                    "json_name" => "",
+                    "property_ids" => [
+                        1293,
+                        1294
+                    ],
+                    "mask_field" => [
+                        "project_developer",
+                        "registry_of_deed"
+                    ]
+                ]
+            ]
+        ];
         // Send HTTP request to M-Files API
 
         $end_point = "$mfilesLink/api/mfiles/document/search/properties-many";
