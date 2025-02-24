@@ -339,4 +339,10 @@ class EditContract extends EditRecord
         $data['contact_data']=$new_data;
         return $data;
     }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        $record->update($data['misc']);
+        return $record;
+    }
 }
