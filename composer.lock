@@ -936,16 +936,16 @@
         },
         {
             "name": "bezhansalleh/filament-shield",
-            "version": "3.3.4",
+            "version": "3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bezhanSalleh/filament-shield.git",
-                "reference": "87853f1132a5a524ba685e6033865ac9a6af4855"
+                "reference": "88b6714e4d14abcb614ff3ac45114866763d1ba5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bezhanSalleh/filament-shield/zipball/87853f1132a5a524ba685e6033865ac9a6af4855",
-                "reference": "87853f1132a5a524ba685e6033865ac9a6af4855",
+                "url": "https://api.github.com/repos/bezhanSalleh/filament-shield/zipball/88b6714e4d14abcb614ff3ac45114866763d1ba5",
+                "reference": "88b6714e4d14abcb614ff3ac45114866763d1ba5",
                 "shasum": ""
             },
             "require": {
@@ -4230,16 +4230,16 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v2.0.2",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contacts.git",
-                "reference": "8614477ee48909e6730de9255b50c773f0477f98"
+                "reference": "e1a8109dbe1fae08d03969e9fdd4e2f4889c601c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/8614477ee48909e6730de9255b50c773f0477f98",
-                "reference": "8614477ee48909e6730de9255b50c773f0477f98",
+                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/e1a8109dbe1fae08d03969e9fdd4e2f4889c601c",
+                "reference": "e1a8109dbe1fae08d03969e9fdd4e2f4889c601c",
                 "shasum": ""
             },
             "require": {
@@ -4303,7 +4303,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v2.0.2"
+                "source": "https://github.com/jn-devops/contacts/tree/v2.1.4"
             },
             "funding": [
                 {
@@ -4311,7 +4311,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-14T07:55:24+00:00"
+            "time": "2025-02-21T08:32:05+00:00"
         },
         {
             "name": "jn-devops/contracts",
