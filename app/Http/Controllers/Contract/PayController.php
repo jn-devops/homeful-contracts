@@ -45,6 +45,7 @@ class PayController extends Controller
         return Inertia::render('Contract/PaySuccess', [
             'reference_code' => $reference_code,
             'payment_details' => $payment_details,
+            'contract' => $contract,
         ]);
     }
 }

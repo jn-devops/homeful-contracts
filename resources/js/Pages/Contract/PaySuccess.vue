@@ -10,6 +10,7 @@ import axios from "axios";
 const props = defineProps({
     reference_code: String,
     payment_details: Object,
+    contract: Object,
 });
 
 const reference = ref({});
@@ -42,6 +43,7 @@ window.location.href = `${window.location.origin}/contact-paid/${props.reference
 const transactionType = ref('Credit/Debit Card');
 const transactionNumber = ref('045352114253');
 const transactionDate = ref('12-19-2024 12:00PM');
+const voucher_code = ref(null);
 
 const completeDataFormAction = () => {
     // TODO: Action if the "Complete Additional Data Form" button is clicked
@@ -56,6 +58,9 @@ onMounted(() => {
     transactionType.value = "Credit/Card Payment"
     transactionNumber.value = props.payment_details?.data.orderInformation.referencedId ?? ''
     transactionDate.value = props.payment_details?.data.orderInformation.responseDate ?? ''
+    voucher_code.value = props.contract?.seller_commission_code ?? null
+    console.log('code', voucher_code.value);
+    
 
     window.scrollTo({
         top: document.body.scrollHeight,
@@ -109,6 +114,12 @@ onMounted(() => {
                     </div>
                     <div class="font-bold col-span-7 text-right text-sm">
                         {{ transactionDate }}
+                    </div>
+                    <div v-if="voucher_code" class="col-span-5 text-sm">
+                        Voucher Code
+                    </div>
+                    <div v-if="voucher_code" class="font-bold col-span-7 text-right text-sm">
+                        {{ voucher_code }}
                     </div>
                 </div>
             </div>
