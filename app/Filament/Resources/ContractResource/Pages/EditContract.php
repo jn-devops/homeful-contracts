@@ -348,7 +348,15 @@ class EditContract extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        dd($data);
         $record->update($data['misc']);
         return $record;
+    }
+
+    public function save(bool $shouldRedirect = true, bool $shouldSendSavedNotification = true): void
+    {
+        $this->record->update($this->data['misc']);
+        $this->record->misc=$this->data['misc'];
+        $this->record->save();
     }
 }
