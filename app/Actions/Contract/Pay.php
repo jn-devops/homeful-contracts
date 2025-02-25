@@ -19,13 +19,16 @@ class Pay
      */
     public function handle(Reference $reference, array $payment_payload): Reference
     {
-        $contract = $reference->getContract();
-        if ($contract instanceof Contract) {
-            $contract->payment = $payment_payload;
-            $contract->save();
-            $contract->state->transitionTo(Paid::class);
+        try {
+            $contract = $reference->getContract();
+            if ($contract instanceof Contract) {
+                $contract->payment = $payment_payload;
+                $contract->save();
+                $contract->state->transitionTo(Paid::class);
+            }
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
         return $reference;
     }
 }
