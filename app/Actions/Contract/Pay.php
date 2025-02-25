@@ -28,8 +28,7 @@ class Pay
                 $contract->payment = $payment_payload;
                 $contract->save();
                 $contract->state->transitionTo(Paid::class);
-                $contact = Contact::find($contract->contact_id);
-                $contact->notify(new OnboardedToPaidBuyerNotification(ReferenceData::fromModel($reference) ));
+                $contract->notify(new OnboardedToPaidBuyerNotification(ReferenceData::fromModel($reference) ));
             }
         } catch (\Throwable $th) {
             throw $th;
