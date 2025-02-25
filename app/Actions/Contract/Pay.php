@@ -2,6 +2,8 @@
 
 namespace App\Actions\Contract;
 
+use Homeful\Notifications\Notifications\OnboardedToPaidBuyerNotification;
+use Homeful\References\Data\ReferenceData;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\References\Models\Reference;
 use Homeful\Contracts\Models\Contract;
@@ -25,6 +27,7 @@ class Pay
                 $contract->payment = $payment_payload;
                 $contract->save();
                 $contract->state->transitionTo(Paid::class);
+                $contract->customer()->notify(new OnboardedToPaidBuyerNotification(ReferenceData::fromModel($reference) ));
             }
         } catch (\Throwable $th) {
             throw $th;
