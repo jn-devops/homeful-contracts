@@ -8,6 +8,7 @@ use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\References\Models\Reference;
 use Homeful\Contracts\Models\Contract;
 use Homeful\Contracts\States\Paid;
+use Homeful\Contacts\Models\Customer as Contact;
 
 class Pay
 {
@@ -27,7 +28,7 @@ class Pay
                 $contract->payment = $payment_payload;
                 $contract->save();
                 $contract->state->transitionTo(Paid::class);
-                $contact = $reference->getContact();
+                $contact = Contact::find($contract->contact_id);
                 $contact->notify(new OnboardedToPaidBuyerNotification(ReferenceData::fromModel($reference) ));
             }
         } catch (\Throwable $th) {
