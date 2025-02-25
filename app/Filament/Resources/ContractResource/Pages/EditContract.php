@@ -358,6 +358,7 @@ class EditContract extends EditRecord
     {
         $this->record->update($this->data['misc']);
         $this->record->misc=$this->data['misc'];
+        $this->record->property_code = $this->data['property_code'];
         $this->record->save();
 
         if ($shouldSendSavedNotification) {

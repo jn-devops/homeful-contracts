@@ -1481,7 +1481,7 @@ class ContractResource extends Resource
                                     Forms\Components\Fieldset::make('Property Allocation')
                                         ->schema([
                                             Group::make()->schema([
-                                                Forms\Components\TextInput::make('contact_data.order.property_code')
+                                                Forms\Components\TextInput::make('property_code')
                                                     ->label('Input Property Code'),
                                                 Forms\Components\Actions::make([
                                                     Forms\Components\Actions\Action::make('Sync Property Details')
