@@ -12,6 +12,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\ActionSize;
+use Filament\Support\Facades\FilamentView;
 use Homeful\Contacts\Actions\GetContactMetadataFromContactModel;
 use Homeful\Contacts\Data\ContactData;
 use Homeful\Contacts\Models\Customer as Contact;
@@ -358,5 +359,13 @@ class EditContract extends EditRecord
         $this->record->update($this->data['misc']);
         $this->record->misc=$this->data['misc'];
         $this->record->save();
+
+        if ($shouldSendSavedNotification) {
+            $this->getSavedNotification()?->send();
+        }
+
+        if ($shouldRedirect && ($redirectUrl = $this->getRedirectUrl())) {
+            $this->redirect($redirectUrl, navigate: false);
+        }
     }
 }
