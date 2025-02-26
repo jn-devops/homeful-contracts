@@ -31,6 +31,7 @@ class Avail
             if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code'))
                 $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
 
+            $contract->save();
             $contract->state->transitionTo(Availed::class, $reference);
         } catch (\Throwable $th) {
             throw $th;
