@@ -2,27 +2,14 @@
 
 namespace App\Filament\Resources\ContractResource\Pages;
 
-use App\Actions\GenerateContractPayloads;
 use App\Filament\Resources\ContractResource;
-use App\Helpers\LoanTermOptions;
-use App\Models\Payload;
-use App\Models\RequirementMatrix;
-use Filament\Actions;
-use Filament\Actions\Action;
-use Filament\Forms\Components\Select;
+use App\Actions\GenerateContractPayloads;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Support\Enums\ActionSize;
-use Filament\Support\Facades\FilamentView;
-use Homeful\Contacts\Actions\GetContactMetadataFromContactModel;
-use Homeful\Contacts\Data\ContactData;
-use Homeful\Contacts\Models\Customer as Contact;
-use Homeful\Contracts\Models\Contract;
-use Homeful\Properties\Models\Project;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Http;
-use Homeful\Contracts\States\ContractState;
-use Spatie\ModelStates\State;
-use Spatie\ModelStates\StateConfig;
+use Homeful\Contracts\Models\Contract;
+use Filament\Forms\Components\Select;
+use Filament\Actions\Action;
+
 
 
 
@@ -100,6 +87,8 @@ class EditContract extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
+        GenerateContractPayloads::dispatch($this->record);
+
         if (!empty($data['property'])&& $data['property']!=null) {
             $data['desired_property']['project']=$data['property']['project']['name']??'';
             $data['desired_property']['unit_type']=$data['property']['unit_type']??'';

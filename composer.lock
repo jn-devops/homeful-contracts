@@ -4401,16 +4401,16 @@
         },
         {
             "name": "jn-devops/mortgage",
-            "version": "v1.2.7",
+            "version": "v1.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/mortgage.git",
-                "reference": "2c34086b31f40bc0aa9d3c88ae246d17bb948b4d"
+                "reference": "63a44471042fb7e94cbc2631258e4b3ec1a82e4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/mortgage/zipball/2c34086b31f40bc0aa9d3c88ae246d17bb948b4d",
-                "reference": "2c34086b31f40bc0aa9d3c88ae246d17bb948b4d",
+                "url": "https://api.github.com/repos/jn-devops/mortgage/zipball/63a44471042fb7e94cbc2631258e4b3ec1a82e4d",
+                "reference": "63a44471042fb7e94cbc2631258e4b3ec1a82e4d",
                 "shasum": ""
             },
             "require": {
@@ -4471,7 +4471,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/mortgage/issues",
-                "source": "https://github.com/jn-devops/mortgage/tree/v1.2.7"
+                "source": "https://github.com/jn-devops/mortgage/tree/v1.2.8"
             },
             "funding": [
                 {
@@ -4479,7 +4479,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-24T02:24:21+00:00"
+            "time": "2025-02-26T01:55:45+00:00"
         },
         {
             "name": "jn-devops/paymate",

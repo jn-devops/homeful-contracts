@@ -19,7 +19,7 @@ class GeneratedDocumentsTable extends Component
     public function mount(Model $record)
     {
         $this->record = $record;
-        app(GenerateContractPayloads::class)->run($record);
+        GenerateContractPayloads::dispatch($this->record);
 
         $this->payloads = Payload::with(['mapping' => function ($query) {
             $query->select('code', 'title', 'category');
