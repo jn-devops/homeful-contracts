@@ -3045,7 +3045,14 @@ class ContractResource extends Resource
                     ->schema([
                         Placeholder::make('state')
                             ->label('Status')
-                            ->content(fn ($record) => $record->state),
+                            ->content(fn ($record) => new \Illuminate\Support\HtmlString("
+                                <x-filament::badge
+                                    color=\"{$record->state->color()}\"
+                                    icon=\"{$record->state->icon()}\"
+                                >
+                                    {$record->state->name()}
+                                </x-filament::badge>
+                            ")),
 //                        Placeholder::make('reference_code')
 //                            ->label('Reference Code')
 //                            ->content(fn ($record) => $record->reference_code),
