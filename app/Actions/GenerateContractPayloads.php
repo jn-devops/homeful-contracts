@@ -2,14 +2,17 @@
 
 namespace App\Actions;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\Contracts\Models\Contract;
 use App\Models\{Mapping, Payload};
 
-class GenerateContractPayloads
+class GenerateContractPayloads implements ShouldQueue
 {
-    use AsAction;
+    use AsAction, AsJob, InteractsWithQueue, Queueable, SerializesModels;
 
     public function handle(Contract $contract): int
     {
@@ -20,7 +23,7 @@ class GenerateContractPayloads
             ->notDisabled()
             ->each(function (Mapping $mapping) use ($contract, &$processedCount) {
                 $value = app(GetContractPayload::class)->run($contract, $mapping);
-                $payload = $this->persistPayload($contract, $mapping, $value);
+                $this->persistPayload($contract, $mapping, $value);
 
                 // Increment the counter
                 $processedCount++;
@@ -30,13 +33,13 @@ class GenerateContractPayloads
     }
 
     /**
-     * @throws BindingResolutionException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function persistPayload(Contract $contract, Mapping $mapping, $value): Payload
     {
         $payload = app(Payload::class)->make([
             'mapping_code' => $mapping->code,
-            'value' => $value??''
+            'value' => $value ?? ''
         ]);
 
         $payload->contract()->associate($contract);
