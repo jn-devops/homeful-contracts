@@ -1859,7 +1859,12 @@ class ContractResource extends Resource
                                                     ])
                                                     ->native(false)
                                                     ->columnSpan(3),
-
+                                                Forms\Components\TextInput::make('misc.input.witness1')
+                                                    ->label('Witness1')
+                                                    ->columnSpan(3),
+                                                Forms\Components\TextInput::make('misc.input.witness2')
+                                                    ->label('Witness2')
+                                                    ->columnSpan(3),
                                                 Forms\Components\Section::make('Downpayment/Equity')
                                                     ->collapsible()
                                                     ->collapsed(true)
