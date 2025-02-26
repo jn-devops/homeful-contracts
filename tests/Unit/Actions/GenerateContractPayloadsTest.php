@@ -75,7 +75,7 @@ dataset('mappings', function () {
                     'type' => 'string',
                     'default' => '537',
                     'category' => 'buyer',
-                    'transformer' => 'ToMajorUnit, NumberSpell, TitleCase'
+                    'transformer' => 'ToMajorUnit, ToWords, TitleCase'
                 ],
                 [
                     'code' => 'order_interest',
