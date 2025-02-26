@@ -20,7 +20,7 @@ class GetContractPayload
     public function handle(Contract $contract, Mapping $mapping): mixed
     {
         $data = $contract->getData()->toArray();
-        $property_code = $contract->inventory->code;
+        $property_code = $contract->inventory->code??'';
 
         return match ($mapping->source) {
             MappingSource::ARRAY => (new ArrayMappingProcessor($mapping, $data))->process(),
