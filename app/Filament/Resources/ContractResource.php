@@ -1552,36 +1552,6 @@ class ContractResource extends Resource
                                                                         ->send();
                                                                 }
 
-                                                                //                                                            try{
-                                                                //                                                                $property = (new Property)
-                                                                //                                                                    ->setTotalContractPrice(new Price(Money::of($tcp =750000, 'PHP')))
-                                                                //                                                                    ->setAppraisedValue(new Price(Money::of($tcp, 'PHP')));
-                                                                //                                                                $borrower = (new Borrower($property))
-                                                                //                                                                    ->setRegional(false)
-                                                                //                                                                    ->setAge(25)
-                                                                //                                                                    ->setGrossMonthlyIncome($get('buyer_employment.monthly_gross_income')??0);
-                                                                //
-                                                                //                                                                $mortgage= new Mortgage(property: $property, borrower: $borrower, params: [
-                                                                //                                                                    Input::WAGES => $get('buyer_employment.monthly_gross_income'),
-                                                                ////                                                                    Input::TCP => $get('order.payment_scheme.total_contract_price'),
-                                                                //                                                                    Input::TCP => 750000,
-                                                                //                                                                    Input::PERCENT_DP => 5 / 100,
-                                                                //                                                                    Input::DP_TERM => 12,
-                                                                //                                                                    Input::BP_INTEREST_RATE => 7 / 100,
-                                                                //                                                                    Input::PERCENT_MF => 8.5 / 100,
-                                                                //                                                                    Input::LOW_CASH_OUT => 0.0,
-                                                                //                                                                    Input::BP_TERM => 20,
-                                                                //                                                                ]);
-                                                                //                                                                $data = MortgageData::fromObject($mortgage);
-                                                                //                                                            }catch (Exception $e){
-                                                                //                                                                Notification::make()
-                                                                //                                                                    ->title($e->getMessage() )
-                                                                //                                                                    ->danger()
-                                                                //                                                                    ->persistent()
-                                                                //                                                                    ->sendToDatabase(auth()->user())
-                                                                //                                                                    ->send();
-                                                                //                                                            }
-
                                                                 try {
                                                                     $mfilesLink = config('gnc.mfiles_link');
                                                                     $credentials = config('gnc.mfiles_credentials');
@@ -1594,7 +1564,7 @@ class ContractResource extends Resource
                                                                         ],
                                                                         "objectID" => 119,
                                                                         "propertyID" => 1105,
-                                                                        "name" => $get('order.property_code')??'',
+                                                                        "name" => $get('contact_data.order.property_code')??'',
                                                                         "property_ids"=>[1105,1050,1109,1203,1204,1202,1285,1024,1290],
                                                                     ];
                                                                     $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
@@ -1896,7 +1866,7 @@ class ContractResource extends Resource
                                                 ->collapsed(true)
                                                 ->schema([
                                                     //                                                Downpayment Equity Start
-                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_amount')
+                                                    Forms\Components\TextInput::make('mortgage.down_payment')
                                                         ->label('Amount')
                                                         ->afterStateUpdated(function(Set $set, Get $get, String $state = null){
                                                             $ntcp = $get('contact_data.order.payment_scheme.net_total_contract_price');
@@ -1913,20 +1883,20 @@ class ContractResource extends Resource
                                                         ->default(0)
                                                         ->minValue(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_percentage_rate')
+                                                    Forms\Components\TextInput::make('mortgage.percent_down_payment')
                                                         ->label('Percentage Rate (%)')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->disabled()
                                                         ->minValue(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_interest_rate')
+                                                    Forms\Components\TextInput::make('mortgage.dp_interest_rate')
                                                         ->label('Interest Rate')
                                                         ->numeric()
                                                         ->disabled()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_terms')
+                                                    Forms\Components\TextInput::make('mortgage.dp_term')
                                                         ->label('Terms')
                                                         ->numeric()
                                                         ->afterStateUpdated(function(Set $set, Get $get, String $state = null){
@@ -1940,12 +1910,12 @@ class ContractResource extends Resource
                                                         ->hint('In Months')
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.equity_1_monthly_payment')
+                                                    Forms\Components\TextInput::make('mortgage.dp_amortization')
                                                         ->label('Monthly Payment')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.loan_value_after_downpayment')
+                                                    Forms\Components\TextInput::make('mortgage.loan_amount')
                                                         ->label('Loan Value After Downpayment')
                                                         ->numeric()
                                                         ->default(0)
@@ -1962,27 +1932,27 @@ class ContractResource extends Resource
                                                 ->collapsed(true)
                                                 ->schema([
 //                                                      BP Amount Start
-                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_amount')
+                                                    Forms\Components\TextInput::make('mortgage.loan_amortization')
                                                         ->label('Loan BP Amount')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_percentage_rate')
+                                                    Forms\Components\TextInput::make('mortgage.percent_balance_payment')
                                                         ->label('Loan BP Percentage Rate')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_interest_rate')
+                                                    Forms\Components\TextInput::make('mortgage.interest_rate')
                                                         ->label('Loan BP Interest Rate')
                                                         ->numeric()
                                                         ->default(0)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_terms')
+                                                    Forms\Components\TextInput::make('mortgage.bp_term')
                                                         ->label('Loan BP Terms')
                                                         ->numeric()
                                                         ->default(30)
                                                         ->columnSpan(3),
-                                                    Forms\Components\TextInput::make('contact_data.order.bp_1_monthly_payment')
+                                                    Forms\Components\TextInput::make('mortgage.loan_amortization')
                                                         ->label('Loan BP Monthly Payment')
                                                         ->numeric()
                                                         ->default(0)
@@ -2018,7 +1988,7 @@ class ContractResource extends Resource
                                                         ],
                                                         "objectID" => 119,
                                                         "propertyID" => 1105,
-                                                        "name" => $get('order.property_code')??'',
+                                                        "name" => $get('contact_data.order.property_code')??'',
                                                         "property_ids"=>[1105,1050,1109,1203,1204,1202,1285,1024,1290],
                                                     ];
                                                     $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
