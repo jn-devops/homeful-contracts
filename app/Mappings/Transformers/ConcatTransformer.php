@@ -54,7 +54,7 @@ class ConcatTransformer extends BaseTransformer
         $after = trim($this->getOption(self::AFTER_PARAM, ''));
 
         // Concatenate the values with a single space between them
-        $transformedValue = trim("{$before} {$value} {$after}");
+        $transformedValue = $value ? trim("{$before} {$value} {$after}") : $value;
 
         return [
             'value' => $transformedValue,

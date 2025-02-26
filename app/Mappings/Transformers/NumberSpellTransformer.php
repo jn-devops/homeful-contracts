@@ -2,10 +2,6 @@
 
 namespace App\Mappings\Transformers;
 
-use Brick\Money\Money;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Number;
-
 /**
  * Class NumberSpellTransformer
  *
@@ -48,21 +44,10 @@ use Illuminate\Support\Number;
  * - **Generating reports** with numbers in text format.
  * - **Enhancing accessibility** by converting numeric values into readable text.
  */
-class NumberSpellTransformer extends BaseTransformer
+class NumberSpellTransformer extends NumberTransformer
 {
     /**
      * @var string The Laravel `Number` helper method used for transformation.
      */
     protected string $command = 'spell';
-
-    public function transform(array $data): array
-    {
-        $value = Arr::get($data, 'value');
-
-        $value = $value instanceof Money ? $value->getAmount()->toFloat() : (float) $value;
-
-        return [
-            'value' => convertNumberToWords($value),
-        ];
-    }
 }
