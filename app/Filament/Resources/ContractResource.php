@@ -3046,9 +3046,9 @@ class ContractResource extends Resource
                         Placeholder::make('state')
                             ->label('Status')
                             ->content(fn ($record) => $record->state),
-                        Placeholder::make('reference_code')
-                            ->label('Reference Code')
-                            ->content(fn ($record) => $record->reference_code),
+//                        Placeholder::make('reference_code')
+//                            ->label('Reference Code')
+//                            ->content(fn ($record) => $record->reference_code),
                         Placeholder::make('created_at')
                             ->label('Date Created')
                             ->content(fn ($record) => $record?->created_at?->format('M d, Y') ?? new HtmlString('&mdash;')),
