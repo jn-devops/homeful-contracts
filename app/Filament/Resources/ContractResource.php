@@ -2062,6 +2062,8 @@ class ContractResource extends Resource
                                                     ->columnSpanFull(),
                                             ])->columnSpanFull(),
                                         Forms\Components\Section::make('PAG-IBIG Evaluation Sheet')
+                                            ->collapsible(true)
+                                            ->collapsed(true)
                                             ->headerActions([
                                                 \Filament\Forms\Components\Actions\Action::make('evaluate')
                                                     ->label('Evaluate')
