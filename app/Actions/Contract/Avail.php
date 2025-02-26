@@ -28,10 +28,10 @@ class Avail
             $product_params = Arr::only($validated, 'sku');
 
             $contract = app(UpdateContractProperty::class)->run($reference, $validated);
-            if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code'))
+            if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code')){
                 $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
-
-            $contract->save();
+                $contract->save();
+            }
             $contract->state->transitionTo(Availed::class, $reference);
         } catch (\Throwable $th) {
             throw $th;
