@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\Contracts\Models\Contract;
+use Lorisleiva\Actions\Concerns\AsJob;
 use App\Models\{Mapping, Payload};
 
 class GenerateContractPayloads implements ShouldQueue
