@@ -21,3 +21,5 @@ Route::post('inquiry' , function (Request $request) { $response = (new Paymate()
 Route::get('generatekey' , function (Request $request) { $response = (new Paymate())->generateKey()  ; return $response;});
 
 Route::post('payment-collected', PaymentCollectedController::class)->name('payment-collected');
+
+Route::post('check-payload', [PaymentCollectedController::class,'checkPayload'])->name('check-payload');
