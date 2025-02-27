@@ -3053,7 +3053,7 @@ class ContractResource extends Resource
                                     color=\"{$record->state->color()}\"
                                     icon=\"{$record->state->icon()}\"
                                 >
-                                    {$record->state->name()}
+                                    " . strtoupper($record->state->name()) . "
                                 </x-filament::badge>
                             ")),
 //                        Placeholder::make('reference_code')
