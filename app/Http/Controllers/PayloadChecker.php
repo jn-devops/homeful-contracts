@@ -51,15 +51,34 @@ class PayloadChecker extends Controller
             return response()->json(['error' => 'Contract not found'], 404);
         }
 
-        $value=[];
 
-        Mapping::query()
+        $mapping= Mapping::query()
             ->notDeprecated()
             ->notDisabled()
-            ->each(function (Mapping $mapping) use ($contract, &$processedCount) {
-                $value[] = app(GetContractPayload::class)->run($contract, $mapping);
-            });
+            ->where('source','mfiles')
+            ->get();
+        // ->each(function (Mapping $mapping) use ($contract, &$processedCount) {
+        //     $value[] = [$mapping->code,app(GetContractPayload::class)->run($contract, $mapping)];
+        // });
 
-        return response()->json($value);
+
+        $mapping= Mapping::query()
+            ->notDeprecated()
+            ->notDisabled()
+            ->where('source','mfiles')
+            ->get();
+        // ->each(function (Mapping $mapping) use ($contract, &$processedCount) {
+        //     $value[] = [$mapping->code,app(GetContractPayload::class)->run($contract, $mapping)];
+        // });
+
+        $value= $mapping->map(function ($mapping) use (&$value,$contract) {
+            return [$mapping->code,app(GetContractPayload::class)->run($contract, $mapping)];
+        });
+
+
+        return response()->json([
+            'mapping'=>$mapping,
+            'values'=>$value
+        ]);
     }
 }
