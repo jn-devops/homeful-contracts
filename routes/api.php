@@ -23,3 +23,5 @@ Route::get('generatekey' , function (Request $request) { $response = (new Paymat
 Route::post('payment-collected', PaymentCollectedController::class)->name('payment-collected');
 
 Route::post('check-payload', [PayloadChecker::class,'checkPayload'])->name('check-payload');
+
+Route::post('check-mfiles', [PayloadChecker::class,'MFilesProcessorCheck'])->name('check-mfiles');
