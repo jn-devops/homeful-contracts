@@ -2038,29 +2038,29 @@ class ContractResource extends Resource
                                         Forms\Components\Section::make('Fees')
                                             ->collapsible()
                                             ->schema([
-                                                Forms\Components\TextInput::make('misc.input.retention_fee')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.retention_fee')
                                                     ->label('Retention Fee')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.service_fee')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.service_fee')
                                                     ->label('Service Fee')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.processing_fee')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.processing')
                                                     ->label('Processing Fee')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.home_utility_connection_fee')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.home_utility_connection')
                                                     ->label('Home Utility Connection Fee')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.balance')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.balance')
                                                     ->label('Balance Fee')
                                                     ->columnSpan(3),
 
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.equity')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.equity')
                                                     ->label('Equity Fee')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.rental')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.rental')
                                                     ->label('Rental Fee')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.present_rental_fee')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.present_rental')
                                                     ->label('Present Rental Fee')
                                                     ->columnSpan(3),
                                             ])->columnSpanFull()->columns(12),
