@@ -1756,7 +1756,7 @@ class ContractResource extends Resource
                                                 Forms\Components\TextInput::make('misc.input.seller.team_head')
                                                     ->label('Team Head')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.chief_seller_officer')
+                                                Forms\Components\TextInput::make('misc.input.seller.chief_seller_officer')
                                                     ->label('Chief Sales Officer/Deputy Chief Sales Officer')
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.exec_tin_no')
@@ -2053,9 +2053,7 @@ class ContractResource extends Resource
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.balance')
                                                     ->label('Balance Fee')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.equity')
-                                                    ->label('Equity Fee')
-                                                    ->columnSpan(3),
+
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.equity')
                                                     ->label('Equity Fee')
                                                     ->columnSpan(3),
@@ -2065,38 +2063,7 @@ class ContractResource extends Resource
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.present_rental_fee')
                                                     ->label('Present Rental Fee')
                                                     ->columnSpan(3),
-                                            ]),
-                                        Forms\Components\Section::make()
-                                            ->collapsible(true)
-                                            ->collapsed()
-                                            ->schema([
-                                                Forms\Components\Repeater::make('contact_data.order.payment_scheme.fees')
-                                                    ->collapsible(true)
-                                                    ->collapsed()
-                                                    ->label('Fees')
-                                                    ->schema([
-                                                        Forms\Components\Select::make('name')
-                                                            ->label('Fee Name')
-                                                            ->options([
-                                                                'retention_fee' => 'Retention Fee',
-                                                                'service_fee' => 'Service Fee',
-                                                                'processing_fee' => 'Processing Fee',
-                                                                'home_utility_connection_fee' => 'Home Utility Connection Fee',
-                                                                'balance' => 'Balance Fee',
-                                                                'equity' => 'Equity Fee',
-                                                                'rental' => 'Rental Fee',
-                                                                'present_rental_fee' => 'Present Rental Fee',
-                                                            ])
-                                                            ->searchable()
-                                                            ->native(false)
-                                                            ->columnSpan(3),
-                                                        Forms\Components\TextInput::make('amount')
-                                                            ->label('Amount')
-                                                            ->numeric()
-                                                            ->columnSpan(3),
-                                                    ])->columns(6)
-                                                    ->columnSpanFull(),
-                                            ])->columnSpanFull(),
+                                            ])->columnSpanFull()->columns(12),
                                         Forms\Components\Section::make('PAG-IBIG Evaluation Sheet')
                                             ->collapsible(true)
                                             ->collapsed(true)
