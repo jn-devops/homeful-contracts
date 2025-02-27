@@ -2038,10 +2038,10 @@ class ContractResource extends Resource
                                         Forms\Components\Section::make('Fees')
                                             ->collapsible()
                                             ->schema([
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.retention_fee')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.retention')
                                                     ->label('Retention Fee')
                                                     ->columnSpan(3),
-                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.service_fee')
+                                                Forms\Components\TextInput::make('misc.input.payment_scheme.fees.service')
                                                     ->label('Service Fee')
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.processing')
