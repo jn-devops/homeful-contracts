@@ -152,7 +152,7 @@ class EditContract extends EditRecord
             $new_data['aif']['last_name'] = $contact_data['aif']['aif_attorney_last_name']??'';
             $new_data['aif']['middle_name'] = $contact_data['aif']['aif_attorney_middle_name']??'';
             $new_data['aif']['name_suffix'] = $contact_data['aif']['aif_attorney_name_suffix']??'';
-            $new_data['aif']['no_middle_name'] = ($contact_data['aif']['aif_attorney_middle_name'] == '');
+//            $new_data['aif']['no_middle_name'] = ($contact_data['aif']['aif_attorney_middle_name'] == '');
         }
 
         if (!empty($contact_data['misc'])){
