@@ -1,7 +1,7 @@
 <?php
 
 use Homeful\Paymate\Paymate;
-use App\Http\Controllers\{ContactVerifiedController, PaymentCollectedController};
+use App\Http\Controllers\{ContactVerifiedController, PaymentCollectedController,PayloadChecker};
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -22,4 +22,4 @@ Route::get('generatekey' , function (Request $request) { $response = (new Paymat
 
 Route::post('payment-collected', PaymentCollectedController::class)->name('payment-collected');
 
-Route::post('check-payload', [PaymentCollectedController::class,'checkPayload'])->name('check-payload');
+Route::post('check-payload', [PayloadChecker::class,'checkPayload'])->name('check-payload');
