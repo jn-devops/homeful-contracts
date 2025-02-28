@@ -197,7 +197,7 @@ watch(() => props.discoverPage, (newVal) => {
                                 <span>House Type:</span>
                             </div>
                             <div class="text-sm font-bold">
-                                <!-- TODO: house type field -->
+                                {{propertyDetail.details.house_type}}
                             </div>
                             <div class="flex gap-2 text-sm items-center">
                                 <svg class="size-4" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -215,7 +215,7 @@ watch(() => props.discoverPage, (newVal) => {
                                 <span>Lot Area:</span>
                             </div>
                             <div class="text-sm font-bold">
-                                {{propertyDetail.details.lot}} sqm
+                                {{propertyDetail.details.lot_area}} sqm
                             </div>
                             <div class="flex gap-2 text-sm items-center">
                                 <svg class="size-4" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -224,7 +224,7 @@ watch(() => props.discoverPage, (newVal) => {
                                 <span>Features:</span>
                             </div>
                             <div class="text-sm font-bold">
-                                <!-- TODO: feature field -->
+                                {{propertyDetail.details.amenities}}
                             </div>
                         </div>
                     </div>
