@@ -2,6 +2,7 @@
 
 namespace App\Actions\Contract;
 
+use App\Actions\GenerateContractPayloads;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Homeful\References\Models\Reference;
@@ -28,6 +29,7 @@ class Avail
             $product_params = Arr::only($validated, 'sku');
 
             $contract = app(UpdateContractProperty::class)->run($reference, $validated);
+            GenerateContractPayloads::dispatch($contract);
             if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code')){
                 $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
                 $contract->save();

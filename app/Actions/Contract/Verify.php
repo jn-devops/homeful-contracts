@@ -2,6 +2,7 @@
 
 namespace App\Actions\Contract;
 
+use App\Actions\GenerateContractPayloads;
 use Homeful\KwYCCheck\Actions\ProcessLeadAction;
 use Illuminate\Support\Facades\Validator;
 use Homeful\References\Models\Reference;
@@ -24,6 +25,7 @@ class Verify
     {
         Validator::validate($checkin_payload, $this->rules());
         $contract = $reference->getContract();
+        GenerateContractPayloads::dispatch($contract);
         $contract->checkin = $checkin_payload;
         $contract->save();
         $contract->state->transitionTo(Verified::class);

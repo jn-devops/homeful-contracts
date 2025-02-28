@@ -2,6 +2,7 @@
 
 namespace App\Actions\Contract;
 
+use App\Actions\GenerateContractPayloads;
 use Homeful\References\Events\ReferenceCreated;
 use Homeful\References\Facades\References;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -22,7 +23,7 @@ class Consult
     {
         /** create a blank contract */
         $contract = app(Contract::class)->create();
-
+        GenerateContractPayloads::dispatch($contract);
         /** update the contract contact */
         UpdateContractContact::run($contract, $contact_reference_code);
 

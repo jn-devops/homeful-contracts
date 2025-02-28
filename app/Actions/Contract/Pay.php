@@ -2,6 +2,7 @@
 
 namespace App\Actions\Contract;
 
+use App\Actions\GenerateContractPayloads;
 use Homeful\Notifications\Notifications\OnboardedToPaidBuyerNotification;
 use Homeful\References\Data\ReferenceData;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -24,6 +25,7 @@ class Pay
     {
         try {
             $contract = $reference->getContract();
+            GenerateContractPayloads::dispatch($contract);
             if ($contract instanceof Contract) {
                 $contract->payment = $payment_payload;
                 $contract->save();
