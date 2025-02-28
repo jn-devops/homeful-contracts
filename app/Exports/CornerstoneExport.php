@@ -66,7 +66,24 @@ class CornerstoneExport implements FromCollection, WithHeadings
            'CivilStatus',
            'Sex',
            'DateOfBirth',
-           'Ownership'
+           'Ownership',
+           'Location' ,
+           'Type' ,
+           'BlockLot',
+           'Street' ,
+           'Barangay',
+           'City' ,
+           'Province',
+           'State',
+           'Country',
+           'ZipCode',
+           'Primary',
+           'Salary',
+           'GrossIncome',
+           'Nationality',
+           'SellerEmail',
+           'TIN',
+           'Pag-ibig Number',
        ];
     }
 }
