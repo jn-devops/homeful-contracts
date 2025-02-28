@@ -37,7 +37,7 @@ class CornerstoneExport implements FromCollection, WithHeadings
                 'DateOfBirth' => $contract->customer->date_of_birth->format('Y-m-d'),
                 'Ownership' => $contract->customer->addresses->first()->ownership->value,
                 'Location' => $contract->customer->addresses->first()->address,
-                'Type' => $contract->customer->addresses->first()->type ?? 'N/A',
+                'Type' => $contract->customer->addresses->first()->type->value ?? 'N/A',
                 'BlockLot'=>'',
                 'Street' => '',
                 'Barangay' => $contract->customer->addresses->first()->sublocality ?? '',
