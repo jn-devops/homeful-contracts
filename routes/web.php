@@ -67,4 +67,6 @@ Route::get('booking/payment',[ BookingController::class, 'payment']);
 Route::get('booking/complete-form',[ BookingController::class, 'complete_form'])->name("booking.payment.success");
 Route::get('redirect-contact',[ BookingController::class, 'redirect_contacts'])->name("redirect.contacts");
 
+Route::get('export/cornerstone', \App\Http\Controllers\CornerstoneController::class)->name('export-cornerstone');
+
 require __DIR__.'/auth.php';
