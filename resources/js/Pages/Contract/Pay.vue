@@ -131,11 +131,11 @@ const formatNumber = (value) => {
                 <div class="w-full mt-4">
                     <h5 class="text-gray-600 font-semibold">Desired Project</h5>
                     <div class="w-full bg-[#F8F9FE] p-2 rounded-xl flex flex-row items-center gap-4">
-                        <div class="basis-4/12">
+                        <div class="basis-4/12 h-[100px] w-full">
                             <img 
                                 :src="projectImgLink" 
                                 alt="Project"
-                                class="w-full rounded-xl"
+                                class="w-full h-full object-cover rounded-xl"
                             >
                         </div>
                         <div class="basis-5/12">
@@ -168,7 +168,6 @@ const formatNumber = (value) => {
                         label="Promo Code"
                         :error-message="form.errors.promo_code"
                         placeholder="ex. 427482-331-23"
-                        helper-message="Enter your code to waive the P10,000 consultation fee."
                         :max="13"
                     />
                 </div>

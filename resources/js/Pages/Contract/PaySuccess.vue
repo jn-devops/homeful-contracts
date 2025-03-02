@@ -44,6 +44,7 @@ const transactionType = ref('Credit/Debit Card');
 const transactionNumber = ref('045352114253');
 const transactionDate = ref('12-19-2024 12:00PM');
 const voucher_code = ref(null);
+const amount = ref(0);
 
 const completeDataFormAction = () => {
     // TODO: Action if the "Complete Additional Data Form" button is clicked
@@ -53,13 +54,11 @@ const dashboardButtonAction = () => {
 }
 
 onMounted(() => {
-    console.log(props.payment_details.data.orderInformation.referencedId);
-    
     transactionType.value = "Credit/Card Payment"
     transactionNumber.value = props.payment_details?.data.orderInformation.referencedId ?? ''
     transactionDate.value = props.payment_details?.data.orderInformation.responseDate ?? ''
     voucher_code.value = props.contract?.seller_commission_code ?? null
-    console.log('code', voucher_code.value);
+    amount.value = props.payment_details.data.orderInformation.amount ?? 0
     
 
     window.scrollTo({
@@ -68,6 +67,11 @@ onMounted(() => {
     });
 
 });
+
+const formatNumber = (value) => {
+  let val =  parseFloat(value).toLocaleString("en-US");
+  return (val / 100).toFixed(2);
+}
 
 </script>
 
@@ -90,7 +94,7 @@ onMounted(() => {
                     </div>
                     <div class="text-center px-10">
                         <h1 class="font-extrabold text-3xl">Success!</h1>
-                        <p class="text-sm leading-none mt-2">You’ve just paid the ₱10,000 fee for your home loan consultation!</p>
+                        <p class="text-sm leading-none mt-2">You’ve just paid the ₱{{ formatNumber(amount) }} fee for your home loan consultation!</p>
                     </div>
                 </div>
             </div>
