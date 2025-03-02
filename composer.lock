@@ -4284,16 +4284,16 @@
         },
         {
             "name": "jn-devops/common",
-            "version": "v1.5.9",
+            "version": "v1.5.94",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/common.git",
-                "reference": "6e843932b10a99b22f16e567db21dbfc9bf39f27"
+                "reference": "e560c351717f234253805f6f8d6e6119e17b0345"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/common/zipball/6e843932b10a99b22f16e567db21dbfc9bf39f27",
-                "reference": "6e843932b10a99b22f16e567db21dbfc9bf39f27",
+                "url": "https://api.github.com/repos/jn-devops/common/zipball/e560c351717f234253805f6f8d6e6119e17b0345",
+                "reference": "e560c351717f234253805f6f8d6e6119e17b0345",
                 "shasum": ""
             },
             "require": {
@@ -4358,7 +4358,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/common/issues",
-                "source": "https://github.com/jn-devops/common/tree/v1.5.9"
+                "source": "https://github.com/jn-devops/common/tree/v1.5.94"
             },
             "funding": [
                 {
@@ -4366,7 +4366,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-26T06:43:09+00:00"
+            "time": "2025-03-02T07:26:06+00:00"
         },
         {
             "name": "jn-devops/contacts",
@@ -4541,16 +4541,16 @@
         },
         {
             "name": "jn-devops/mortgage",
-            "version": "v1.2.82",
+            "version": "v1.2.84",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/mortgage.git",
-                "reference": "e69d288ef9e51a0a1da18419e20f11c6f7e137f8"
+                "reference": "5c3a921a601d68c0cf727bf82ad79354f6010770"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/mortgage/zipball/e69d288ef9e51a0a1da18419e20f11c6f7e137f8",
-                "reference": "e69d288ef9e51a0a1da18419e20f11c6f7e137f8",
+                "url": "https://api.github.com/repos/jn-devops/mortgage/zipball/5c3a921a601d68c0cf727bf82ad79354f6010770",
+                "reference": "5c3a921a601d68c0cf727bf82ad79354f6010770",
                 "shasum": ""
             },
             "require": {
@@ -4611,7 +4611,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/mortgage/issues",
-                "source": "https://github.com/jn-devops/mortgage/tree/v1.2.82"
+                "source": "https://github.com/jn-devops/mortgage/tree/v1.2.84"
             },
             "funding": [
                 {
@@ -4619,7 +4619,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-27T03:25:58+00:00"
+            "time": "2025-03-02T08:27:09+00:00"
         },
         {
             "name": "jn-devops/paymate",
@@ -4704,16 +4704,16 @@
         },
         {
             "name": "jn-devops/payment",
-            "version": "v1.3.1",
+            "version": "v1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/payment.git",
-                "reference": "88b22bce1abac2fdcdd7d75436db42f393d31f6a"
+                "reference": "0815892556c17cfe4f8aa6a8d7457ba7c54ab124"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/payment/zipball/88b22bce1abac2fdcdd7d75436db42f393d31f6a",
-                "reference": "88b22bce1abac2fdcdd7d75436db42f393d31f6a",
+                "url": "https://api.github.com/repos/jn-devops/payment/zipball/0815892556c17cfe4f8aa6a8d7457ba7c54ab124",
+                "reference": "0815892556c17cfe4f8aa6a8d7457ba7c54ab124",
                 "shasum": ""
             },
             "require": {
@@ -4775,7 +4775,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/payment/issues",
-                "source": "https://github.com/jn-devops/payment/tree/v1.3.1"
+                "source": "https://github.com/jn-devops/payment/tree/v1.3.2"
             },
             "funding": [
                 {
@@ -4783,7 +4783,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-22T09:30:01+00:00"
+            "time": "2025-03-02T08:18:20+00:00"
         },
         {
             "name": "jn-devops/products",
@@ -9307,16 +9307,16 @@
         },
         {
             "name": "ramsey/collection",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/collection.git",
-                "reference": "a4b48764bfbb8f3a6a4d1aeb1a35bb5e9ecac4a5"
+                "reference": "3c5990b8a5e0b79cd1cf11c2dc1229e58e93f109"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/collection/zipball/a4b48764bfbb8f3a6a4d1aeb1a35bb5e9ecac4a5",
-                "reference": "a4b48764bfbb8f3a6a4d1aeb1a35bb5e9ecac4a5",
+                "url": "https://api.github.com/repos/ramsey/collection/zipball/3c5990b8a5e0b79cd1cf11c2dc1229e58e93f109",
+                "reference": "3c5990b8a5e0b79cd1cf11c2dc1229e58e93f109",
                 "shasum": ""
             },
             "require": {
@@ -9324,25 +9324,22 @@
             },
             "require-dev": {
                 "captainhook/plugin-composer": "^5.3",
-                "ergebnis/composer-normalize": "^2.28.3",
-                "fakerphp/faker": "^1.21",
+                "ergebnis/composer-normalize": "^2.45",
+                "fakerphp/faker": "^1.24",
                 "hamcrest/hamcrest-php": "^2.0",
-                "jangregor/phpstan-prophecy": "^1.0",
-                "mockery/mockery": "^1.5",
+                "jangregor/phpstan-prophecy": "^2.1",
+                "mockery/mockery": "^1.6",
                 "php-parallel-lint/php-console-highlighter": "^1.0",
-                "php-parallel-lint/php-parallel-lint": "^1.3",
-                "phpcsstandards/phpcsutils": "^1.0.0-rc1",
-                "phpspec/prophecy-phpunit": "^2.0",
-                "phpstan/extension-installer": "^1.2",
-                "phpstan/phpstan": "^1.9",
-                "phpstan/phpstan-mockery": "^1.1",
-                "phpstan/phpstan-phpunit": "^1.3",
-                "phpunit/phpunit": "^9.5",
-                "psalm/plugin-mockery": "^1.1",
-                "psalm/plugin-phpunit": "^0.18.4",
-                "ramsey/coding-standard": "^2.0.3",
-                "ramsey/conventional-commits": "^1.3",
-                "vimeo/psalm": "^5.4"
+                "php-parallel-lint/php-parallel-lint": "^1.4",
+                "phpspec/prophecy-phpunit": "^2.3",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-mockery": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^10.5",
+                "ramsey/coding-standard": "^2.3",
+                "ramsey/conventional-commits": "^1.6",
+                "roave/security-advisories": "dev-latest"
             },
             "type": "library",
             "extra": {
@@ -9380,19 +9377,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/collection/issues",
-                "source": "https://github.com/ramsey/collection/tree/2.0.0"
+                "source": "https://github.com/ramsey/collection/tree/2.1.0"
             },
-            "funding": [
-                {
-                    "url": "https://github.com/ramsey",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/ramsey/collection",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2022-12-31T21:50:55+00:00"
+            "time": "2025-03-02T04:48:29+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -16769,12 +16756,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
