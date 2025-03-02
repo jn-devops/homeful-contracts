@@ -112,10 +112,9 @@ class EditContract extends EditRecord
 
 
         if($this->record->mortgage !=null){
-            dd($this->record->getData());
             $new_data['order']['net_loan_proceeds'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
-            $new_data['order']['non_life_insurance'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
-            $new_data['order']['mrisri_docstamp_total'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
+//            $new_data['order']['non_life_insurance'] = $this->record->getData()->mortgage->loan[0][''];
+//            $new_data['order']['mrisri_docstamp_total'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
         }
 
         if ($this->record->inventory !=null)  {
