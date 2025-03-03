@@ -3830,16 +3830,16 @@
         },
         {
             "name": "homeful/notifications",
-            "version": "v1.5.7",
+            "version": "v1.5.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/notifications.git",
-                "reference": "b636384bb4d27da4645165a1fba78f7bd5a4ae0c"
+                "reference": "2c6e55acec36ea7a14639284f843d095d93794b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/notifications/zipball/b636384bb4d27da4645165a1fba78f7bd5a4ae0c",
-                "reference": "b636384bb4d27da4645165a1fba78f7bd5a4ae0c",
+                "url": "https://api.github.com/repos/jn-devops/notifications/zipball/2c6e55acec36ea7a14639284f843d095d93794b9",
+                "reference": "2c6e55acec36ea7a14639284f843d095d93794b9",
                 "shasum": ""
             },
             "require": {
@@ -3900,7 +3900,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/notifications/issues",
-                "source": "https://github.com/jn-devops/notifications/tree/v1.5.7"
+                "source": "https://github.com/jn-devops/notifications/tree/v1.5.8"
             },
             "funding": [
                 {
@@ -3908,7 +3908,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-03T01:42:53+00:00"
+            "time": "2025-03-03T02:14:12+00:00"
         },
         {
             "name": "homeful/references",
