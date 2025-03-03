@@ -3830,16 +3830,16 @@
         },
         {
             "name": "homeful/notifications",
-            "version": "v1.5.6",
+            "version": "v1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/notifications.git",
-                "reference": "77a9e318a0d8f67561a03a1f023317be927ac282"
+                "reference": "00d61b727d7a0492e593d6ac0c08ef0cb34ee36c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/notifications/zipball/77a9e318a0d8f67561a03a1f023317be927ac282",
-                "reference": "77a9e318a0d8f67561a03a1f023317be927ac282",
+                "url": "https://api.github.com/repos/jn-devops/notifications/zipball/00d61b727d7a0492e593d6ac0c08ef0cb34ee36c",
+                "reference": "00d61b727d7a0492e593d6ac0c08ef0cb34ee36c",
                 "shasum": ""
             },
             "require": {
@@ -3900,7 +3900,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/notifications/issues",
-                "source": "https://github.com/jn-devops/notifications/tree/v1.5.6"
+                "source": "https://github.com/jn-devops/notifications/tree/v1.6.2"
             },
             "funding": [
                 {
@@ -3908,7 +3908,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-25T08:04:03+00:00"
+            "time": "2025-03-03T04:05:28+00:00"
         },
         {
             "name": "homeful/references",
@@ -4370,16 +4370,16 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v2.1.8",
+            "version": "v2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contacts.git",
-                "reference": "70ed218e4b842ea2c06b99ef84636dd04ff121db"
+                "reference": "f78ec8e7deeee20172efb199a081fb1ebb9d9225"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/70ed218e4b842ea2c06b99ef84636dd04ff121db",
-                "reference": "70ed218e4b842ea2c06b99ef84636dd04ff121db",
+                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/f78ec8e7deeee20172efb199a081fb1ebb9d9225",
+                "reference": "f78ec8e7deeee20172efb199a081fb1ebb9d9225",
                 "shasum": ""
             },
             "require": {
@@ -4443,7 +4443,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v2.1.8"
+                "source": "https://github.com/jn-devops/contacts/tree/v2.1.9"
             },
             "funding": [
                 {
@@ -4451,7 +4451,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-27T07:49:52+00:00"
+            "time": "2025-03-02T07:40:04+00:00"
         },
         {
             "name": "jn-devops/contracts",
@@ -4541,16 +4541,16 @@
         },
         {
             "name": "jn-devops/mortgage",
-            "version": "v1.2.84",
+            "version": "v1.2.85",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/mortgage.git",
-                "reference": "5c3a921a601d68c0cf727bf82ad79354f6010770"
+                "reference": "1238cb9dcb77a3084f14170c1b9bf284a2d1565f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/mortgage/zipball/5c3a921a601d68c0cf727bf82ad79354f6010770",
-                "reference": "5c3a921a601d68c0cf727bf82ad79354f6010770",
+                "url": "https://api.github.com/repos/jn-devops/mortgage/zipball/1238cb9dcb77a3084f14170c1b9bf284a2d1565f",
+                "reference": "1238cb9dcb77a3084f14170c1b9bf284a2d1565f",
                 "shasum": ""
             },
             "require": {
@@ -4611,7 +4611,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/mortgage/issues",
-                "source": "https://github.com/jn-devops/mortgage/tree/v1.2.84"
+                "source": "https://github.com/jn-devops/mortgage/tree/v1.2.85"
             },
             "funding": [
                 {
@@ -4619,7 +4619,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-02T08:27:09+00:00"
+            "time": "2025-03-02T09:55:47+00:00"
         },
         {
             "name": "jn-devops/paymate",
@@ -4787,16 +4787,16 @@
         },
         {
             "name": "jn-devops/products",
-            "version": "v1.4.1",
+            "version": "v1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/products.git",
-                "reference": "7df8cd432809f78bae588c81d7c12e32f13edd65"
+                "reference": "e085bf3fd4b80ce9a98811ebaef67e1957d1cad1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/products/zipball/7df8cd432809f78bae588c81d7c12e32f13edd65",
-                "reference": "7df8cd432809f78bae588c81d7c12e32f13edd65",
+                "url": "https://api.github.com/repos/jn-devops/products/zipball/e085bf3fd4b80ce9a98811ebaef67e1957d1cad1",
+                "reference": "e085bf3fd4b80ce9a98811ebaef67e1957d1cad1",
                 "shasum": ""
             },
             "require": {
@@ -4856,7 +4856,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/products/issues",
-                "source": "https://github.com/jn-devops/products/tree/v1.4.1"
+                "source": "https://github.com/jn-devops/products/tree/v1.4.2"
             },
             "funding": [
                 {
@@ -4864,7 +4864,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-27T03:59:23+00:00"
+            "time": "2025-03-02T10:01:01+00:00"
         },
         {
             "name": "jn-devops/properties",
@@ -4950,16 +4950,16 @@
         },
         {
             "name": "jn-devops/property",
-            "version": "v1.2.5",
+            "version": "v1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/property.git",
-                "reference": "4a386b652c20dda220c53db4bd5cde417accf62f"
+                "reference": "c05ccfcf05fe0443162c73e3cb35abec95cd4825"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/property/zipball/4a386b652c20dda220c53db4bd5cde417accf62f",
-                "reference": "4a386b652c20dda220c53db4bd5cde417accf62f",
+                "url": "https://api.github.com/repos/jn-devops/property/zipball/c05ccfcf05fe0443162c73e3cb35abec95cd4825",
+                "reference": "c05ccfcf05fe0443162c73e3cb35abec95cd4825",
                 "shasum": ""
             },
             "require": {
@@ -5020,7 +5020,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/property/issues",
-                "source": "https://github.com/jn-devops/property/tree/v1.2.5"
+                "source": "https://github.com/jn-devops/property/tree/v1.2.6"
             },
             "funding": [
                 {
@@ -5028,7 +5028,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-17T09:15:43+00:00"
+            "time": "2025-03-02T09:23:06+00:00"
         },
         {
             "name": "joaopaulolndev/filament-pdf-viewer",
@@ -6284,16 +6284,16 @@
         },
         {
             "name": "league/csv",
-            "version": "9.21.0",
+            "version": "9.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/csv.git",
-                "reference": "72196d11ebba22d868954cb39c0c7346207430cc"
+                "reference": "afc109aa11f3086b8be8dfffa04ac31480b36b76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/csv/zipball/72196d11ebba22d868954cb39c0c7346207430cc",
-                "reference": "72196d11ebba22d868954cb39c0c7346207430cc",
+                "url": "https://api.github.com/repos/thephpleague/csv/zipball/afc109aa11f3086b8be8dfffa04ac31480b36b76",
+                "reference": "afc109aa11f3086b8be8dfffa04ac31480b36b76",
                 "shasum": ""
             },
             "require": {
@@ -6303,19 +6303,23 @@
             "require-dev": {
                 "ext-dom": "*",
                 "ext-xdebug": "*",
-                "friendsofphp/php-cs-fixer": "^3.64.0",
-                "phpbench/phpbench": "^1.3.1",
-                "phpstan/phpstan": "^1.12.11",
+                "friendsofphp/php-cs-fixer": "^3.69.0",
+                "phpbench/phpbench": "^1.4.0",
+                "phpstan/phpstan": "^1.12.18",
                 "phpstan/phpstan-deprecation-rules": "^1.2.1",
-                "phpstan/phpstan-phpunit": "^1.4.1",
-                "phpstan/phpstan-strict-rules": "^1.6.1",
-                "phpunit/phpunit": "^10.5.16 || ^11.4.3",
-                "symfony/var-dumper": "^6.4.8 || ^7.1.8"
+                "phpstan/phpstan-phpunit": "^1.4.2",
+                "phpstan/phpstan-strict-rules": "^1.6.2",
+                "phpunit/phpunit": "^10.5.16 || ^11.5.7",
+                "symfony/var-dumper": "^6.4.8 || ^7.2.3"
             },
             "suggest": {
                 "ext-dom": "Required to use the XMLConverter and the HTMLConverter classes",
                 "ext-iconv": "Needed to ease transcoding CSV using iconv stream filters",
-                "ext-mbstring": "Needed to ease transcoding CSV using mb stream filters"
+                "ext-mbstring": "Needed to ease transcoding CSV using mb stream filters",
+                "ext-mysqli": "Requiered to use the package with the MySQLi extension",
+                "ext-pdo": "Required to use the package with the PDO extension",
+                "ext-pgsql": "Requiered to use the package with the PgSQL extension",
+                "ext-sqlite3": "Required to use the package with the SQLite3 extension"
             },
             "type": "library",
             "extra": {
@@ -6328,7 +6332,7 @@
                     "src/functions_include.php"
                 ],
                 "psr-4": {
-                    "League\\Csv\\": "src/"
+                    "League\\Csv\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6367,7 +6371,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-08T19:27:58+00:00"
+            "time": "2025-02-28T10:00:39+00:00"
         },
         {
             "name": "league/flysystem",
@@ -6879,27 +6883,27 @@
         },
         {
             "name": "lorisleiva/laravel-actions",
-            "version": "v2.8.6",
+            "version": "v2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lorisleiva/laravel-actions.git",
-                "reference": "4647523599bee13cfd6b9bc9acdaf4503d4801ce"
+                "reference": "807f9cbd8fdb60713dfd9b2175861052f933c6e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lorisleiva/laravel-actions/zipball/4647523599bee13cfd6b9bc9acdaf4503d4801ce",
-                "reference": "4647523599bee13cfd6b9bc9acdaf4503d4801ce",
+                "url": "https://api.github.com/repos/lorisleiva/laravel-actions/zipball/807f9cbd8fdb60713dfd9b2175861052f933c6e5",
+                "reference": "807f9cbd8fdb60713dfd9b2175861052f933c6e5",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^10.0|^11.0",
-                "lorisleiva/lody": "^0.5",
+                "illuminate/contracts": "^10.0|^11.0|^12.0",
+                "lorisleiva/lody": "^0.6",
                 "php": "^8.1"
             },
             "require-dev": {
-                "orchestra/testbench": "^8.0|^9.0",
-                "pestphp/pest": "^1.23|^2.34",
-                "phpunit/phpunit": "^9.6|^10.0"
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^2.34|^3.0",
+                "phpunit/phpunit": "^10.5|^11.5"
             },
             "type": "library",
             "extra": {
@@ -6943,7 +6947,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lorisleiva/laravel-actions/issues",
-                "source": "https://github.com/lorisleiva/laravel-actions/tree/v2.8.6"
+                "source": "https://github.com/lorisleiva/laravel-actions/tree/v2.9.0"
             },
             "funding": [
                 {
@@ -6951,30 +6955,30 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-04T08:36:29+00:00"
+            "time": "2025-03-01T19:32:31+00:00"
         },
         {
             "name": "lorisleiva/lody",
-            "version": "v0.5.0",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lorisleiva/lody.git",
-                "reference": "c2f51b070e99f3a240d66cf68ef1f232036917fe"
+                "reference": "6bada710ebc75f06fdf62db26327be1592c4f014"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lorisleiva/lody/zipball/c2f51b070e99f3a240d66cf68ef1f232036917fe",
-                "reference": "c2f51b070e99f3a240d66cf68ef1f232036917fe",
+                "url": "https://api.github.com/repos/lorisleiva/lody/zipball/6bada710ebc75f06fdf62db26327be1592c4f014",
+                "reference": "6bada710ebc75f06fdf62db26327be1592c4f014",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^9.0|^10.0|^11.0",
-                "php": "^8.0"
+                "illuminate/contracts": "^10.0|^11.0|^12.0",
+                "php": "^8.1"
             },
             "require-dev": {
-                "orchestra/testbench": "^9.0",
-                "pestphp/pest": "^1.20|^2.34",
-                "phpunit/phpunit": "^9.5.10|^10.5"
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^2.34|^3.0",
+                "phpunit/phpunit": "^10.5|^11.5"
             },
             "type": "library",
             "extra": {
@@ -7015,7 +7019,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lorisleiva/lody/issues",
-                "source": "https://github.com/lorisleiva/lody/tree/v0.5.0"
+                "source": "https://github.com/lorisleiva/lody/tree/v0.6.0"
             },
             "funding": [
                 {
@@ -7023,7 +7027,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-13T12:08:59+00:00"
+            "time": "2025-03-01T19:21:17+00:00"
         },
         {
             "name": "maatwebsite/excel",
@@ -10262,16 +10266,16 @@
         },
         {
             "name": "spatie/laravel-model-states",
-            "version": "2.11.0",
+            "version": "2.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-model-states.git",
-                "reference": "15216c6e89e155759daeb137ac9af0534dae47c6"
+                "reference": "476175cb045a40c2b0892bc520bed9fe5a86013b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-model-states/zipball/15216c6e89e155759daeb137ac9af0534dae47c6",
-                "reference": "15216c6e89e155759daeb137ac9af0534dae47c6",
+                "url": "https://api.github.com/repos/spatie/laravel-model-states/zipball/476175cb045a40c2b0892bc520bed9fe5a86013b",
+                "reference": "476175cb045a40c2b0892bc520bed9fe5a86013b",
                 "shasum": ""
             },
             "require": {
@@ -10322,7 +10326,7 @@
                 "state"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-model-states/tree/2.11.0"
+                "source": "https://github.com/spatie/laravel-model-states/tree/2.11.1"
             },
             "funding": [
                 {
@@ -10334,7 +10338,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-26T09:35:35+00:00"
+            "time": "2025-02-28T09:04:36+00:00"
         },
         {
             "name": "spatie/laravel-model-status",
@@ -10469,16 +10473,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "6.15.0",
+            "version": "6.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "86074fcfd127f9fa7bcdf550b7c938e3beb0d65f"
+                "reference": "4fa03c06509e037a4d42c131d0f181e3e4bbd483"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/86074fcfd127f9fa7bcdf550b7c938e3beb0d65f",
-                "reference": "86074fcfd127f9fa7bcdf550b7c938e3beb0d65f",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/4fa03c06509e037a4d42c131d0f181e3e4bbd483",
+                "reference": "4fa03c06509e037a4d42c131d0f181e3e4bbd483",
                 "shasum": ""
             },
             "require": {
@@ -10540,7 +10544,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/6.15.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/6.16.0"
             },
             "funding": [
                 {
@@ -10548,7 +10552,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-17T19:18:01+00:00"
+            "time": "2025-02-28T20:29:57+00:00"
         },
         {
             "name": "spatie/laravel-schemaless-attributes",
@@ -13219,16 +13223,16 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "40df446f6053787edb245381c3b3d80b031b5fc0"
+                "reference": "d59dbb61dc0a1d9abb2130451b9e5e0f264bfe1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/40df446f6053787edb245381c3b3d80b031b5fc0",
-                "reference": "40df446f6053787edb245381c3b3d80b031b5fc0",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/d59dbb61dc0a1d9abb2130451b9e5e0f264bfe1c",
+                "reference": "d59dbb61dc0a1d9abb2130451b9e5e0f264bfe1c",
                 "shasum": ""
             },
             "require": {
@@ -13238,9 +13242,9 @@
             },
             "require-dev": {
                 "laravel/folio": "^1.1",
-                "orchestra/testbench": "^7.0 || ^8.0 || ^9.0",
-                "pestphp/pest": "^2.26",
-                "pestphp/pest-plugin-laravel": "^2.4"
+                "orchestra/testbench": "^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "pestphp/pest": "^2.26|^3.0",
+                "pestphp/pest-plugin-laravel": "^2.4|^3.0"
             },
             "type": "library",
             "extra": {
@@ -13283,9 +13287,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/v2.5.1"
+                "source": "https://github.com/tighten/ziggy/tree/v2.5.2"
             },
-            "time": "2025-01-31T19:23:01+00:00"
+            "time": "2025-02-27T15:43:52+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
