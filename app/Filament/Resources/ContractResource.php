@@ -1490,6 +1490,8 @@ class ContractResource extends Resource
                                                             ->button()
                                                             ->keyBindings(['command+1', 'ctrl+1'])
                                                             ->action(function (Get $get, Set $set, $state,Model $record) {
+                                                                $record->property_code = $state;
+                                                                $record->save();
                                                                 if(ModelsContact::where('order->property_code', $get('contact_data.order.property_code'))->count() > 0 && Contact::where('order->property_code', $get('contact_data.order.property_code'))->first()->id != $record->contact_id){
                                                                     Notification::make()
                                                                         ->title('Order has already been reserved')
