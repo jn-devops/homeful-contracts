@@ -28,7 +28,6 @@ class RequirementsTable extends Component
     {
         $this->record = $record;
         $contact = Contact::where('id', $record->contact_id)->first()->getData()->toArray();
-        dd($contact);
         $employment_status = collect($contact['employment']??[])->firstWhere('type','Primary')['employment_type']??'';
         $this->chosenFile = "";
         $requirements = RequirementMatrix::where('civil_status',$contact['civil_status']??'')->where('employment_status',$employment_status)->first();
