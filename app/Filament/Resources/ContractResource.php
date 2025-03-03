@@ -1490,9 +1490,7 @@ class ContractResource extends Resource
                                                             ->button()
                                                             ->keyBindings(['command+1', 'ctrl+1'])
                                                             ->action(function (Get $get, Set $set, $state,Model $record) {
-                                                                $record->property_code = $get('property_code');
-                                                                $record->save();
-                                                                if(ModelsContact::where('order->property_code', $get('contact_data.order.property_code'))->count() > 0 && ModelsContact::where('order->property_code', $get('contact_data.order.property_code'))->first()->id != $record->contact_id){
+                                                                if(Contract::where('property_code', $get('property_code'))->count() > 0 && Contract::where('property_code', $get('property_code'))->first()->id != $record->contact_id){
                                                                     Notification::make()
                                                                         ->title('Order has already been reserved')
                                                                         ->body('Sorry, this order has already been reserved for somebody, please choose another property.')
@@ -1501,8 +1499,10 @@ class ContractResource extends Resource
                                                                         ->sendToDatabase(auth()->user())
                                                                         ->send();
                                                                 }else{
+                                                                    $record->property_code = $get('property_code');
+                                                                    $record->save();
                                                                     try {
-                                                                        $response = Http::get('https://properties.homeful.ph/api/property-details/'.$get('contact_data.order.property_code'));
+                                                                        $response = Http::get('https://properties.homeful.ph/api/property-details/'.$get('property_code'));
                                                                         if ($response->successful()) {
                                                                             $set('contact_data.order.sku', $response->json()['data']['sku']??'');
                                                                             $set('contact_data.order.project_name', $response->json()['data']['project']['name']??'');
@@ -1987,7 +1987,7 @@ class ContractResource extends Resource
                                                             ],
                                                             "objectID" => 119,
                                                             "propertyID" => 1105,
-                                                            "name" => $get('contact_data.order.property_code')??'',
+                                                            "name" => $get('property_code')??'',
                                                             "property_ids"=>[1105,1050,1109,1203,1204,1202,1285,1024,1290],
                                                         ];
                                                         $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
@@ -2003,12 +2003,12 @@ class ContractResource extends Resource
                                                                 ->sendToDatabase(auth()->user())
                                                                 ->send();
                                                         }
-                                                        $response = Http::get($mfilesLink . '/api/mfiles/technical-description/'.($get("contact_data.order.property_code")??"") );
+                                                        $response = Http::get($mfilesLink . '/api/mfiles/technical-description/'.($get("property_code")??"") );
                                                         if ($response->successful()){
                                                             $set('contact_data.order.technical_description', $response->json()??'');
                                                         }else{
                                                             Notification::make()
-                                                                ->title('No technical description has been found for this property code :'.($get("contact_data.order.property_code")??""))
+                                                                ->title('No technical description has been found for this property code :'.($get("property_code")??""))
                                                                 ->danger()
                                                                 ->persistent()
                                                                 ->sendToDatabase(auth()->user())
