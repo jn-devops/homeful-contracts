@@ -36,6 +36,7 @@ class Avail
             }
             $contract->state->transitionTo(Availed::class, $reference);
         } catch (\Throwable $th) {
+            logger()->error($th);
             throw $th;
         }
 
