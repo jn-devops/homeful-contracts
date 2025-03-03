@@ -39,6 +39,7 @@ class RequirementsTable extends Component
             return [
                 'description' => $requirement,
                 'status' => ($this->record->customer->$uploader_label !== null) ? 'Uploaded' : 'Pending',
+                'url' => ($this->record->customer->$uploader_label !== null) ? $this->record->customer->$uploader_label->getUrl() : null,
             ];
         });
     }
