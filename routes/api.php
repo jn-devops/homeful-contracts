@@ -2,6 +2,7 @@
 
 use Homeful\Paymate\Paymate;
 use App\Http\Controllers\{ContactVerifiedController, PaymentCollectedController,PayloadChecker};
+use Homeful\Contacts\Models\Customer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -25,3 +26,8 @@ Route::post('payment-collected', PaymentCollectedController::class)->name('payme
 Route::post('check-payload', [PayloadChecker::class,'checkPayload'])->name('check-payload');
 
 Route::post('check-mfiles', [PayloadChecker::class,'MFilesProcessorCheck'])->name('check-mfiles');
+
+Route::post('get-contact-media/{id}', function($id){
+    $customer = Customer::find($id);
+    return response()->json($customer->getData());
+});
