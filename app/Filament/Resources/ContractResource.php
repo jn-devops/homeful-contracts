@@ -1562,18 +1562,60 @@ class ContractResource extends Resource
                                                                         // Prepare the data to send in the POST request
                                                                         $payload = [
                                                                             "Credentials" => [
-                                                                                "Username" => $credentials['username'],  // Fetching from config
-                                                                                "Password" => $credentials['password'],  // Fetching from config
+                                                                                "Username" => $credentials['username'],
+                                                                                "Password" => $credentials['password'],
                                                                             ],
-                                                                            "objectID" => 119,
-                                                                            "propertyID" => 1105,
-                                                                            "name" => $get('contact_data.order.property_code')??'',
-                                                                            "property_ids"=>[1105,1050,1109,1203,1204,1202,1285,1024,1290],
+                                                                            "Documents" => [
+                                                                                [
+                                                                                    "objectID" => 119,
+                                                                                    "propertyID" => 1105,
+                                                                                    "name" => $get('property_code'),
+                                                                                    "json_name" => "",
+                                                                                    "property_ids" => [
+                                                                                        1105,
+                                                                                        1050,
+                                                                                        1109,
+                                                                                        1203,
+                                                                                        1204,
+                                                                                        1202,
+                                                                                        1285,
+                                                                                        1024,
+                                                                                    ],
+                                                                                    "mask_field" => [
+                                                                                        "",
+                                                                                        "project_code",
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        "technical_description",
+                                                                                        "tct_no"
+                                                                                    ]
+                                                                                ],
+                                                                                [
+                                                                                    "objectID" => 101,
+                                                                                    "propertyID" => 1050,
+                                                                                    "name" => $get('contact_data.order.project_code'),
+                                                                                    "json_name" => "",
+                                                                                    "property_ids" => [
+                                                                                        1293,
+                                                                                        1294
+                                                                                    ],
+                                                                                    "mask_field" => [
+                                                                                        "project_developer",
+                                                                                        "registry_of_deed"
+                                                                                    ]
+                                                                                ]
+                                                                            ]
                                                                         ];
-                                                                        $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
+                                                                        $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties-many', $payload);
+                                                                        dd($response->json(),$payload);
                                                                         if ($response->successful()) {
                                                                             //                                                            $set('contact_data.order.technical_description', $response->json()['Technical Description']??'');
-                                                                            $set('contact_data.order.tct_no', $response->json()['TCT No.']??'');
+                                                                            $set('contact_data.order.tct_no', $response->json()['inventory']['tct_no']??'');
+                                                                            $set('contact_data.order.technical_description', $response->json()['inventory']['technical_description']??'');
+                                                                            $set('contact_data.order.company_name', $response->json()['project']['project_developer']??'');
+                                                                            $set('contact_data.order.registry_of_deeds_address', $response->json()['project']['registry_of_deed']??'');
                                                                             Notification::make()
                                                                                 ->title('MFILES Tech Decription Success')
                                                                                 ->body($response->json()['Technical Description'])
@@ -1582,20 +1624,11 @@ class ContractResource extends Resource
                                                                                 ->sendToDatabase(auth()->user())
                                                                                 ->send();
                                                                         }
-                                                                        $response = Http::get($mfilesLink . '/api/mfiles/technical-description/'.($get("contact_data.order.property_code")??""));
-                                                                        if ($response->successful()){
-                                                                            $set('contact_data.order.technical_description', $response->json()??'');
-                                                                        }else{
-                                                                            Notification::make()
-                                                                                ->title('No technical description has been found for this property code :'.($get("contact_data.order.property_code")??""))
-                                                                                ->danger()
-                                                                                ->persistent()
-                                                                                ->sendToDatabase(auth()->user())
-                                                                                ->send();
-                                                                        }
+
+
                                                                     }catch (Exception $e){
                                                                         Notification::make()
-                                                                            ->title('MFILES Tech Decription Error')
+                                                                            ->title('MFILES Detials')
                                                                             ->body($e->getMessage())
                                                                             ->danger()
                                                                             ->persistent()
@@ -1603,43 +1636,6 @@ class ContractResource extends Resource
                                                                             ->send();
                                                                     }
 
-                                                                    try {
-                                                                        $mfilesLink = config('homeful-contracts.mfiles_link');
-                                                                        $credentials = config('homeful-contracts.mfiles_credentials');
-
-                                                                        // Prepare the data to send in the POST request
-                                                                        $payload = [
-                                                                            "Credentials" => [
-                                                                                "Username" => $credentials['username'],  // Fetching from config
-                                                                                "Password" => $credentials['password'],  // Fetching from config
-                                                                            ],
-                                                                            "objectID" => 101,
-                                                                            "propertyID" => 1050,
-                                                                            "name" => $get('contact_data.order.project_code')??'',
-                                                                            "property_ids"=>[1293,1294],
-                                                                        ];
-                                                                        $response = Http::post($mfilesLink . '/api/mfiles/document/search/properties', $payload);
-                                                                        if ($response->successful()) {
-                                                                            $set('contact_data.order.company_name', $response->json()['Project Developer']??'');
-                                                                            $set('contact_data.order.registry_of_deeds_address', $response->json()['Deed of Registry']??'');
-                                                                            Notification::make()
-                                                                                ->title('MFILES PROJECT DETAILS Success')
-                                                                                ->body($response->json()['Project Developer'])
-                                                                                ->success()
-                                                                                ->persistent()
-                                                                                ->sendToDatabase(auth()->user())
-                                                                                ->send();
-                                                                        }
-
-                                                                    }catch (Exception $e){
-                                                                        Notification::make()
-                                                                            ->title('MFILES PROJECT DETAILS ERROR')
-                                                                            ->body($e->getMessage())
-                                                                            ->danger()
-                                                                            ->persistent()
-                                                                            ->sendToDatabase(auth()->user())
-                                                                            ->send();
-                                                                    }
 
                                                                 }
                                                             })
