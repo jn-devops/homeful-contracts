@@ -4370,16 +4370,16 @@
         },
         {
             "name": "jn-devops/contacts",
-            "version": "v2.1.9",
+            "version": "v2.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/contacts.git",
-                "reference": "f78ec8e7deeee20172efb199a081fb1ebb9d9225"
+                "reference": "d977c0d81c6985d49244bd726b8d6c8c071212ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/f78ec8e7deeee20172efb199a081fb1ebb9d9225",
-                "reference": "f78ec8e7deeee20172efb199a081fb1ebb9d9225",
+                "url": "https://api.github.com/repos/jn-devops/contacts/zipball/d977c0d81c6985d49244bd726b8d6c8c071212ec",
+                "reference": "d977c0d81c6985d49244bd726b8d6c8c071212ec",
                 "shasum": ""
             },
             "require": {
@@ -4443,7 +4443,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contacts/issues",
-                "source": "https://github.com/jn-devops/contacts/tree/v2.1.9"
+                "source": "https://github.com/jn-devops/contacts/tree/v2.1.12"
             },
             "funding": [
                 {
@@ -4451,7 +4451,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-02T07:40:04+00:00"
+            "time": "2025-03-03T09:51:08+00:00"
         },
         {
             "name": "jn-devops/contracts",
