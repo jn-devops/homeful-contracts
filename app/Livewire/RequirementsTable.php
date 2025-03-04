@@ -21,7 +21,7 @@ class RequirementsTable extends Component
     public $chosenFile;
     public $currentReq;
 
-    #[Validate('max:1024')]
+    #[Validate('max:5120')]
     public $document;
 
     public function mount(Model $record)
