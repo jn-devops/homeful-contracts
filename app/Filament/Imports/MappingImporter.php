@@ -2,6 +2,9 @@
 
 namespace App\Filament\Imports;
 
+use App\Enums\MappingCategory;
+use App\Enums\MappingSource;
+use App\Enums\MappingType;
 use App\Models\Mapping;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
@@ -44,7 +47,6 @@ class MappingImporter extends Importer
 
     public function resolveRecord(): ?Mapping
     {
-        // Define the validation rules for required fields
         $rules = [
             'code' => ['required', 'max:255'],
             'path' => ['required', 'max:255'],
@@ -56,16 +58,27 @@ class MappingImporter extends Importer
         // Validate the data
         $validator = Validator::make($this->data, $rules);
 
-        // If validation fails, skip the record by returning null
         if ($validator->fails()) {
-            return null;
+            return null; // Skip invalid records
         }
 
-        // Return an existing record or create a new one based on 'code'
-        return Mapping::firstOrNew([
-            'code' => $this->data['code'],
-        ]);
+        // Ensure all fields are present in the updateOrCreate method
+        return Mapping::updateOrCreate(
+            ['code' => $this->data['code']], // Find by 'code'
+            [
+                'path' => $this->data['path'] ?? '',
+                'source' => $this->data['source'] ?? MappingSource::default()->value,
+                'title' => $this->data['title'] ?? '',
+                'type' => $this->data['type'] ?? MappingType::default()->value,
+                'default' => $this->data['default'] ?? '',
+                'category' => $this->data['category'] ?? MappingCategory::default()->value,
+                'transformer' => $this->data['transformer'] ?? '',
+                'options' => $this->data['options'] ?? '',
+                'remarks' => $this->data['remarks'] ?? '',
+            ]
+        );
     }
+
 
     public static function getCompletedNotificationBody(Import $import): string
     {
