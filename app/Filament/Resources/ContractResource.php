@@ -69,10 +69,24 @@ class ContractResource extends Resource
     {
         return static::getModel()::count();
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = Contract::query();
+        if(auth()->user()->hasRole('sales')) {
+            $query=$query->whereIn('state',['Paid','Pre-Qualified','Remedy','']);
+            dd($query);
+        }else{
+
+        }
+        return $query;
+    }
+
     public static function form(Form $form): Form
     {
 
         return $form
+
             ->schema([
                 Forms\Components\Tabs::make()
                     ->persistTabInQueryString()
@@ -3070,6 +3084,8 @@ class ContractResource extends Resource
         return $table
             ->defaultSort('created_at', 'desc')
             ->defaultPaginationPageOption(50)
+            ->poll('10s')
+            ->deferLoading()
             ->columns([
                 TextColumn::make('state')
                     ->badge()

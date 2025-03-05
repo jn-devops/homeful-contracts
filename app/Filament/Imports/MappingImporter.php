@@ -6,6 +6,7 @@ use App\Models\Mapping;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
+use Illuminate\Support\Facades\Validator;
 
 class MappingImporter extends Importer
 {
@@ -43,12 +44,27 @@ class MappingImporter extends Importer
 
     public function resolveRecord(): ?Mapping
     {
-        // return Mapping::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
+        // Define the validation rules for required fields
+        $rules = [
+            'code' => ['required', 'max:255'],
+            'path' => ['required', 'max:255'],
+            'source' => ['required', 'max:255'],
+            'type' => ['required', 'max:255'],
+            'category' => ['required', 'max:255'],
+        ];
 
-        return new Mapping();
+        // Validate the data
+        $validator = Validator::make($this->data, $rules);
+
+        // If validation fails, skip the record by returning null
+        if ($validator->fails()) {
+            return null;
+        }
+
+        // Return an existing record or create a new one based on 'code'
+        return Mapping::firstOrNew([
+            'code' => $this->data['code'],
+        ]);
     }
 
     public static function getCompletedNotificationBody(Import $import): string
