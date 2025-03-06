@@ -139,11 +139,11 @@ const formatNumber = (value) => {
                     We may require additional information for a thorough assessment.
                 </p>
                 <br>
-                <SecondaryButton @click="dashboardButtonAction">
+                <!-- <SecondaryButton @click="dashboardButtonAction">
                     <div class="py-2 font-semibold">
                         Go to Dashboard
                     </div>
-                </SecondaryButton>
+                </SecondaryButton> -->
             </div>
         </div>
     </DefaultLayout>

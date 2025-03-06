@@ -74,9 +74,9 @@ const numberFormatter = (num) => new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2,
 }).format(num);
 
-const location = props.propertyDetail.details['location']
-const brand = props.propertyDetail.details['brand']
-const category = props.propertyDetail.details['category']
+const market_segment = props.propertyDetail.details['market_segment']
+const name = props.propertyDetail.details['name']
+const property_type = props.propertyDetail.details['property_type']
 
 const transformImgList = (list) => {
     let imgListTemp = JSON.parse(list);
@@ -93,12 +93,21 @@ function formatKey(key) {
     .replace(/^./, str => str.toUpperCase());
 }
 
+const proj_intro_container = ref(null);
+
 onMounted(() => {
     imgList.value = transformImgList(props.propertyDetail.details.digital_assets)
     
     currentImg.value = imgList.value.length === 0
                                         ? {imgLink: usePage().props.data.appLink + '/images/sample1.png'}
                                         : imgList.value[0];
+
+    if (proj_intro_container.value) {
+        const ulElement = proj_intro_container.value.querySelector('ul');
+        if (ulElement) {
+            ulElement.classList.add('list-disc', 'pl-5'); // Add padding for proper indentation
+        }
+    }
 })
 
 watch(() => voucher_code.value, (newVal) => {
@@ -128,9 +137,9 @@ watch(() => props.discoverPage, (newVal) => {
             <ImageSliderDiscoverPage
                 :imgList="imgList"
                 @updateCurrentImg="updateCurrentImg"
-                :brand="brand"
-                :category="category"
-                :location="location"
+                :name="name"
+                :property_type="property_type"
+                :market_segment="market_segment"
                 :currentImgIndex="currentImgIndex"
             />
             <div class="p-6">
@@ -180,7 +189,7 @@ watch(() => props.discoverPage, (newVal) => {
                 </div>
                 <div>
                     <h5 class="text-base font-bold underline mt-5 mb-7">Project Introduction</h5>
-                    <p class="leading-none text-sm pb-5">{{ propertyDetail.details.description }}</p>
+                    <p class="text-sm pb-5" ref="proj_intro_container" v-html="propertyDetail.details.description"></p>
                     <!-- <p class="leading-none text-sm pb-5">Each unit consists of 3 bedrooms, 1 toilet and bath, and is thoughtfully designed to include 2 carport provisions, ensuring convenience and functionality for residents.</p> -->
                     <!-- <p class="leading-none text-sm pb-5">Its efficient use of space and modern design make Agapeya a compelling choice for individuals or families seeking affordable yet stylish housing solutions.</p> -->
 

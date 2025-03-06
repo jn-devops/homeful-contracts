@@ -14,15 +14,15 @@ const props = defineProps({
         type: Number,
         default: null
     },
-    category: {
+    property_type: {
         type: String,
         default: ""
     },
-    brand: {
+    name: {
         type: String,
         default: ""
     },
-    location: {
+    market_segment: {
         type: String,
         default: ""
     },
@@ -133,9 +133,9 @@ onUnmounted(() => {
         <div ref="targetDiv"></div>
         <div class="flex justify-center items-center px-4">
             <div class="basis-4/6 leading-none">
-                <p class="text-xs font-semibold">{{ category }}</p>
-                <p class="text-xl font-bold">{{ brand }}</p>
-                <p class="text-base font-semibold">{{ location }}</p>
+                <p class="text-xs font-semibold">{{ property_type }}</p>
+                <p class="text-xl font-bold">{{ name }}</p>
+                <p class="text-base font-semibold">{{ market_segment }}</p>
             </div>
             <div class="basis-2/6">
                 <div class="flex gap-4 justify-center">

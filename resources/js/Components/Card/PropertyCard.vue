@@ -10,7 +10,7 @@ const props = defineProps({
         type: String,
         default: '',
     },
-    location: {
+    market_segment: {
         type: String,
         default: "Test Location",
     },
@@ -49,7 +49,7 @@ function showDiscover(sku) {
             <div class="flex flex-row items-center">
                 <div class="basis-4/6 leading-none">
                     <p class="text-sm leading-none">{{ name }}</p>
-                    <p class="font-bold ">{{ location }}</p>
+                    <p class="font-bold ">{{ market_segment }}</p>
                     <p class="text-3xl font-bold my-1">₱{{ tcp }}</p>
                     <p class="text-xs">Monthly Payment: ₱{{ monthlyPayment }}</p>
                     <p class="text-xs">Years to Pay: {{ term }} years</p>

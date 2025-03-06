@@ -18,10 +18,6 @@ const props = defineProps({
         type: Object,
         default: [],
     },
-    reference_code: {
-        type: String,
-        default: '',
-    }
 });
 
 const reference = ref({});
@@ -157,7 +153,6 @@ watch (
                     <div class="inset-0 bg-gradient-to-t from-white to-transparent opacity-100 h-40 w-full bottom-0 flex items-end pb-4 ps-4">
                         <div class="flex flex-col">
                             <h3 class="text-2xl font-crimson font-bold">Home Fit For You</h3>
-                            <span class="text-sm">Homeful ID: <b>{{ reference_code }}</b></span>
                             <span class="text-sm">Range: ₱ {{ formatNumber(startRange.details['price']) }} - ₱ {{ formatNumber(lastRange.details['price']) }}</span>
                         </div>
                     </div>
@@ -196,7 +191,7 @@ watch (
                     <div v-for="(opt, i) in buttonOptions">
                         <PropertyCard 
                             :name="JSON.parse(opt.name).name"
-                            :location="opt.details['location']"
+                            :market_segment="opt.details['market_segment']"
                             :imgLink="opt.details['facade_url']"
                             :tcp="numberFormatter(opt.details['price'])"
                             :monthlyPayment="numberFormatter(JSON.parse(opt.description).loan_amortization)"
