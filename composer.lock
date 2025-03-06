@@ -4435,16 +4435,16 @@
         },
         {
             "name": "jn-devops/common",
-            "version": "v1.5.94",
+            "version": "v1.5.95",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/common.git",
-                "reference": "e560c351717f234253805f6f8d6e6119e17b0345"
+                "reference": "7cf60631b0760be340c09d4276784b5e4d78ff42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/common/zipball/e560c351717f234253805f6f8d6e6119e17b0345",
-                "reference": "e560c351717f234253805f6f8d6e6119e17b0345",
+                "url": "https://api.github.com/repos/jn-devops/common/zipball/7cf60631b0760be340c09d4276784b5e4d78ff42",
+                "reference": "7cf60631b0760be340c09d4276784b5e4d78ff42",
                 "shasum": ""
             },
             "require": {
@@ -4509,7 +4509,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/common/issues",
-                "source": "https://github.com/jn-devops/common/tree/v1.5.94"
+                "source": "https://github.com/jn-devops/common/tree/v1.5.95"
             },
             "funding": [
                 {
@@ -4517,7 +4517,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-02T07:26:06+00:00"
+            "time": "2025-03-06T10:45:28+00:00"
         },
         {
             "name": "jn-devops/contacts",
@@ -4692,16 +4692,16 @@
         },
         {
             "name": "jn-devops/mortgage",
-            "version": "v1.2.85",
+            "version": "v1.2.86",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jn-devops/mortgage.git",
-                "reference": "1238cb9dcb77a3084f14170c1b9bf284a2d1565f"
+                "reference": "4e033355326f25dc194f4aca778039bf5888522b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jn-devops/mortgage/zipball/1238cb9dcb77a3084f14170c1b9bf284a2d1565f",
-                "reference": "1238cb9dcb77a3084f14170c1b9bf284a2d1565f",
+                "url": "https://api.github.com/repos/jn-devops/mortgage/zipball/4e033355326f25dc194f4aca778039bf5888522b",
+                "reference": "4e033355326f25dc194f4aca778039bf5888522b",
                 "shasum": ""
             },
             "require": {
@@ -4762,7 +4762,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/mortgage/issues",
-                "source": "https://github.com/jn-devops/mortgage/tree/v1.2.85"
+                "source": "https://github.com/jn-devops/mortgage/tree/v1.2.86"
             },
             "funding": [
                 {
@@ -4770,7 +4770,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-02T09:55:47+00:00"
+            "time": "2025-03-06T11:09:12+00:00"
         },
         {
             "name": "jn-devops/paymate",
@@ -5497,16 +5497,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.44.0",
+            "version": "v11.44.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "e9a33da34815ac1ed46c7e4c477a775f4592f0a7"
+                "reference": "0883d4175f4e2b5c299e7087ad3c74f2ce195c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/e9a33da34815ac1ed46c7e4c477a775f4592f0a7",
-                "reference": "e9a33da34815ac1ed46c7e4c477a775f4592f0a7",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/0883d4175f4e2b5c299e7087ad3c74f2ce195c6d",
+                "reference": "0883d4175f4e2b5c299e7087ad3c74f2ce195c6d",
                 "shasum": ""
             },
             "require": {
@@ -5614,7 +5614,7 @@
                 "league/flysystem-read-only": "^3.25.1",
                 "league/flysystem-sftp-v3": "^3.25.1",
                 "mockery/mockery": "^1.6.10",
-                "orchestra/testbench-core": "^9.9.4",
+                "orchestra/testbench-core": "^9.11.2",
                 "pda/pheanstalk": "^5.0.6",
                 "php-http/discovery": "^1.15",
                 "phpstan/phpstan": "^2.0",
@@ -5708,7 +5708,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-02-24T13:08:54+00:00"
+            "time": "2025-03-05T15:34:10+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -10266,16 +10266,16 @@
         },
         {
             "name": "spatie/laravel-data",
-            "version": "4.13.1",
+            "version": "4.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-data.git",
-                "reference": "14252330397cf84647cc086324ea1a30dbe5f7cc"
+                "reference": "bd060f6d47ad4a3fac1f92162d76bfd9975b10ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-data/zipball/14252330397cf84647cc086324ea1a30dbe5f7cc",
-                "reference": "14252330397cf84647cc086324ea1a30dbe5f7cc",
+                "url": "https://api.github.com/repos/spatie/laravel-data/zipball/bd060f6d47ad4a3fac1f92162d76bfd9975b10ca",
+                "reference": "bd060f6d47ad4a3fac1f92162d76bfd9975b10ca",
                 "shasum": ""
             },
             "require": {
@@ -10336,7 +10336,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-data/issues",
-                "source": "https://github.com/spatie/laravel-data/tree/4.13.1"
+                "source": "https://github.com/spatie/laravel-data/tree/4.13.2"
             },
             "funding": [
                 {
@@ -10344,7 +10344,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-14T14:29:16+00:00"
+            "time": "2025-03-03T09:59:10+00:00"
         },
         {
             "name": "spatie/laravel-fractal",
@@ -17032,12 +17032,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
