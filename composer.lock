@@ -4680,7 +4680,7 @@
             ],
             "support": {
                 "issues": "https://github.com/jn-devops/contracts/issues",
-                "source": "https://github.com/jn-devops/contracts/tree/v1.7.16"
+                "source": "https://github.com/jn-devops/contracts/tree/v1.7.5"
             },
             "funding": [
                 {
@@ -4688,7 +4688,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-08T07:32:40+00:00"
+            "time": "2025-02-27T01:45:26+00:00"
         },
         {
             "name": "jn-devops/mortgage",
@@ -17032,12 +17032,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

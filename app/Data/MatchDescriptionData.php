@@ -12,5 +12,7 @@ class MatchDescriptionData extends Data
         public float $partial_miscellaneous_fees,
         public float $loan_amortization,
         public float $bp_term,
+        public float $down_payment,
+        public array $property,
     ) {}
 }

@@ -18,9 +18,13 @@ const props = defineProps({
         type: Object,
         default: [],
     },
+    ref_code: {
+        type: String,
+        default: '',
+    },
 });
 
-const reference = ref({});
+const reference = ref(props.ref_code);
 
 const form = useForm({
     reference_code: reference.value,
@@ -127,20 +131,20 @@ provide('locations', locations)
 
 onMounted(() => {
     
-}),
+})
 
-watch (
-    () => usePage().props.flash.event,
-    (event) => {
-        switch (event?.name) {
-            case 'reference':
-                console.log('event:', event?.data);
-                reference.value = event?.data;
-                break;
-        }
-    },
-    { immediate: true }
-);
+// watch (
+//     () => usePage().props.flash.event,
+//     (event) => {
+//         switch (event?.name) {
+//             case 'reference':
+//                 console.log('event:', event?.data);
+//                 reference.value = event?.data;
+//                 break;
+//         }
+//     },
+//     { immediate: true }
+// );
 
 </script>
 
