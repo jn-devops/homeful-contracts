@@ -174,7 +174,7 @@ class EditContract extends EditRecord
 //            $new_data['aif']['no_middle_name'] = ($contact_data['aif']['aif_attorney_middle_name'] == '');
         }
 
-        $new_data['misc']['inputs']=$this->record->misc_inputs;
+        $data['misc']['input']=$this->record->misc_inputs;
         // if (!empty($contact_data['misc'])){
         //     $new_data['misc'] = $contact_data['misc']??[];
         // }
