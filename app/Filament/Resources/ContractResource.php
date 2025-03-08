@@ -77,7 +77,7 @@ class ContractResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = Contract::query();
-        if(auth()->user()->hasRole('sales')) {
+        if(auth()->user()->hasRole('Sales')) {
             $query=$query->whereIn('state',[
                 'Homeful\Contracts\States\Paid',
                 'Homeful\Contracts\States\Prequalified',
@@ -85,7 +85,7 @@ class ContractResource extends Resource
                 'Homeful\Contracts\States\Approved',
                 'Homeful\Contracts\States\Validated',
             ]);
-        }else if (auth()->user()->hasRole('cad/cfu')){
+        }else if (auth()->user()->hasRole('CAD/CFU')){
             $query=$query->whereIn('state',[
                 'Homeful\Contracts\States\Prequalified',
                 'Homeful\Contracts\States\Qualified',
