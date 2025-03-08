@@ -32,6 +32,10 @@ class Avail
             GenerateContractPayloads::dispatch($contract);
             if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code')){
                 $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
+                if($this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code)){
+                    $contract->voucher_code = $seller_voucher_code;
+                    $contract->voucher_source = 'seller';
+                }
                 $contract->save();
             }
             $contract->state->transitionTo(Availed::class, $reference);

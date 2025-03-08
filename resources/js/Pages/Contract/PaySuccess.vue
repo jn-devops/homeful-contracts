@@ -57,8 +57,8 @@ onMounted(() => {
     transactionType.value = "Credit/Card Payment"
     transactionNumber.value = props.payment_details?.data.orderInformation.referencedId ?? ''
     transactionDate.value = props.payment_details?.data.orderInformation.responseDate ?? ''
-    voucher_code.value = props.contract?.seller_commission_code ?? null
-    amount.value = props.payment_details.data.orderInformation.amount ?? 0
+    voucher_code.value = props.contract.misc?.voucher_code ?? null
+    amount.value = props.payment_details?.data.orderInformation.amount ?? 0
     
 
     window.scrollTo({
@@ -67,6 +67,14 @@ onMounted(() => {
     });
 
 });
+
+const formatDate = (date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(new Date(date));
+};
 
 const formatNumber = (value) => {
   let val =  parseFloat(value).toLocaleString("en-US");
@@ -117,7 +125,8 @@ const formatNumber = (value) => {
                         Transation Date
                     </div>
                     <div class="font-bold col-span-7 text-right text-sm">
-                        {{ transactionDate }}
+                        <!-- {{ transactionDate }} -->
+                          {{ formatDate('2025-03-06T11:54:40+08:00') }}
                     </div>
                     <div v-if="voucher_code" class="col-span-5 text-sm">
                         Voucher Code
