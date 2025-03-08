@@ -42,6 +42,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Homeful\Contracts\States\Approved;
+use Homeful\Contracts\States\Prequalified;
+use Homeful\Contracts\States\Qualified;
+use Homeful\Contracts\States\Validated;
 use http\Env\Response;
 use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Database\Eloquent\Builder;
@@ -74,11 +78,21 @@ class ContractResource extends Resource
     {
         $query = Contract::query();
         if(auth()->user()->hasRole('sales')) {
-            $query=$query->whereIn('state',['Paid','Pre-Qualified','Remedy','']);
-            dd($query);
-        }else{
-
+            $query=$query->whereIn('state',[
+                'Homeful\Contracts\States\Paid',
+                'Homeful\Contracts\States\Prequalified',
+                'Homeful\Contracts\States\Qualified',
+                'Homeful\Contracts\States\Approved',
+                'Homeful\Contracts\States\Validated',
+            ]);
+        }else if (auth()->user()->hasRole('cad/cfu')){
+            $query=$query->whereIn('state',[
+                'Homeful\Contracts\States\Prequalified',
+                'Homeful\Contracts\States\Qualified',
+                'Homeful\Contracts\States\Approved',
+            ]);
         }
+
         return $query;
     }
 
