@@ -368,7 +368,6 @@ class EditContract extends EditRecord
         $this->record->misc_inputs=$this->data['misc']['input'];
         $this->record->property_code = $this->data['property_code'];
         $this->record->save();
-        dd($this->record,$this->record->misc_inputs);
 
         if ($shouldSendSavedNotification) {
             $this->getSavedNotification()?->send();
