@@ -3107,7 +3107,6 @@ class ContractResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->defaultPaginationPageOption(50)
             ->poll('10s')
-            ->deferLoading()
             ->columns([
                 TextColumn::make('state')
                     ->badge()
