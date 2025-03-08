@@ -2062,29 +2062,37 @@ class ContractResource extends Resource
                                             ->collapsible()
                                             ->schema([
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.retention')
+                                                    ->numeric()
                                                     ->label('Retention Fee')
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.service')
                                                     ->label('Service Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.processing')
                                                     ->label('Processing Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.home_utility_connection')
                                                     ->label('Home Utility Connection Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.balance')
                                                     ->label('Balance Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
 
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.equity')
                                                     ->label('Equity Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.rental')
                                                     ->label('Rental Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.present_rental')
                                                     ->label('Present Rental Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                             ])->columnSpanFull()->columns(12),
                                         Forms\Components\Section::make('PAG-IBIG Evaluation Sheet')
