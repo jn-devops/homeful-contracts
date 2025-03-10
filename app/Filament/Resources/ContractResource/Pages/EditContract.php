@@ -174,9 +174,10 @@ class EditContract extends EditRecord
 //            $new_data['aif']['no_middle_name'] = ($contact_data['aif']['aif_attorney_middle_name'] == '');
         }
 
-        if (!empty($contact_data['misc'])){
-            $new_data['misc'] = $contact_data['misc']??[];
-        }
+        $data['misc']['input']=$this->record->misc_inputs;
+        // if (!empty($contact_data['misc'])){
+        //     $new_data['misc'] = $contact_data['misc']??[];
+        // }
 
 
 //
@@ -364,8 +365,7 @@ class EditContract extends EditRecord
 
     public function save(bool $shouldRedirect = true, bool $shouldSendSavedNotification = true): void
     {
-        $this->record->update($this->data['misc']);
-        $this->record->misc=$this->data['misc'];
+        $this->record->misc_inputs=$this->data['misc']['input'];
         $this->record->property_code = $this->data['property_code'];
         $this->record->save();
 

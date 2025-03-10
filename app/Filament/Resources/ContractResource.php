@@ -77,7 +77,7 @@ class ContractResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = Contract::query();
-        if(auth()->user()->hasRole('sales')) {
+        if(auth()->user()->hasRole('Sales')) {
             $query=$query->whereIn('state',[
                 'Homeful\Contracts\States\Paid',
                 'Homeful\Contracts\States\Prequalified',
@@ -85,7 +85,7 @@ class ContractResource extends Resource
                 'Homeful\Contracts\States\Approved',
                 'Homeful\Contracts\States\Validated',
             ]);
-        }else if (auth()->user()->hasRole('cad/cfu')){
+        }else if (auth()->user()->hasRole('CAD/CFU')){
             $query=$query->whereIn('state',[
                 'Homeful\Contracts\States\Prequalified',
                 'Homeful\Contracts\States\Qualified',
@@ -2062,29 +2062,37 @@ class ContractResource extends Resource
                                             ->collapsible()
                                             ->schema([
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.retention')
+                                                    ->numeric()
                                                     ->label('Retention Fee')
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.service')
                                                     ->label('Service Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.processing')
                                                     ->label('Processing Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.home_utility_connection')
                                                     ->label('Home Utility Connection Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.balance')
                                                     ->label('Balance Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
 
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.equity')
                                                     ->label('Equity Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.rental')
                                                     ->label('Rental Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                                 Forms\Components\TextInput::make('misc.input.payment_scheme.fees.present_rental')
                                                     ->label('Present Rental Fee')
+                                                    ->numeric()
                                                     ->columnSpan(3),
                                             ])->columnSpanFull()->columns(12),
                                         Forms\Components\Section::make('PAG-IBIG Evaluation Sheet')
@@ -3099,7 +3107,6 @@ class ContractResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->defaultPaginationPageOption(50)
             ->poll('10s')
-            ->deferLoading()
             ->columns([
                 TextColumn::make('state')
                     ->badge()
