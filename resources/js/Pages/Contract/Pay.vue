@@ -7,6 +7,8 @@ import InputTextPromoCodeFormat from '@/Components/Input/InputTextPromoCodeForma
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import { ref, watch } from "vue";
 import axios from "axios";
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import PlainBlackButton from '@/Components/Button/PlainBlackButton.vue';
 
 const props = defineProps({
     referenceCode: String,
@@ -43,47 +45,45 @@ const form = useForm({
 // });
 const submit = (paymentMethod,ewallet = null) => {
     errorBox.value = "";
-    
-const baseURL = window.location.origin;
-let postUrl;
-let data ;
-// console.log(paymentMethod);
-if(paymentMethod=="cashier")
-{
-    data  = JSON.stringify({
-  "referenceCode": props.referenceCode,
-  "amount": props.amount,
-//   "callbackParam": route('pay.success')
-});
-    postUrl = `${baseURL}/api/homeful-cashier`
-}
+    const baseURL = window.location.origin;
+    let postUrl;
+    let data ;
 
-else if(paymentMethod=="eWallet")
-{
-     data = JSON.stringify({
-  "referenceCode": props.referenceCode,
-  "amount": props.amount,
-  "wallet": ewallet,
-//   "callbackParam": route('pay.success')
-});
-    postUrl = `${baseURL}/api/homeful-wallet` 
-}
-console.log(postUrl);
-let config = {
-  method: 'post',
-  maxBodyLength: Infinity,
-  url: postUrl,
-  headers: { 
-    'Content-Type': 'application/json',
-     'Access-Control-Allow-Origin':'*'
-  },
-  data : data
-};
+    if(paymentMethod=="cashier")
+    {
+        data  = JSON.stringify({
+        "referenceCode": props.referenceCode,
+        "amount": props.amount,
+        });
+        postUrl = `${baseURL}/api/homeful-cashier`
+    }
+    else if(paymentMethod=="eWallet")
+    {
+        data = JSON.stringify({
+            "referenceCode": props.referenceCode,
+            "amount": props.amount,
+            "wallet": ewallet,
+        });
+        postUrl = `${baseURL}/api/homeful-wallet` 
+    }
+    console.log(postUrl);
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: postUrl,
+        headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin':'*'
+        },
+        data : data
+    };
 
-axios.request(config)
+    axios.request(config)
         .then((response) => {
             if (paymentMethod === "cashier") {
                 const cashierUrl = response.data?.data?.cashierUrl;
+                console.log(response.data);
+                
                 if (cashierUrl) {
                     window.location.href = cashierUrl;
                 } else {
@@ -110,10 +110,41 @@ axios.request(config)
 //     });
 // };
 
+const verifiedPromoCode = ref(false);
+const promo_code_input = ref('');
+const promo_code_error = ref('');
+const promo_code_success = ref('');
+
+const verifyPromoCode = async () => {
+    try {
+        const response = await axios.get('/verify-promo-code', { params: { promo_code: promo_code_input.value } }).then((response) => {
+            if(response.data.valid){
+                verifiedPromoCode.value = true;
+                promo_code_error.value = '';
+                promo_code_success.value = response.data.message;
+            } else {
+                verifiedPromoCode.value = false;
+                promo_code_error.value = response.data.message;
+                promo_code_success.value = '';
+            }
+        }).catch((error) => {
+            console.log(error.response?.data?.message);
+            promo_code_error.value = error.response?.data?.message;
+            promo_code_success.value = '';
+            verifiedPromoCode.value = false;
+
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        verifiedPromoCode.value = fasle;
+
+    }
+};
+
 const formatNumber = (value) => {
-  let val =  parseFloat(value).toLocaleString("en-US");
-  return (val / 100).toFixed(2);
-}
+  let val = parseFloat(value) / 100; // Convert and divide first
+  return val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
 </script>
 
 <template>
@@ -164,16 +195,33 @@ const formatNumber = (value) => {
                 </div> -->
                 <div class="mt-4">
                     <InputTextPromoCodeFormat
-                        v-model="form.promo_code"
+                        v-model="promo_code_input"
                         label="Promo Code"
-                        :error-message="form.errors.promo_code"
-                        placeholder="ex. 427482-331-23"
+                        v-model:verified-promo-code="verifiedPromoCode"
+                        :error-message="promo_code_error"
+                        :success-message="promo_code_success"
+                        placeholder="ex. ae72d8"
                         :max="13"
                     />
+                    <PlainBlackButton 
+                        class="w-full mt-4"
+                        @click="verifyPromoCode"
+                        v-show="!verifiedPromoCode"
+                    >
+                        Apply Code
+                    </PlainBlackButton>
+                    <PlainBlackButton 
+                        class="w-full mt-4"
+                        v-show="verifiedPromoCode"
+                    >
+                        Continue
+                    </PlainBlackButton>
+                    
                 </div>
                 <div class="mt-6">
                     <form @submit.prevent="submit">
                         <h3 class="text-lg font-bold">Select payment option below</h3>
+                        <p class="italic text-sm text-red-400">{{ errorBox }}</p>
                         <div class="rounded-xl bg-[#F8F9FE] flex flex-row items-center justify-center p-3 gap-2 my-3">
                             <div class="basis-2/12">
                                 <svg class="w-full" viewBox="0 0 67 54" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

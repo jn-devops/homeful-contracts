@@ -51,6 +51,7 @@ Route::resource('consult', ConsultController::class)
     ->only(['create', 'store']);
 Route::resource('avail', AvailController::class)
     ->only(['create', 'store']);
+Route::get('verify-promo-code', [AvailController::class, 'verifyPromoCode'])->name('verify.promo-code');
 Route::get('verify-contact', VerifyContactController::class)->name('verify-contact');
 Route::resource('verify', VerifyController::class)->only(['create', 'store']);
 Route::get('contact-onboarded/{reference}', ContactOnboardedController::class)->name('contact-onboarded');
