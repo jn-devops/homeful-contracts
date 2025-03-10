@@ -63,4 +63,25 @@ class AvailController extends Controller
 
         return $options;
     }
+
+    public function verifyPromoCode(Request $request)
+    {
+        $validated = Validator::validate($request->all(), [
+            'promo_code' => ['required', 'string'],
+        ]);
+        return response()->json([
+            'valid' => true,
+            'message' => 'Promo code is valid',
+            'data' => [
+                'promo_code' => $validated['promo_code'],
+            ],
+        ], 200);
+        // return response()->json([
+        //     'valid' => false,
+        //     'message' => 'Promo code is invalid',
+        //     'data' => [
+        //         'promo_code' => $validated['promo_code'],
+        //     ],
+        // ], 422);
+    }
 }
