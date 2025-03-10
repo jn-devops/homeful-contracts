@@ -31,8 +31,9 @@ class Avail
             $contract = app(UpdateContractProperty::class)->run($reference, $validated);
             GenerateContractPayloads::dispatch($contract);
             if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code')){
-                $contract->seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
-                if($this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code)){
+                $seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
+                $contract->seller_commission_code = $seller_commission_code;
+                if (!empty($seller_commission_code)){
                     $contract->voucher_code = $seller_voucher_code;
                     $contract->voucher_source = 'seller';
                 }
