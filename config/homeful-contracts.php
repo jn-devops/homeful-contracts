@@ -8,7 +8,8 @@ return [
         'register-contact' => env('REGISTER_CONTACT_ENDPOINT', 'http://homeful-contacts.test/register'),
         'api-register-contact' => env('REGISTER_API_CONTACT_ENDPOINT', 'http://homeful-contacts.test/api/register'),
         'matches' => env('MATCHES_ENDPOINT', 'http://homeful-match.test/api/match'),
-        'verify-contact' => env('VERIFY_CONTACT_ENDPOINT', 'https://seqrcode.net/campaign-checkin/9de6ca3d-293f-4e98-8bde-daf13e1bfc91'),
+        // 'verify-contact' => env('VERIFY_CONTACT_ENDPOINT', 'https://seqrcode.net/campaign-checkin/9e65a245-f72b-40bc-b3e5-d81a993bed87'),// TODO|Xian: fix this 
+        'verify-contact' => 'https://seqrcode.net/campaign-checkin/9e65a245-f72b-40bc-b3e5-d81a993bed87', // TODO|Xian: fix this 
         'collect-contact' => env('COLLECT_CONTACT_ENDPOINT', 'https://google.com'),
         'redeem-voucher' => env('REDEEM_VOUCHER_ENDPOINT', 'http://homeful-sellers.test/api/redeem/:voucher'),
     ],
