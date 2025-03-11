@@ -5,7 +5,7 @@ import BookingNavigation from '@/Components/Booking/BookingNavigation.vue';
 import InputText from '@/Components/Input/InputText.vue';
 import InputTextPromoCodeFormat from '@/Components/Input/InputTextPromoCodeFormat.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import axios from "axios";
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import PlainBlackButton from '@/Components/Button/PlainBlackButton.vue';
@@ -20,6 +20,9 @@ const props = defineProps({
 
 const reference = ref({});
 const errorBox = ref(""); // State to hold error messages
+const total_amount = ref(0);
+const total_discount = ref(0);
+
 watch (
     () => usePage().props.flash.event,
     (event) => {
@@ -35,7 +38,7 @@ watch (
 
 const form = useForm({
     referenceCode: props.referenceCode,
-    amount: props.amount
+    amount: total_amount.value
 });
 
 // let data = JSON.stringify({
@@ -53,7 +56,7 @@ const submit = (paymentMethod,ewallet = null) => {
     {
         data  = JSON.stringify({
         "referenceCode": props.referenceCode,
-        "amount": props.amount,
+        "amount": total_amount.value,
         });
         postUrl = `${baseURL}/api/homeful-cashier`
     }
@@ -61,7 +64,7 @@ const submit = (paymentMethod,ewallet = null) => {
     {
         data = JSON.stringify({
             "referenceCode": props.referenceCode,
-            "amount": props.amount,
+            "amount": total_amount.value,
             "wallet": ewallet,
         });
         postUrl = `${baseURL}/api/homeful-wallet` 
@@ -145,6 +148,20 @@ const formatNumber = (value) => {
   let val = parseFloat(value) / 100; // Convert and divide first
   return val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 };
+
+onMounted(() => {
+    total_amount.value = props.amount;
+})
+
+watch(verifiedPromoCode, (newVal, oldVal) => {
+    if(newVal){
+        total_discount.value = total_amount.value;
+        total_amount.value = total_amount.value - total_discount.value;
+    } else {
+        total_discount.value = 0;
+        total_amount.value = props.amount;
+    }
+});
 </script>
 
 <template>
@@ -174,25 +191,23 @@ const formatNumber = (value) => {
                             <p class="text-sm">{{ projectLocation }}</p>
                         </div>
                     </div>
+                    <div v-if="verifiedPromoCode" class="flex flex-row mt-3 w-full justify-center items-center">
+                        <div class="flex-none text-sm">
+                            Dicount
+                        </div>
+                        <div class="flex-grow text-right font-bold text-sm text-red-700">
+                           - ₱ {{ formatNumber(total_discount)  }}
+                        </div>
+                    </div>
                     <div class="flex flex-row mt-3 w-full justify-center items-center">
                         <div class="flex-none text-sm">
                             You're about to Pay
                         </div>
                         <div class="flex-grow text-right font-extrabold text-2xl">
-                            ₱ {{ formatNumber(amount)  }}
+                            ₱ {{ formatNumber(total_amount)  }}
                         </div>
                     </div>
                 </div>
-                <!-- <div class="mt-4">
-                    <InputText 
-                        v-model="form.voucher_code"
-                        label="Voucher Code"
-                        :error-message="form.errors.voucher_code"
-                        placeholder="ex. H98K28"
-                        helper-message="If you are a seller's assistant, please enter the seller voucher code. If not, kindly click the Book Now button below."
-                        :max="8"
-                    />
-                </div> -->
                 <div class="mt-4">
                     <InputTextPromoCodeFormat
                         v-model="promo_code_input"

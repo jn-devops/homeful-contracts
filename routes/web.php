@@ -55,13 +55,11 @@ Route::get('verify-promo-code', [AvailController::class, 'verifyPromoCode'])->na
 Route::get('verify-contact', VerifyContactController::class)->name('verify-contact');
 Route::resource('verify', VerifyController::class)->only(['create', 'store']);
 
-use App\Http\Middleware\ManualOnboard;
+use App\Http\Middleware\ManualStateCheck;
 Route::get('contact-onboarded/{reference}', ContactOnboardedController::class)
-    ->middleware(ManualOnboard::class)
+    ->middleware(ManualStateCheck::class)
     ->name('contact-onboarded');
-Route::get('manual-onboard', function (string $reference) {
-    return inertia()->render('Booking/Onboard');
-})->name('manual-onboard');
+Route::get('manual-onboard/{reference}', [ContactOnboardedController::class, 'manual_onboard'])->name('manual-onboard');
 
 use App\Http\Controllers\ManualOnboardController;
 Route::post('post-manual-onboard', ManualOnboardController::class)->name('post-manual-onboard');

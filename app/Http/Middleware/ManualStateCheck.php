@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Closure;
 
 
-class ManualOnboard
+class ManualStateCheck
 {
     /**
      * Handle an incoming request.
@@ -19,7 +19,7 @@ class ManualOnboard
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $reference_code = $request->get('reference');
+        $reference_code = $request->route('reference')->code;
         $reference = Reference::where('code', $reference_code)->first();
         if ($reference instanceof Reference) {
             $contract = $reference->getContract();
@@ -29,7 +29,7 @@ class ManualOnboard
             }
             elseif ($contract->state instanceof Availed) {
                 app('redirect')->setIntendedUrl($request->path());
-                return redirect()->route('manual-onboard')->withInput($request->all());
+                return redirect()->route('manual-onboard', ['reference' => $reference_code]);
             }
         }
 

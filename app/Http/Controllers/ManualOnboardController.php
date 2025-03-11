@@ -21,7 +21,7 @@ class ManualOnboardController extends Controller
         $contract = $reference->getContract();
         if ($contract instanceof Contract) {
             if ($contract->state instanceof Verified) {
-                $contract->state->transitionTo(Onboarded::class);
+                return redirect()->route('contact-onboarded', ['reference' => $reference_code]);
             }
             elseif ($contract->state instanceof Availed) {
                 return back()->withErrors([
