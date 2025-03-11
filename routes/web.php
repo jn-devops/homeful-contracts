@@ -54,7 +54,18 @@ Route::resource('avail', AvailController::class)
 Route::get('verify-promo-code', [AvailController::class, 'verifyPromoCode'])->name('verify.promo-code');
 Route::get('verify-contact', VerifyContactController::class)->name('verify-contact');
 Route::resource('verify', VerifyController::class)->only(['create', 'store']);
-Route::get('contact-onboarded/{reference}', ContactOnboardedController::class)->name('contact-onboarded');
+
+use App\Http\Middleware\ManualOnboard;
+Route::get('contact-onboarded/{reference}', ContactOnboardedController::class)
+    ->middleware(ManualOnboard::class)
+    ->name('contact-onboarded');
+Route::get('manual-onboard', function (string $reference) {
+    return inertia()->render('Booking/Onboard');
+})->name('manual-onboard');
+
+use App\Http\Controllers\ManualOnboardController;
+Route::post('post-manual-onboard', ManualOnboardController::class)->name('post-manual-onboard');
+
 Route::resource('pay', PayController::class)->only(['create', 'store']);
 Route::get('payment-confirmation/{reservation_code}', [PayController::class, 'confirmation'])->name('pay.success');
 Route::get('collect-contact', CollectContactController::class)->name('collect-contact');
