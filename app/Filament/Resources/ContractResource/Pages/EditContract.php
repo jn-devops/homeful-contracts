@@ -6,6 +6,7 @@ use App\Filament\Resources\ContractResource;
 use App\Actions\GenerateContractPayloads;
 use App\Models\Payload;
 use Filament\Resources\Pages\EditRecord;
+use Homeful\Contacts\Enums\Ownership;
 use Homeful\Contacts\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Homeful\Contracts\Models\Contract;
@@ -89,6 +90,7 @@ class EditContract extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
+
         GenerateContractPayloads::dispatch($this->record);
 
         if (!empty($data['property'])&& $data['property']!=null) {
@@ -174,6 +176,7 @@ class EditContract extends EditRecord
             $new_data['spouse']['no_middle_name']=$new_data['spouse']['middle_name']==''||$new_data['spouse']['middle_name']==null;
         }
 
+
         if (!empty($contact_data['aif'])){
             $new_data['aif']=$this->record->customer->aif->toArray()??[];
         }
@@ -241,6 +244,8 @@ class EditContract extends EditRecord
 
         $new_data['contact'] = $new_data;
         $data['contact_data']=$new_data;
+
+
         return $data;
     }
 
@@ -259,11 +264,11 @@ class EditContract extends EditRecord
 
     public function save(bool $shouldRedirect = true, bool $shouldSendSavedNotification = true): void
     {
-        dd($this->record,$this->data);
+        $contact = Contact::where('id',$this->record->contact_id)->first();
 
         $this->record->misc_inputs=$this->data['misc']['input'];
         $this->record->property_code = $this->data['property_code'];
-        $contact = Contact::where('id',$this->record->contact_id)->first();
+
 
         $data= $this->data;
         $contact_attribs=[
@@ -284,34 +289,34 @@ class EditContract extends EditRecord
             'employment' => [
                 [
                     'type'=>'Primary',
-                    'employment_status' => $data['contact_data']['buyer_employment']['employment_status'] ?? null,
-                    'monthly_gross_income' => $data['contact_data']['buyer_employment']['monthly_gross_income'] ?? null,
-                    'current_position' => $data['contact_data']['buyer_employment']['current_position'] ?? null,
-                    'employment_type' => $data['contact_data']['buyer_employment']['employment_type'] ?? null,
-                    'years_in_service' => $data['contact_data']['buyer_employment']['years_in_service'] ?? null,
-                    'rank' => $data['contact_data']['buyer_employment']['rank'] ?? null,
-                    'industry' => $data['contact_data']['buyer_employment']['industry'] ?? null,
+                    'employment_status' => $data['contact_data']['buyer_employment']['employment_status'] ?? '',
+                    'monthly_gross_income' => $data['contact_data']['buyer_employment']['monthly_gross_income'] ?? '',
+                    'current_position' => $data['contact_data']['buyer_employment']['current_position'] ?? '',
+                    'employment_type' => $data['contact_data']['buyer_employment']['employment_type'] ?? '',
+                    'years_in_service' => $data['contact_data']['buyer_employment']['years_in_service'] ?? '',
+                    'rank' => $data['contact_data']['buyer_employment']['rank'] ?? '',
+                    'industry' => $data['contact_data']['buyer_employment']['industry'] ?? '',
                     'employer' => [
-                        'name' => $data['contact_data']['buyer_employment']['employer']['name'] ?? null,
-                        'industry' => $data['contact_data']['buyer_employment']['employer']['industry'] ?? null,
-                        'nationality' => $data['contact_data']['buyer_employment']['employer']['nationality'] ?? null,
-                        'contact_no' => $data['contact_data']['buyer_employment']['employer']['contact_no'] ?? null,
-                        'year_established' => $data['contact_data']['buyer_employment']['employer']['year_established'] ?? null,
-                        'total_number_of_employees' => $data['contact_data']['buyer_employment']['employer']['total_number_of_employees'] ?? null,
-                        'email' => $data['contact_data']['buyer_employment']['employer']['email'] ?? null,
-                        'fax' => $data['contact_data']['buyer_employment']['employer']['fax'] ?? null,
+                        'name' => $data['contact_data']['buyer_employment']['employer']['name'] ?? '',
+                        'industry' => $data['contact_data']['buyer_employment']['employer']['industry'] ?? '',
+                        'nationality' => $data['contact_data']['buyer_employment']['employer']['nationality'] ?? '',
+                        'contact_no' => $data['contact_data']['buyer_employment']['employer']['contact_no'] ?? '',
+                        'year_established' => $data['contact_data']['buyer_employment']['employer']['year_established'] ?? '',
+                        'total_number_of_employees' => $data['contact_data']['buyer_employment']['employer']['total_number_of_employees'] ?? '',
+                        'email' => $data['contact_data']['buyer_employment']['employer']['email'] ?? '',
+                        'fax' => $data['contact_data']['buyer_employment']['employer']['fax'] ?? '',
 
                         // Expanding the employer address structure
                         'address' => [
-                            'full_address' => $data['contact_data']['buyer_employment']['employer']['address']['full_address'] ?? null,
-                            'address1' => $data['contact_data']['buyer_employment']['employer']['address']['address1'] ?? null,
-                            'sublocality' => $data['contact_data']['buyer_employment']['employer']['address']['sublocality'] ?? null,
-                            'locality' => $data['contact_data']['buyer_employment']['employer']['address']['locality'] ?? null,
-                            'administrative_area' => $data['contact_data']['buyer_employment']['employer']['address']['administrative_area'] ?? null,
-                            'country' => $data['contact_data']['buyer_employment']['employer']['address']['country'] ?? null,
-                            'region' => $data['contact_data']['buyer_employment']['employer']['address']['region'] ?? null,
-                            'ownership' =>'company',
-                            'type'=>'company',
+                            'full_address' => $data['contact_data']['buyer_employment']['employer']['address']['full_address'] ?? '',
+                            'address1' => $data['contact_data']['buyer_employment']['employer']['address']['address1'] ?? '',
+                            'sublocality' => $data['contact_data']['buyer_employment']['employer']['address']['sublocality'] ?? '',
+                            'locality' => $data['contact_data']['buyer_employment']['employer']['address']['locality'] ?? '',
+                            'administrative_area' => $data['contact_data']['buyer_employment']['employer']['address']['administrative_area'] ?? '',
+                            'country' => $data['contact_data']['buyer_employment']['employer']['address']['country'] ?? '',
+                            'region' => $data['contact_data']['buyer_employment']['employer']['address']['region'] ?? '',
+                            'ownership' =>'Owned',
+                            'type'=>'Primary',
                         ]
                     ],
                     'id' => [
@@ -326,67 +331,82 @@ class EditContract extends EditRecord
             'addresses' => [
                 [
                     'type' => 'Primary',
-                    'ownership' => $data['contact_data']['buyer']['address']['present']['ownership'] ?? null,
-                    'address1'=>$data['contact_data']['buyer']['address']['present']['address1'] ?? null,
-                    'sublocality' => $data['contact_data']['buyer']['address']['present']['sublocality'] ?? null,
-                    'locality' => $data['contact_data']['buyer']['address']['present']['locality'] ?? null,
-                    'administrative_area' => $data['contact_data']['buyer']['address']['present']['administrative_area'] ?? null,
-                    'postal_code' => $data['contact_data']['buyer']['address']['present']['postal_code'] ?? null,
+                    'ownership' => $data['contact_data']['buyer']['address']['present']['ownership'] ?? Ownership::default(),
+                    'address1'=>$data['contact_data']['buyer']['address']['present']['address1'] ?? '',
+                    'sublocality' => $data['contact_data']['buyer']['address']['present']['sublocality'] ?? '',
+                    'locality' => $data['contact_data']['buyer']['address']['present']['locality'] ?? '',
+                    'administrative_area' => $data['contact_data']['buyer']['address']['present']['administrative_area'] ?? '',
+                    'postal_code' => $data['contact_data']['buyer']['address']['present']['postal_code'] ?? '',
                     'region' => $data['contact_data']['buyer']['address']['present']['region'] ?? '',
                     'country' => $data['contact_data']['buyer']['address']['present']['country'] ?? '',
                 ],
                 [
                     'type' => 'Secondary',
-                    'ownership' => $data['contact_data']['buyer']['address']['permanent']['ownership'] ?? null,
-                    'address1'=>$data['contact_data']['buyer']['address']['permanent']['address1'] ?? null,
-                    'sublocality' => $data['contact_data']['buyer']['address']['permanent']['sublocality'] ?? null,
-                    'locality' => $data['contact_data']['buyer']['address']['permanent']['locality'] ?? null,
-                    'administrative_area' => $data['contact_data']['buyer']['address']['permanent']['administrative_area'] ?? null,
-                    'postal_code' => $data['contact_data']['buyer']['address']['permanent']['postal_code'] ?? null,
+                    'ownership' => $data['contact_data']['buyer']['address']['permanent']['ownership'] ?? Ownership::default(),
+                    'address1'=>$data['contact_data']['buyer']['address']['permanent']['address1'] ?? '',
+                    'sublocality' => $data['contact_data']['buyer']['address']['permanent']['sublocality'] ?? '',
+                    'locality' => $data['contact_data']['buyer']['address']['permanent']['locality'] ?? '',
+                    'administrative_area' => $data['contact_data']['buyer']['address']['permanent']['administrative_area'] ?? '',
+                    'postal_code' => $data['contact_data']['buyer']['address']['permanent']['postal_code'] ?? '',
                     'region' => $data['contact_data']['buyer']['address']['permanent']['region'] ?? '',
                     'country' => $data['contact_data']['buyer']['address']['permanent']['country'] ?? '',
                 ]
-            ]
+            ],
+            'aif'=>$data['contact_data']['aif']??[],
         ];
 
         if($data['contact_data']['buyer']['civil_status']=='Married'){
             $contact_attribs['spouse']= [
-                'first_name' => $data['contact_data']['spouse']['first_name'] ?? null,
-                'middle_name' => $data['contact_data']['spouse']['middle_name'] ?? null,
-                'last_name' => $data['contact_data']['spouse']['last_name'] ?? null,
-                'name_suffix' => $data['contact_data']['spouse']['name_suffix'] ?? null,
-                'civil_status' => $data['contact_data']['spouse']['civil_status'] ?? null,
-                'sex' => $data['contact_data']['spouse']['sex'] ?? null,
-                'nationality' => $data['contact_data']['spouse']['nationality'] ?? null,
-                'date_of_birth' => $data['contact_data']['spouse']['date_of_birth'] ?? null,
-                'email' => $data['contact_data']['spouse']['email'] ?? null,
-                'mobile' => $data['contact_data']['spouse']['mobile'] ?? null,
-                'other_mobile' => $data['contact_data']['spouse']['other_mobile'] ?? null,
-                'landline' => $data['contact_data']['spouse']['landline'] ?? null,
-                'mothers_maiden_name' => $data['contact_data']['spouse']['mothers_maiden_name'] ?? null,
-            ];
-        }else{
-            $contact_attribs['spouse']= [
-                'first_name' =>  null,
-                'middle_name' =>  null,
-                'last_name' =>  null,
-                'name_suffix' =>  null,
-                'civil_status' =>  null,
-                'sex' =>  null,
-                'nationality' => null,
-                'date_of_birth' => null,
-                'email' =>  null,
-                'mobile' =>  null,
-                'landline' =>  null,
-                'mothers_maiden_name' =>  null,
+                'first_name' => $data['contact_data']['spouse']['first_name'] ?? '',
+                'middle_name' => $data['contact_data']['spouse']['middle_name'] ?? '',
+                'last_name' => $data['contact_data']['spouse']['last_name'] ?? '',
+                'name_suffix' => $data['contact_data']['spouse']['name_suffix'] ?? '',
+                'civil_status' => $data['contact_data']['spouse']['civil_status'] ?? '',
+                'sex' => $data['contact_data']['spouse']['sex'] ?? '',
+                'nationality' => $data['contact_data']['spouse']['nationality'] ?? '',
+                'date_of_birth' => $data['contact_data']['spouse']['date_of_birth'] ?? '',
+                'email' => $data['contact_data']['spouse']['email'] ?? '',
+                'mobile' => $data['contact_data']['spouse']['mobile'] ?? '',
+                'other_mobile' => $data['contact_data']['spouse']['other_mobile'] ?? '',
+                'landline' => $data['contact_data']['spouse']['landline'] ?? '',
+                'mothers_maiden_name' => $data['contact_data']['spouse']['mothers_maiden_name'] ?? '',
             ];
         }
+//        else{
+//            $contact_attribs['spouse']= [
+//                'first_name' =>  '',
+//                'middle_name' => '',
+//                'last_name' =>  '',
+//                'name_suffix' => '',
+//                'civil_status' => '',
+//                'sex' =>  '',
+//                'nationality' => '',
+//                'date_of_birth' =>'',
+//                'email' =>  '',
+//                'mobile' =>  '',
+//                'landline' =>  '',
+//                'mothers_maiden_name' =>  '',
+//            ];
+//        }
 
-        $contact->update($data);
+        if ($data['contact_data']['co_borrowers']) {
+            $cobo_data=[];
+            foreach ($data['contact_data']['co_borrowers'] as $coborrower) {
+                $address = $coborrower['address'];
+                $employment = $coborrower['coborrower_employment'];
 
+                $coborrower['addresses'][0] = $address;
+                $coborrower['employment'][0] = $employment;
+                $cobo_data[] = $coborrower;
+            }
+            $contact_attribs['co_borrowers'] = $cobo_data;
+        }
 
-
+        $contact->update($contact_attribs);
         $this->record->save();
+
+
+
 
         if ($shouldSendSavedNotification) {
             $this->getSavedNotification()?->send();

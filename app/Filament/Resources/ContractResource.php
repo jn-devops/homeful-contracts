@@ -833,14 +833,14 @@ class ContractResource extends Resource
                                                                 ->required()
                                                                 ->maxLength(255)
                                                                 ->columnSpan(3),
-                                                            TextInput::make('spouse.tin')
+                                                            TextInput::make('contact_data.spouse.tin')
                                                                 ->label('Tax Identification Number')
                                                                 ->maxLength(255)
                                                                 ->columnSpan(3),
                                                         ])->columns(12)->columnSpanFull(),
                                                         \Filament\Forms\Components\Fieldset::make('Contact Information')
                                                             ->schema([
-                                                                Forms\Components\TextInput::make('spouse.email')
+                                                                Forms\Components\TextInput::make('contact_data.spouse.email')
                                                                     ->label('Email')
                                                                     // ->email()
                                                                     ->required()
@@ -851,7 +851,7 @@ class ContractResource extends Resource
                                                                     })
                                                                     ->columnSpan(3),
 
-                                                                Forms\Components\TextInput::make('spouse.mobile')
+                                                                Forms\Components\TextInput::make('contact_data.spouse.mobile')
                                                                     ->label('Mobile')
                                                                     ->required()
                                                                     ->prefix('+63')
@@ -864,7 +864,7 @@ class ContractResource extends Resource
                                                                     })
                                                                     ->columnSpan(3),
 
-                                                                Forms\Components\TextInput::make('spouse.other_mobile')
+                                                                Forms\Components\TextInput::make('contact_data.spouse.other_mobile')
                                                                     ->label('Other Mobile')
                                                                     ->prefix('+63')
                                                                     ->regex("/^[0-9]+$/")
@@ -876,7 +876,7 @@ class ContractResource extends Resource
                                                                     })
                                                                     ->columnSpan(3),
 
-                                                                Forms\Components\TextInput::make('spouse.landline')
+                                                                Forms\Components\TextInput::make('contact_data.spouse.landline')
                                                                     ->label('Landline')
                                                                     ->columnSpan(3),
                                                             ])->columns(12)->columnSpanFull(),
@@ -1097,7 +1097,7 @@ class ContractResource extends Resource
                                                                             ->columnSpan(3),
 
                                                                     ])
-                                                                    ->hidden(fn (Get $get): bool => $get('civil_status')!=\Homeful\Contacts\Enums\CivilStatus::MARRIED &&  $get('civil_status')!=null)
+//                                                                    ->hidden(fn (Get $get): bool => $get('civil_status')!=\Homeful\Contacts\Enums\CivilStatus::MARRIED &&  $get('civil_status')!=null)
                                                                     ->columns(12)
                                                                     ->columnSpanFull(),
 
