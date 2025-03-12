@@ -1372,12 +1372,12 @@ class ContractResource extends Resource
                                                             ->schema([
                                                                 TextInput::make('contact_data.aif.last_name')
                                                                     ->label('Last Name')
-                                                                    // ->required()
+                                                                     ->required()
                                                                     ->maxLength(255)
                                                                     ->columnSpan(3),
                                                                 TextInput::make('contact_data.aif.first_name')
                                                                     ->label('First Name')
-                                                                    // ->required()
+                                                                     ->required()
                                                                     ->maxLength(255)
                                                                     ->columnSpan(3),
 
