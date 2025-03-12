@@ -1400,11 +1400,12 @@ class ContractResource extends Resource
                                                                 Select::make('contact_data.aif.civil_status')
                                                                     ->label('Civil Status')
                                                                     ->native(false)
+                                                                    ->required()
                                                                     ->options(collect(CivilStatus::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                     ->columnSpan(3),
                                                                 Select::make('contact_data.aif.sex')
                                                                     ->label('Gender')
-                                                                    // ->required()
+                                                                     ->required()
                                                                     ->native(false)
                                                                     ->options([
                                                                         'Male'=>'Male',
@@ -1419,7 +1420,7 @@ class ContractResource extends Resource
                                                                 Select::make('contact_data.aif.nationality')
                                                                     ->label('Nationality')
                                                                     ->native(false)
-                                                                    ->searchable()
+                                                                    ->required()
                                                                     ->searchable()
                                                                     ->options(collect(Nationality::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                     ->columnSpan(3),
