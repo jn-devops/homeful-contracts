@@ -887,7 +887,7 @@ class ContractResource extends Resource
                                             ->schema([
                                                 Section::make()
                                                     ->schema([
-                                                        Forms\Components\Repeater::make('co_borrowers')
+                                                        Forms\Components\Repeater::make('contact_data.co_borrowers')
                                                             ->label('Co-Borrowers')
                                                             ->extraItemActions([
                                                                 Forms\Components\Actions\Action::make('copy_from_spouse')
@@ -1105,33 +1105,33 @@ class ContractResource extends Resource
                                                                 //Cobo Address
                                                                 \Filament\Forms\Components\Fieldset::make('Address')
                                                                     ->schema([
-                                                                        TextInput::make('coborrower.address.present.ownership')
+                                                                        TextInput::make('address.primary.ownership')
                                                                             ->required()
                                                                             ->columnSpan(3),
-                                                                        TextInput::make('coborrower.address.present.country')
+                                                                        TextInput::make('address.primary.country')
                                                                             ->required()
                                                                             ->columnSpan(3),
-                                                                        TextInput::make('coborrower.address.present.postal_code')
+                                                                        TextInput::make('address.primary.postal_code')
                                                                             ->minLength(4)
                                                                             ->maxLength(4)
                                                                             ->required()
                                                                             ->columnSpan(3),
-                                                                        TextInput::make('coborrower.address.present.region')
-                                                                            ->hidden(fn(Get $get):bool => $get('coborrower.address.present.country') != 'PH'&&$get('coborrower.address.present.country')!=null)
+                                                                        TextInput::make('address.primary.region')
+                                                                            ->hidden(fn(Get $get):bool => $get('address.primary.country') != 'PH'&&$get('address.primary.country')!=null)
                                                                             ->columnSpan(3),
-                                                                        TextInput::make('coborrower.address.present.administrative_area')
+                                                                        TextInput::make('address.primary.administrative_area')
                                                                             ->columnSpan(3),
-                                                                        TextInput::make('coborrower.address.present.locality')
+                                                                        TextInput::make('address.primary.locality')
                                                                             ->label('City')
                                                                             ->columnSpan(3),
-                                                                        TextInput::make('coborrower.address.present.sublocality')
+                                                                        TextInput::make('address.primary.sublocality')
                                                                             ->label('Barangay')
                                                                             ->columnSpan(3),
-                                                                        TextInput::make('coborrower.address.present.address1')
-                                                                            ->label(fn(Get $get)=>$get('coborrower.address.present.country')!='PH'?'Full Address':'Unit Number, House/Building/Street No, Street Name')
+                                                                        TextInput::make('address.primary.address1')
+                                                                            ->label(fn(Get $get)=>$get('address.primary.country')!='PH'?'Full Address':'Unit Number, House/Building/Street No, Street Name')
 //                                        ->hint('Unit Number, House/Building/Street No, Street Name')
-                                                                            ->placeholder(fn(Get $get)=>$get('coborrower.address.present.country')!='PH'?'Full Address':'Unit Number, House/Building/Street No, Street Name')
-                                                                            ->required(fn(Get $get):bool => $get('coborrower.address.present.country') != 'PH')
+                                                                            ->placeholder(fn(Get $get)=>$get('address.primary.country')!='PH'?'Full Address':'Unit Number, House/Building/Street No, Street Name')
+                                                                            ->required(fn(Get $get):bool => $get('address.primary.country') != 'PH')
                                                                             ->autocapitalize('words')
                                                                             ->maxLength(255)
                                                                             ->live()
@@ -1300,40 +1300,7 @@ class ContractResource extends Resource
                                             ->schema([
                                                 Section::make()
                                                     ->schema([
-                                                        Forms\Components\Fieldset::make('Attorney Details')->schema([
-                                                            TextInput::make('contact_data.aif.attorney.last_name')
-                                                                ->label('Last Name')
-                                                                ->required()
-                                                                ->maxLength(255)
-                                                                ->columnSpan(3),
-                                                            TextInput::make('contact_data.aif.attorney.first_name')
-                                                                ->label('First Name')
-                                                                ->required()
-                                                                ->maxLength(255)
-                                                                ->columnSpan(3),
 
-                                                            TextInput::make('contact_data.aif.attorney.middle_name')
-                                                                ->label('Middle Name')
-                                                                ->maxLength(255)
-                                                                ->required(fn (Get $get): bool => ! $get('contact_data.aif.attorney.no_middle_name'))
-                                                                ->readOnly(fn (Get $get): bool =>  $get('contact_data.aif.attorney.no_middle_name'))
-//                                            ->hidden(fn (Get $get): bool =>  $get('no_middle_name'))
-                                                                ->columnSpan(3),
-                                                            TextInput::make('contact_data.aif.attorney.name_suffix')
-                                                                ->label('Suffix')
-                                                                ->required()
-                                                                ->columnSpan(2),
-
-                                                            Forms\Components\Checkbox::make('contact_data.aif.attorney.no_middle_name')
-                                                                ->live()
-                                                                ->inline(false)
-                                                                ->afterStateUpdated(function(Get $get,Set $set){
-                                                                    $set('aif.attorney.middle_name',null);
-//                                                if ($get('no_middle_name')) {
-//                                                }
-                                                                })
-                                                                ->columnSpan(1),
-                                                        ])->columns(12)->columnSpanFull(),
                                                         //Personal Information
                                                         Section::make('Contact Person Information')
                                                             ->headerActions([
@@ -1377,7 +1344,7 @@ class ContractResource extends Resource
                                                                     ->readOnly(fn (Get $get): bool =>  $get('contact_data.aif.no_middle_name'))
                                                                     //                                            ->hidden(fn (Get $get): bool =>  $get('no_middle_name'))
                                                                     ->columnSpan(3),
-                                                                Select::make('contact_data.aif.name_suffix')
+                                                                TextInput::make('contact_data.aif.name_suffix')
                                                                     ->label('Suffix')
                                                                     ->columnSpan(2),
 
