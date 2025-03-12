@@ -13,9 +13,9 @@ class GetSellerCommissionCode
     /**
      * @throws ConnectionException
      */
-    public function handle(string $seller_voucher_code): ?string
+    public function handle(string $seller_voucher_code, string $project_code): ?string
     {
-        $route = __(config('homeful-contracts.end-points.redeem-voucher'), ['voucher' => $seller_voucher_code, 'project_code' => 'PPPEM']);
+        $route = __(config('homeful-contracts.end-points.redeem-voucher'), ['voucher' => $seller_voucher_code, 'project_code' => $project_code]);
         $response = Http::acceptJson()->post($route);
 
         return $response->ok() ? $response->json('seller_commission_code') : null;
