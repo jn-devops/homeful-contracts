@@ -571,6 +571,7 @@ class ContractResource extends Resource
                                                             Select::make('contact_data.buyer_employment.current_position')
                                                                 ->label('Current Position')
                                                                 ->native(false)
+                                                                ->searchable()
                                                                 ->options(collect(Position::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                 ->columnSpan(3),
                                                             //                                                Select::make('buyer_employment.current_position')
@@ -1212,6 +1213,7 @@ class ContractResource extends Resource
                                                                     Select::make('coborrower_employment.current_position')
                                                                         ->label('Current Position')
                                                                         ->native(false)
+                                                                        ->searchable()
                                                                         ->options(collect(Position::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                         ->required(fn (Get $get): bool =>   $get('coborrower_employment.employment_type')!=EmploymentType::SELF_EMPLOYED)
                                                                         ->hidden(fn (Get $get): bool =>   $get('coborrower_employment.employment_type')==EmploymentType::SELF_EMPLOYED)
