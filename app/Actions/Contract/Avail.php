@@ -11,6 +11,7 @@ use Homeful\Contracts\States\Availed;
 use App\Actions\GetInventory;
 use Illuminate\Support\Arr;
 use App\Actions\UpdateContractProperty;
+use Homeful\Products\Models\Product;
 
 class Avail
 {
@@ -26,12 +27,13 @@ class Avail
     {
         try {
             /** extract sku (in associative array) from attribs */
-            $product_params = Arr::only($validated, 'sku');
+            $sku = Arr::only($validated, 'sku');
+            $product = Product::where('sku', $sku)->firstOrFail();
 
             $contract = app(UpdateContractProperty::class)->run($reference, $validated);
             GenerateContractPayloads::dispatch($contract);
             if ($seller_voucher_code = Arr::get($validated, 'seller_voucher_code')){
-                $seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code);
+                $seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code, $product->project_code);
                 $contract->seller_commission_code = $seller_commission_code;
                 if (!empty($seller_commission_code)){
                     $contract->voucher_code = $seller_voucher_code;
@@ -96,8 +98,8 @@ class Avail
         ];
     }
 
-    protected function getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code): ?string
+    protected function getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code, $project_code): ?string
     {
-        return GetSellerCommissionCode::run($seller_voucher_code);
+        return GetSellerCommissionCode::run($seller_voucher_code, $project_code);
     }
 }
