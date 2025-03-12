@@ -64,7 +64,6 @@ use Carbon\Carbon;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\ViewField;
 use Homeful\Contacts\Models\Contact as ModelsContact;
-
 class ContractResource extends Resource
 {
     protected static ?string $model = Contract::class;
@@ -210,7 +209,7 @@ class ContractResource extends Resource
                                                                     ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
                                                                         $livewire->validateOnly($component->getStatePath());
                                                                     })
-                                                                    ->unique(ignoreRecord: true,table: Contact::class,column: 'email')
+                                                                    ->unique(ignoreRecord: true,table: ModelsContact::class,column: 'email')
                                                                     ->columnSpan(3),
 
                                                                 Forms\Components\TextInput::make('contact_data.buyer.mobile')
