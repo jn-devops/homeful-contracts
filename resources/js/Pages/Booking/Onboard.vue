@@ -1,5 +1,5 @@
 <script setup>
-// import Loading from '@/Components/Animation/Loading.vue';
+import { Vue3Lottie } from "vue3-lottie";
 import PlainBlackButton from '@/Components/Button/PlainBlackButton.vue';
 import WarningToast from '@/Components/Toast/WarningToast.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
@@ -56,7 +56,10 @@ const submit = () => {
                 <form @submit.prevent="submit">
                     <div class="w-full flex flex-col justify-center items-center mb-28">
                         <div class="w-32 ">
-                            <!-- <Loading /> -->
+                            <Vue3Lottie 
+                                animationLink="/Loading.json" 
+                                width="100%" 
+                            />
                         </div>
                         Please wait while we verify your account
                     </div>
