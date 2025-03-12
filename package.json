@@ -27,7 +27,6 @@
         "@headlessui/vue": "^1.7.23",
         "@heroicons/vue": "^2.2.0",
         "@vuepic/vue-datepicker": "^11.0.1",
-        "lottie-web": "^5.12.2",
         "vue-zoomable": "^1.2.6"
     }
 }
