@@ -848,6 +848,7 @@ class ContractResource extends Resource
                                                                 ->required()
                                                                 ->label('Nationality')
                                                                 ->native(false)
+                                                                ->searchable()
                                                                 ->options(collect(Nationality::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                 ->columnSpan(3),
                                                             TextInput::make('contact_data.spouse.tin')
@@ -1008,6 +1009,8 @@ class ContractResource extends Resource
                                                                         Select::make('nationality')
                                                                             ->label('Nationality')
                                                                             ->native(false)
+                                                                            ->searchable()
+                                                                            ->searchable()
                                                                             ->options(collect(Nationality::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                             ->required()
                                                                             ->columnSpan(3),
@@ -1414,6 +1417,8 @@ class ContractResource extends Resource
                                                                 Select::make('contact_data.aif.nationality')
                                                                     ->label('Nationality')
                                                                     ->native(false)
+                                                                    ->searchable()
+                                                                    ->searchable()
                                                                     ->options(collect(Nationality::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                     ->columnSpan(3),
                                                                 Select::make('contact_data.aif.relationship_to_buyer')
