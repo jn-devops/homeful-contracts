@@ -36,6 +36,7 @@ class EditContract extends EditRecord
                 ->requiresConfirmation(true)
                 ->modalCancelActionLabel('No')
                 ->action(function(){
+                    $this->form->validate();
                     $this->save();
                 })
                 ->keyBindings(['command+s', 'ctrl+s']),
@@ -277,8 +278,6 @@ class EditContract extends EditRecord
 
     public function save(bool $shouldRedirect = true, bool $shouldSendSavedNotification = true): void
     {
-        $this->form->validate();
-        dd('test');
         $contact = Contact::where('id',$this->record->contact_id)->first();
 
         $this->record->misc_inputs=$this->data['misc']['input'];
