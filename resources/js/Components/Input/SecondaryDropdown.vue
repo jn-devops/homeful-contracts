@@ -20,7 +20,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 const publishingOptions = props.options;
-const selected = ref(null)
+const selected = ref({title: props.modelValue})
 
 watch(selected, (newValue) => {
     emit('update:modelValue', newValue.title)
