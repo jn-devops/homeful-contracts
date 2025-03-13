@@ -903,7 +903,7 @@ class ContractResource extends Resource
                                                             ])->columns(12)->columnSpanFull(),
                                                     ])
                                             ])
-                                            ->hidden(fn(Get $get)=>Str::title($get('contact_data.buyer.civil_status'))  != 'Married'),
+                                            ->hidden(fn(Get $get)=>Str::title($get('contact_data.buyer.civil_status')->value)  != 'Married'),
                                         Forms\Components\Tabs\Tab::make('Co-Borrower')
                                             ->icon('heroicon-m-user-plus')
                                             ->schema([
