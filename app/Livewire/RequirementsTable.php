@@ -27,10 +27,11 @@ class RequirementsTable extends Component
     public function mount(Model $record)
     {
         $this->record = $record;
-        $contact = Contact::where('id', $record->contact_id)->first()->getData()->toArray();
-        $employment_status = collect($contact['employment']??[])->firstWhere('type','Primary')['employment_type']??'';
+        $contact = Contact::where('id', $record->contact_id)->first();
+        $employment = $contact->employment;
+        $employment_status = collect($employment??[])->firstWhere('type','Primary')['employment_type']??'';
         $this->chosenFile = "";
-        $requirements = RequirementMatrix::where('civil_status',$contact['civil_status']??'')->where('employment_status',$employment_status)->first();
+        $requirements = RequirementMatrix::where('civil_status',$contact->civil_status??'')->where('employment_status',$employment_status)->first();
         $reqs = collect(json_decode($requirements->requirements??"[]", true))
             ->sort()
             ->values();
