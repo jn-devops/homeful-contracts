@@ -36,6 +36,7 @@ class EditContract extends EditRecord
                 ->requiresConfirmation(true)
                 ->modalCancelActionLabel('No')
                 ->action(function(){
+                    $this->form->validate();
                     $this->save();
                 })
                 ->keyBindings(['command+s', 'ctrl+s']),
@@ -65,7 +66,7 @@ class EditContract extends EditRecord
                 ->form([
                     Select::make('status')
                         ->options(function(Contract $record){
-                           return collect($this->record->state->transitionableStates())
+                            return collect($this->record->state->transitionableStates())
                                 ->mapWithKeys(function ($state) {
 
                                     $stateInstance = new $state($this->record); // Pass the model instance
@@ -98,7 +99,7 @@ class EditContract extends EditRecord
             $data['desired_property']['unit_type']=$data['property']['unit_type']??'';
             $data['desired_property']['tcp']=$data['property']['tcp']??'';
             $data['desired_property']['payment_terms']=($this->record->mortgage->getBalancePaymentTerm() ?? 0) ? $this->record->mortgage->getBalancePaymentTerm() . ' years' : '';
-            $data['desired_property']['monthly_amortization'] = $this->record->getData()->mortgage->loan_amortization??0;
+            $data['desired_property']['monthly_amortization'] = $this->record->mortgage->getLoan()->getMonthlyAmortization()->inclusive()->getAmount()->toFloat()??0;
         }
 
         if(!empty($data['payment'])&& $data['payment']!=null){
@@ -115,7 +116,7 @@ class EditContract extends EditRecord
 
 
         if($this->record->mortgage !=null){
-            $new_data['order']['net_loan_proceeds'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
+            $new_data['order']['net_loan_proceeds'] = $this->record->mortgage->getBalancePayment()->getAmount()->toFloat()??'';
 //            $new_data['order']['non_life_insurance'] = $this->record->getData()->mortgage->loan[0][''];
 //            $new_data['order']['mrisri_docstamp_total'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
         }
@@ -132,28 +133,34 @@ class EditContract extends EditRecord
             $new_data['order']['registry_of_deeds_address']=$payloads['registry_of_deeds_address']??'';
 
 
+            $inventory = $this->record->inventory;
+            $project = $inventory->project ?? null;
 
-            $new_data['order']['sku']=$this->record->getData()->inventory->toArray()['sku']??'';
-            $new_data['order']['phase']=$this->record->getData()->inventory->toArray()['phase']??'';
-            $new_data['order']['block']=$this->record->getData()->inventory->toArray()['block']??'';
-            $new_data['order']['lot']=$this->record->getData()->inventory->toArray()['lot']??'';
-            $new_data['order']['lot_area']=$this->record->getData()->inventory->toArray()['lot_area']??'';
-            $new_data['order']['floor_area']=$this->record->getData()->inventory->toArray()['floor_area']??'';
-            $new_data['order']['property_code']=$this->record->property_code??'';
-            $new_data['order']['property_name'] = $this->record->getData()->inventory->toArray()['name']??'';
-            $new_data['order']['property_type'] = $this->record->getData()->inventory->toArray()['type']??'';
-            $new_data['order']['project_name'] = $this->record->getData()->inventory->toArray()['project']['name']??'';
-            $new_data['order']['project_location'] = $this->record->getData()->inventory->toArray()['project']['location']??'';
-            $new_data['order']['project_address'] = $this->record->getData()->inventory->toArray()['project']['address']??'';
-            $new_data['order']['project_code'] = $this->record->getData()->inventory->toArray()['project']['code']??'';
-            $new_data['order']['unit_type_interior'] = $this->record->getData()->inventory->toArray()['unit_type_interior']??'';
-            $new_data['order']['unit_type'] = $this->record->getData()->inventory->toArray()['unit_type']??'';
-            $new_data['order']['payment_scheme']['total_contract_price'] = $this->record->getData()->inventory->toArray()['tcp']??'';
+            $new_data['order']['sku'] = $inventory->sku ?? '';
+            $new_data['order']['phase'] = $inventory->phase ?? '';
+
+            $new_data['order']['block'] = $inventory->block ?? '';
+            $new_data['order']['lot'] = $inventory->lot ?? '';
+            $new_data['order']['lot_area'] = $inventory->lot_area ?? '';
+            $new_data['order']['floor_area'] = $inventory->floor_area ?? '';
+            $new_data['order']['property_code'] = $this->record->property_code ?? '';
+            $new_data['order']['property_name'] = $inventory->name ?? '';
+            $new_data['order']['property_type'] = $inventory->type ?? '';
+
+            $new_data['order']['project_name'] = $project->name ?? '';
+            $new_data['order']['project_location'] = $project->location ?? '';
+            $new_data['order']['project_address'] = $project->address ?? '';
+            $new_data['order']['project_code'] = $project->code ?? '';
+
+            $new_data['order']['unit_type_interior'] = $inventory->unit_type_interior ?? '';
+            $new_data['order']['unit_type'] = $inventory->unit_type ?? '';
+
+            $new_data['order']['payment_scheme']['total_contract_price'] = $inventory->tcp ?? '';
         }
 
-        $contact_data= $this->record->customer->toArray();
 
-        if($contact_data["co_borrowers"]){
+
+        if($this->record->customer->co_borrowers!=null){
             foreach($this->record->customer->co_borrowers->toArray() as $co_borrower){
 //                dd($co_borrower,$co_borrower['employment'][0]);
                 $co_borrower['address']['primary']= $co_borrower['addresses'][0];
@@ -162,12 +169,18 @@ class EditContract extends EditRecord
             }
         }
 
+        $contact_data['addresses']=$this->record->customer->addresses->toArray();
+
+
         $buyer_address_present = collect($contact_data['addresses'])
             ->filter(fn($address) => in_array($address['type'], ['Primary','Present']))
             ->first() ?? [];
         $buyer_address_permanent = collect($contact_data['addresses'])
             ->filter(fn($address) => in_array($address['type'], ['Sencondary','Permanent']))
             ->first() ?? [];
+
+        $contact_data['employment']=$this->record->customer->employment->toArray();
+
         $buyer_employment = collect($contact_data['employment'])->firstWhere('type', 'Primary') ?? [];
         $new_data['buyer_employment']=$buyer_employment;
         // Spouse details if available
@@ -184,22 +197,23 @@ class EditContract extends EditRecord
         $data['misc']['input']=$this->record->misc_inputs;
 
 
-        $new_data['buyer']['mobile'] = $contact_data['mobile'];
+        $customer = $this->record->customer;
+
         $new_data['buyer'] = [
-            'first_name' => $contact_data['first_name']??'',
-            'last_name' => $contact_data['last_name']??'',
-            'middle_name' => $contact_data['middle_name']??'',
-            'name_suffix' => $contact_data['name_suffix']??'',
-            'mothers_maiden_name' => $contact_data['mothers_maiden_name']??'',
-            'email' => $contact_data['email']??'',
-            'mobile' => $contact_data['mobile']??'',
-            'other_mobile' => $contact_data['other_mobile']??'',
-            'help_number' => $contact_data['help_number']??'',
-            'landline' => $contact_data['landline']??'',
-            'civil_status' => $contact_data['civil_status']??'',
-            'sex' => $contact_data['sex']??'',
-            'nationality' => $contact_data['nationality']??'',
-            'date_of_birth' => $contact_data['date_of_birth'],
+            'first_name' => $customer->first_name ?? '',
+            'last_name' => $customer->last_name ?? '',
+            'middle_name' => $customer->middle_name ?? '',
+            'name_suffix' => $customer->name_suffix ?? '',
+            'mothers_maiden_name' => $customer->mothers_maiden_name ?? '',
+            'email' => $customer->email ?? '',
+            'mobile' => $customer->mobile ?? '',
+            'other_mobile' => $customer->other_mobile ?? '',
+            'help_number' => $customer->help_number ?? '',
+            'landline' => $customer->landline ?? '',
+            'civil_status' => $customer->civil_status ?? '',
+            'sex' => $customer->sex ?? '',
+            'nationality' => $customer->nationality ?? '',
+            'date_of_birth' => $customer->date_of_birth ?? '',
         ];
 //
         $new_data['buyer']['no_middle_name']=$new_data['buyer']['middle_name']==''||$new_data['buyer']['middle_name']==null;

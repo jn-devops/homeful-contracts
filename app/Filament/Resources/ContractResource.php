@@ -64,7 +64,6 @@ use Carbon\Carbon;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\ViewField;
 use Homeful\Contacts\Models\Contact as ModelsContact;
-
 class ContractResource extends Resource
 {
     protected static ?string $model = Contract::class;
@@ -160,6 +159,7 @@ class ContractResource extends Resource
                                                                 })
                                                                 ->columnSpan(1),
                                                             Select::make('contact_data.buyer.civil_status')
+                                                                ->live()
                                                                 ->label('Civil Status')
                                                                 ->native(false)
                                                                 ->options(collect(CivilStatus::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
@@ -207,10 +207,10 @@ class ContractResource extends Resource
                                                                     ->required()
                                                                     ->maxLength(255)
                                                                     ->live()
-                                                                    ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
-                                                                        $livewire->validateOnly($component->getStatePath());
-                                                                    })
-                                                                    ->unique(ignoreRecord: true,table: Contact::class,column: 'email')
+//                                                                    ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+//                                                                        $livewire->validateOnly($component->getStatePath());
+//                                                                    })
+//                                                                    ->unique(ignoreRecord: true,table: ModelsContact::class,column: 'email')
                                                                     ->columnSpan(3),
 
                                                                 Forms\Components\TextInput::make('contact_data.buyer.mobile')
@@ -534,6 +534,7 @@ class ContractResource extends Resource
                                                         //Employment
                                                         \Filament\Forms\Components\Fieldset::make('Employment')->schema([
                                                             Select::make('contact_data.buyer_employment.employment_type')
+                                                                ->live()
                                                                 ->label('Employment Type')
                                                                 ->native(false)
                                                                 ->options(collect(EmploymentType::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
@@ -572,6 +573,7 @@ class ContractResource extends Resource
                                                             Select::make('contact_data.buyer_employment.current_position')
                                                                 ->label('Current Position')
                                                                 ->native(false)
+                                                                ->searchable()
                                                                 ->options(collect(Position::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                 ->columnSpan(3),
                                                             //                                                Select::make('buyer_employment.current_position')
@@ -591,6 +593,7 @@ class ContractResource extends Resource
                                                                 ->columnSpan(3),
                                                             Select::make('contact_data.buyer_employment.employer.industry')
                                                                 ->label('Work Industry')
+                                                                ->required()
                                                                 ->native(false)
                                                                 ->options(collect(Industry::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                 ->columnSpan(3),
@@ -849,6 +852,7 @@ class ContractResource extends Resource
                                                                 ->required()
                                                                 ->label('Nationality')
                                                                 ->native(false)
+                                                                ->searchable()
                                                                 ->options(collect(Nationality::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                 ->columnSpan(3),
                                                             TextInput::make('contact_data.spouse.tin')
@@ -899,7 +903,8 @@ class ContractResource extends Resource
                                                                     ->columnSpan(3),
                                                             ])->columns(12)->columnSpanFull(),
                                                     ])
-                                            ])->hidden(fn(Get $get)=>Str::title($get('contact_data.buyer.civil_status'))  != 'Married'),
+                                            ])
+                                            ->hidden(fn(Get $get)=>Str::title($get('contact_data.buyer.civil_status')->value)  != 'Married'),
                                         Forms\Components\Tabs\Tab::make('Co-Borrower')
                                             ->icon('heroicon-m-user-plus')
                                             ->schema([
@@ -1009,6 +1014,8 @@ class ContractResource extends Resource
                                                                         Select::make('nationality')
                                                                             ->label('Nationality')
                                                                             ->native(false)
+                                                                            ->searchable()
+                                                                            ->searchable()
                                                                             ->options(collect(Nationality::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                             ->required()
                                                                             ->columnSpan(3),
@@ -1210,6 +1217,7 @@ class ContractResource extends Resource
                                                                     Select::make('coborrower_employment.current_position')
                                                                         ->label('Current Position')
                                                                         ->native(false)
+                                                                        ->searchable()
                                                                         ->options(collect(Position::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                         ->required(fn (Get $get): bool =>   $get('coborrower_employment.employment_type')!=EmploymentType::SELF_EMPLOYED)
                                                                         ->hidden(fn (Get $get): bool =>   $get('coborrower_employment.employment_type')==EmploymentType::SELF_EMPLOYED)
@@ -1223,6 +1231,7 @@ class ContractResource extends Resource
                                                                     Select::make('coborrower_employment.employer.industry')
                                                                         ->label('Work Industry')
                                                                         ->native(false)
+                                                                        ->required()
                                                                         ->options(collect(Industry::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                         ->columnSpan(3),
                                                                     TextInput::make('coborrower_employment.monthly_gross_income')
@@ -1368,12 +1377,12 @@ class ContractResource extends Resource
                                                             ->schema([
                                                                 TextInput::make('contact_data.aif.last_name')
                                                                     ->label('Last Name')
-                                                                    // ->required()
+                                                                     ->required()
                                                                     ->maxLength(255)
                                                                     ->columnSpan(3),
                                                                 TextInput::make('contact_data.aif.first_name')
                                                                     ->label('First Name')
-                                                                    // ->required()
+                                                                     ->required()
                                                                     ->maxLength(255)
                                                                     ->columnSpan(3),
 
@@ -1396,11 +1405,12 @@ class ContractResource extends Resource
                                                                 Select::make('contact_data.aif.civil_status')
                                                                     ->label('Civil Status')
                                                                     ->native(false)
+                                                                    ->required()
                                                                     ->options(collect(CivilStatus::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                     ->columnSpan(3),
                                                                 Select::make('contact_data.aif.sex')
                                                                     ->label('Gender')
-                                                                    // ->required()
+                                                                     ->required()
                                                                     ->native(false)
                                                                     ->options([
                                                                         'Male'=>'Male',
@@ -1415,6 +1425,8 @@ class ContractResource extends Resource
                                                                 Select::make('contact_data.aif.nationality')
                                                                     ->label('Nationality')
                                                                     ->native(false)
+                                                                    ->required()
+                                                                    ->searchable()
                                                                     ->options(collect(Nationality::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                     ->columnSpan(3),
                                                                 Select::make('contact_data.aif.relationship_to_buyer')
@@ -1470,7 +1482,8 @@ class ContractResource extends Resource
                                                                     ->columnSpan(3),
                                                             ])->columns(12)->columnSpanFull(),
                                                     ])
-                                            ]),
+                                            ])
+                                            ->hidden(fn(Get $get)=>$get('contact_data.buyer_employment.employment_type') !='Overseas Filipino Worker (OFW)' ),
 
 
                                     ])
