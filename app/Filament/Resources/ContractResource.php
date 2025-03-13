@@ -207,10 +207,10 @@ class ContractResource extends Resource
                                                                     ->required()
                                                                     ->maxLength(255)
                                                                     ->live()
-                                                                    ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
-                                                                        $livewire->validateOnly($component->getStatePath());
-                                                                    })
-                                                                    ->unique(ignoreRecord: true,table: ModelsContact::class,column: 'email')
+//                                                                    ->afterStateUpdated(function (Forms\Contracts\HasForms $livewire, Forms\Components\TextInput $component) {
+//                                                                        $livewire->validateOnly($component->getStatePath());
+//                                                                    })
+//                                                                    ->unique(ignoreRecord: true,table: ModelsContact::class,column: 'email')
                                                                     ->columnSpan(3),
 
                                                                 Forms\Components\TextInput::make('contact_data.buyer.mobile')
@@ -593,6 +593,7 @@ class ContractResource extends Resource
                                                                 ->columnSpan(3),
                                                             Select::make('contact_data.buyer_employment.employer.industry')
                                                                 ->label('Work Industry')
+                                                                ->required()
                                                                 ->native(false)
                                                                 ->options(collect(Industry::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                 ->columnSpan(3),
@@ -1230,6 +1231,7 @@ class ContractResource extends Resource
                                                                     Select::make('coborrower_employment.employer.industry')
                                                                         ->label('Work Industry')
                                                                         ->native(false)
+                                                                        ->required()
                                                                         ->options(collect(Industry::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                         ->columnSpan(3),
                                                                     TextInput::make('coborrower_employment.monthly_gross_income')
