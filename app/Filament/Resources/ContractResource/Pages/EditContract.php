@@ -98,7 +98,8 @@ class EditContract extends EditRecord
             $data['desired_property']['unit_type']=$data['property']['unit_type']??'';
             $data['desired_property']['tcp']=$data['property']['tcp']??'';
             $data['desired_property']['payment_terms']=($this->record->mortgage->getBalancePaymentTerm() ?? 0) ? $this->record->mortgage->getBalancePaymentTerm() . ' years' : '';
-            $data['desired_property']['monthly_amortization'] = $this->record->getData()->mortgage->loan_amortization??0;
+//            $data['desired_property']['monthly_amortization'] = $this->record->getData()->mortgage->loan_amortization??0;
+            $data['desired_property']['monthly_amortization'] = $this->record->mortgage->getLoan()->getMonthlyAmortization()->inclusive()->getAmount()->toFloat()??0;
         }
 
         if(!empty($data['payment'])&& $data['payment']!=null){
@@ -115,7 +116,8 @@ class EditContract extends EditRecord
 
 
         if($this->record->mortgage !=null){
-            $new_data['order']['net_loan_proceeds'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
+            $new_data['order']['net_loan_proceeds'] = $this->record->mortgage->getLoan()->addOnFeesToPayment()->getAmount()->toFloat()??0;
+//            $new_data['order']['net_loan_proceeds'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
 //            $new_data['order']['non_life_insurance'] = $this->record->getData()->mortgage->loan[0][''];
 //            $new_data['order']['mrisri_docstamp_total'] = $this->record->getData()->mortgage->add_on_fees_to_payment??'';
         }
