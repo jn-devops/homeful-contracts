@@ -159,6 +159,7 @@ class ContractResource extends Resource
                                                                 })
                                                                 ->columnSpan(1),
                                                             Select::make('contact_data.buyer.civil_status')
+                                                                ->live()
                                                                 ->label('Civil Status')
                                                                 ->native(false)
                                                                 ->options(collect(CivilStatus::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
@@ -533,6 +534,7 @@ class ContractResource extends Resource
                                                         //Employment
                                                         \Filament\Forms\Components\Fieldset::make('Employment')->schema([
                                                             Select::make('contact_data.buyer_employment.employment_type')
+                                                                ->live()
                                                                 ->label('Employment Type')
                                                                 ->native(false)
                                                                 ->options(collect(EmploymentType::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
@@ -900,7 +902,8 @@ class ContractResource extends Resource
                                                                     ->columnSpan(3),
                                                             ])->columns(12)->columnSpanFull(),
                                                     ])
-                                            ])->hidden(fn(Get $get)=>Str::title($get('contact_data.buyer.civil_status'))  != 'Married'),
+                                            ])
+                                            ->hidden(fn(Get $get)=>Str::title($get('contact_data.buyer.civil_status'))  != 'Married'),
                                         Forms\Components\Tabs\Tab::make('Co-Borrower')
                                             ->icon('heroicon-m-user-plus')
                                             ->schema([
@@ -1477,7 +1480,8 @@ class ContractResource extends Resource
                                                                     ->columnSpan(3),
                                                             ])->columns(12)->columnSpanFull(),
                                                     ])
-                                            ]),
+                                            ])
+                                            ->hidden(fn(Get $get)=>$get('contact_data.buyer_employment.employment_type') !='Overseas Filipino Worker (OFW)' ),
 
 
                                     ])
