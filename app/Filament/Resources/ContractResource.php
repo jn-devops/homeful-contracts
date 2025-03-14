@@ -396,7 +396,7 @@ class ContractResource extends Resource
                                                                                     ->label('Ownership')
                                                                                     ->required()
                                                                                     ->native(false)
-                                                                                    ->options(collect(CivilStatus::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
+                                                                                    ->options(collect(Ownership::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                                     ->columnSpan(3),
                                                                                 //                                                                    Select::make('buyer.address.permanent.ownership')
                                                                                 //                                                                        ->options(HomeOwnership::all()->pluck('description','code'))
@@ -1143,7 +1143,7 @@ class ContractResource extends Resource
                                                                         Select::make('address.primary.ownership')
                                                                             ->required()
                                                                             ->native(false)
-                                                                            ->options(collect(CivilStatus::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
+                                                                            ->options(collect(Ownership::cases())->mapWithKeys(fn($case) => [$case->value => $case->value])->toArray())
                                                                             ->columnSpan(3),
                                                                         TextInput::make('address.primary.country')
                                                                             ->required()
