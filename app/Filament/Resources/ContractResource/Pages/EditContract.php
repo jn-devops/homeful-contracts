@@ -169,7 +169,7 @@ class EditContract extends EditRecord
             }
         }
 
-        $contact_data['addresses']=$this->record->customer->addresses->toArray();
+        $contact_data['addresses']=$this->record->customer->addresses->toArray()??[];
 
 
         $buyer_address_present = collect($contact_data['addresses'])
@@ -179,7 +179,7 @@ class EditContract extends EditRecord
             ->filter(fn($address) => in_array($address['type'], ['Sencondary','Permanent']))
             ->first() ?? [];
 
-        $contact_data['employment']=$this->record->customer->employment->toArray();
+        $contact_data['employment']=$this->record->customer->employment->toArray()??[];
 
         $buyer_employment = collect($contact_data['employment'])->firstWhere('type', 'Primary') ?? [];
         $new_data['buyer_employment']=$buyer_employment;
