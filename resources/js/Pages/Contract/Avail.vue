@@ -40,10 +40,10 @@ const submit = () => {
     });
 };
 
-const sort = ref(null);
+const sort = ref('Highest');
 const sortOption = [
-        { title: 'Ascending', description: 'Ascending', current: true },
-        { title: 'Descending', description: 'Descending', current: false },
+        { title: 'Lowest', description: 'Lowest', current: true },
+        { title: 'Highest', description: 'Highest', current: false },
     ]
 const discoverPage = ref(false);
 
@@ -129,22 +129,39 @@ const age = computed(() => {
 provide('houseTypes', houseTypes)
 provide('locations', locations)
 
+const list_properties = ref([]);
+
+const descending_order = (object_properties) => {
+    return Object.values(object_properties)
+        .map((item) => {
+        const parsedDescription = JSON.parse(item.description);
+        const totalContractPrice = parsedDescription.property.total_contract_price;
+        return { ...item, totalContractPrice };
+        })
+        .sort((a, b) => b.totalContractPrice - a.totalContractPrice)
+}
+
+const ascending_order = (object_properties) => {
+    return Object.values(object_properties)
+        .map((item) => {
+        const parsedDescription = JSON.parse(item.description);
+        const totalContractPrice = parsedDescription.property.total_contract_price;
+        return { ...item, totalContractPrice };
+        })
+        .sort((a, b) => a.totalContractPrice - b.totalContractPrice);
+}
+
 onMounted(() => {
-    
+    list_properties.value = descending_order(props.buttonOptions);
 })
 
-// watch (
-//     () => usePage().props.flash.event,
-//     (event) => {
-//         switch (event?.name) {
-//             case 'reference':
-//                 console.log('event:', event?.data);
-//                 reference.value = event?.data;
-//                 break;
-//         }
-//     },
-//     { immediate: true }
-// );
+watch (sort, (newVal) => {
+    if (newVal === 'Lowest') {
+        list_properties.value = ascending_order(props.buttonOptions);
+    } else {
+        list_properties.value = descending_order(props.buttonOptions);
+    }
+})
 
 </script>
 
@@ -192,7 +209,7 @@ onMounted(() => {
                     <span>All Property Types, All Locations, {{ age }} years of age with an income of P{{ numberFormatter(contactData.monthly_gross_income) }}.</span>
                 </div>
                 <div class="mt-3">
-                    <div v-for="(opt, i) in buttonOptions">
+                    <div v-for="(opt, i) in list_properties">
                         <PropertyCard 
                             :name="JSON.parse(opt.name).name"
                             :market_segment="opt.details['market_segment']"
