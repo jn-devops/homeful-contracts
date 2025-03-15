@@ -3,6 +3,7 @@
 namespace App\Actions\Contract;
 
 use App\Actions\GenerateContractPayloads;
+use App\Actions\Sync;
 use Homeful\Notifications\Notifications\OnboardedToPaidBuyerNotification;
 use Homeful\References\Data\ReferenceData;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -32,6 +33,7 @@ class Pay
                 $contract->state->transitionTo(Paid::class);
                 $contract->notify(new OnboardedToPaidBuyerNotification(ReferenceData::fromModel($reference) ));
             }
+            Sync::dispatch($contract,$reference);
         } catch (\Throwable $th) {
             throw $th;
         }

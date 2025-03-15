@@ -92,7 +92,7 @@ class EditContract extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
 
-        GenerateContractPayloads::dispatch($this->record);
+//        GenerateContractPayloads::dispatch($this->record);
 
         if (!empty($data['property'])&& $data['property']!=null) {
             $data['desired_property']['project']=$data['property']['project']['name']??'';
@@ -169,7 +169,12 @@ class EditContract extends EditRecord
             }
         }
 
-        $contact_data['addresses']=$this->record->customer->addresses->toArray()??[];
+
+        if($this->record->customer->addresses!=null){
+            $contact_data['addresses']=$this->record->customer->addresses->toArray()??[];
+        }else{
+            $contact_data['addresses']=[];
+        }
 
 
         $buyer_address_present = collect($contact_data['addresses'])
