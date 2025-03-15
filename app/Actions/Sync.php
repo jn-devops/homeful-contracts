@@ -20,7 +20,7 @@ class Sync implements ShouldQueue
     public function handle(Contract $contract, Reference $reference)
     {
         try {
-            Http::withToken(config('lazarus.lazarus_api_token'))->post(config('lazarus.lazarus_url').'admin/consultations', [
+            Http::withToken(config('lazarus.lazarus_api_token'))->post(config('lazarus.lazarus_url').'api/admin/consultations', [
                 'contact_id' => $contract->contact_id,
                 'contract_id' => $contract->id,
                 'reference_code' => $contract->payment->data->orderInformation->orderId,
@@ -41,5 +41,17 @@ class Sync implements ShouldQueue
                 'trace' => $exception->getTraceAsString(),
             ]);
         }
+
+        try {
+            Http::withToken(config('lazarus.contact_server_api_token'))->post(config('lazarus.contact_server_url').'set-lazarus-contact/'.$contract->contact_id, [
+                'contact_id' => $contract->contact_id,
+            ]);
+        }catch (\Exception $exception){
+            Log::error('Error on Set Lazarus Contact API', [
+                'message' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString(),
+            ]);
+        }
+
     }
 }
