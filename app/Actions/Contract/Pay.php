@@ -69,6 +69,7 @@ class Pay
                     'contact_id' => $contract->contact_id,
                 ]);
 
+                logger($request->url());
                 logger($request->status());
                 logger($request->json());
             }catch (\Exception $exception){
