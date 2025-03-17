@@ -24,6 +24,6 @@ class BookingController extends Controller
     }
 
     public function redirect_contacts(){
-        return Inertia::location('https://contacts.homeful.ph/review/personal');
+        return Inertia::location(config('lazarus.contact_server_url').'review/personal');
     }
 }
