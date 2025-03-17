@@ -65,11 +65,11 @@ class Pay
             logger('lazarus set contacts');
             logger($contract->contact_id);
             try {
-                $request= Http::withToken(config('lazarus.contact_server_api_token'))->post(config('lazarus.contact_server_url').'set-lazarus-contact/'.$contract->contact_id, [
+                $request= Http::withToken(config('lazarus.contact_server_api_token'))->post(config('lazarus.contact_server_url').'api/set-lazarus-contact/'.$contract->contact_id, [
                     'contact_id' => $contract->contact_id,
                 ]);
 
-                logger($request->url());
+                logger(config('lazarus.contact_server_url').'api/set-lazarus-contact/'.$contract->contact_id);
                 logger($request->status());
                 logger($request->json());
             }catch (\Exception $exception){
@@ -82,7 +82,6 @@ class Pay
         } catch (\Throwable $th) {
             throw $th;
         }
-
 
 
         return $reference;
