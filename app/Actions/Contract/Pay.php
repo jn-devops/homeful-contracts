@@ -65,8 +65,9 @@ class Pay
             logger('lazarus set contacts');
             logger($contract->contact_id);
             try {
-                $request= Http::withToken(config('lazarus.contact_server_api_token'))->post(config('lazarus.contact_server_url').'api/set-lazarus-contact/'.$contract->contact_id, [
+                $request= Http::withToken(config('lazarus.contact_server_api_token'))->post(config('lazarus.contact_server_url').'api/set-lazarus-contact', [
                     'contact_id' => $contract->contact_id,
+                    'reference_code' => $reference->code,
                 ]);
 
                 logger(config('lazarus.contact_server_url').'api/set-lazarus-contact/'.$contract->contact_id);
