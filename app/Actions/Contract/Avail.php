@@ -36,10 +36,10 @@ class Avail
                 $project_code = $product->meta->get('project_code');
                 $seller_commission_code = $this->getSellerCommissionCodeFromSellerVoucherCode($seller_voucher_code, $project_code) ?? null;
                 $contract->seller_commission_code = $seller_commission_code;
-                if($seller_commission_code){
-                    $contract->voucher_code = $seller_voucher_code;
-                    $contract->voucher_source = 'seller';
-                }
+                //if($seller_commission_code){
+                // }
+                $contract->voucher_code = $seller_voucher_code;
+                $contract->voucher_source = 'seller';
                 $contract->save();
             }
             $contract->state->transitionTo(Availed::class, $reference);
