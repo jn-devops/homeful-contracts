@@ -17,7 +17,7 @@ class GetSellerCommissionCode
     {
         $route = __(config('homeful-contracts.end-points.redeem-voucher'), ['voucher' => $seller_voucher_code, 'project_code' => $project_code]);
         $response = Http::acceptJson()->post($route);
-
+        dd($response->json(), $response->ok());
         return $response->ok() ? $response->json('seller_commission_code') : null;
     }
 }
